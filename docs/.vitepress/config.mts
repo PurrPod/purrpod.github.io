@@ -6,6 +6,7 @@ export default defineConfig({
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
+      { text: '介绍', link: '/intro' },
       { text: '指南', link: '/guide/usage' },
       { text: '配置', link: '/config/' },
       { text: '开发', link: '/develop/architecture' },
@@ -99,6 +100,7 @@ export default defineConfig({
       themeConfig: {
         nav: [
           { text: 'Home', link: '/en/' },
+          { text: 'Introduction', link: '/en/intro' },
           { text: 'Guide', link: '/en/guide/usage' },
           { text: 'Config', link: '/en/config/' },
           { text: 'Develop', link: '/en/develop/architecture' },

@@ -9,6 +9,9 @@ hero:
     src: /logo.png
     alt: CatInCup Logo
   actions:
+    - theme: alt
+      text: 介绍
+      link: /intro
     - theme: brand
       text: 开始使用
       link: /guide/usage

@@ -8,6 +8,7 @@ The official ecosystem library is being prepared. In the future, you can one-cli
 - Efficient office Skill templates
 - Data analysis and bioinformatics tool Plugins
 - Sensors for specific academic websites
+- Harness Engineering customized for specific industry workflows
 
 ## 2. Communication and Feedback
 

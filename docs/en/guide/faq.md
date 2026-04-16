@@ -37,7 +37,7 @@ Built-in retry logic. If it continues to fail, please configure domestic mirror 
 - **Highly Customizable**: Minimal Python build, supports no-code extensions.
   
 
-**2. Is the sandbox mechanism secure enough?** All Shell and code execution is forcibly blocked within Docker containers. Access to the host uses a **strict whitelist mechanism**; unauthorized directories are completely invisible. However, if you actively add high-risk directories (such as system disk root directory) to the whitelist, there is still a risk of误操作. **Please follow the principle of least privilege,后果自负.**
+**2. Is the sandbox mechanism secure enough?** All Shell and code execution is forcibly blocked within Docker containers. Access to the host uses a **strict whitelist mechanism**; unauthorized directories are completely invisible. However, if you actively add high-risk directories (such as system disk root directory) to the whitelist, there is still a risk of accidental operation. **Please follow the principle of least privilege, at your own risk.**
 
 ## 4. Security and Compliance
 

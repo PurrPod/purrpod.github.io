@@ -9,6 +9,8 @@ All environment configuration files of the system are uniformly stored in the `d
 - **Skill Installation**： Drag the skill folder containing `SKILL.md` into the `data/skill/` directory, and it will take effect after restart.
     
 - **Native Plugin Installation**： Place your Python plugin package directory under `src/plugins/plugin_collection/`, and the system will automatically scan and parse YAML to register tools.
+
+- **External Harness Engineering Integration**：Refer to the corresponding README.md for operation.
     
 
 ## 2. Sensor Configuration

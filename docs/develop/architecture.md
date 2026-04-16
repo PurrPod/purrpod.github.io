@@ -1,5 +1,7 @@
 # 架构介绍
 
+## 项目结构树
+
 CatInCup 采用极致的解耦设计，核心代码位于 `src/` 目录：
 
 ```
@@ -13,7 +15,7 @@ src/
 ```
 
 
-## 演进路线图 (Roadmap)
+## 演进路线图
 
 1. **核心引擎优化**：打磨 Harness Engineering，提升 KV Cache 命中率，进一步压降 Token 消耗。
     

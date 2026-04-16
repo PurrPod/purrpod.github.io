@@ -16,7 +16,7 @@ You must mount the target files to the sandbox directory or explicitly grant per
 
 When you have fixed processing flows, solidifying them into Skills is the most efficient approach.
 
-- **Skill Minimal Structure**: The simplest form is a Markdown document (see development documentation), which explains the standard business流程 and precautions.
+- **Skill Minimal Structure**: The simplest form is a Markdown document (see development documentation), which explains the standard business process and precautions.
   
 - **Advanced Usage**: Capable users can package corresponding execution scripts in Skills. When assigning tasks, clearly distinguish between **task planning** and **task triggering**—use `Schedule` (structured calendar files) for long-term planning, and use `Cron` tools for timed alerts and triggers for specific tasks. Before each task execution, simply let the Agent load the corresponding Skill.
 

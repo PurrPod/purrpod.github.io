@@ -25,11 +25,13 @@ _Note: Be sure to handle third-party dependency isolation and introduction in th
 
 ## 3. Harness Engineering Development
 
-The scheduling brain of the framework. Core logic is concentrated in `src/agent/agent.py` and `src/models/task.py`.
+For certain specific industries, you can customize your own Harness Engineering according to the industry's work characteristics.
 
-- Developers can directly modify task flow logic according to business needs.
+In this framework, we provide developers with a BaseTask class, defined as a general task, providing many basic built-in functions and class attributes.
 
-- _Preview: Future versions will integrate MoE (Mixture of Experts) routing system to support more granular task distribution._
+Developers can define their own Harness Engineering in the `src/models/expert/` folder, that is, give a class inheriting BaseTask, modify or use the basic built-in functions (refer to the trading task), and implement their own workflow.
+
+The expert interface provides developers with out-of-the-box native tools and plugin ecosystem, and enjoys the framework's API polling, concurrency compatibility and other features
 
 
 ## 4. Sensor Development (Environmental Sensing)
