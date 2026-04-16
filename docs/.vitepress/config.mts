@@ -7,6 +7,13 @@ export default defineConfig({
     nav: [
       { text: '首页', link: '/' },
       { text: '介绍', link: '/intro' },
+      {
+        text: '下载',
+        items: [
+          { text: 'Git Clone', link: 'https://github.com/PurrPod/cat-in-cup' },
+          { text: '下载压缩包', link: 'https://github.com/PurrPod/cat-in-cup/archive/refs/heads/main.zip' }
+        ]
+      },
       { text: '指南', link: '/guide/usage' },
       { text: '配置', link: '/config/' },
       { text: '开发', link: '/develop/architecture' },
@@ -103,6 +110,13 @@ export default defineConfig({
         nav: [
           { text: 'Home', link: '/en/' },
           { text: 'Introduction', link: '/en/intro' },
+          {
+            text: 'Download',
+            items: [
+              { text: 'Git Clone', link: 'https://github.com/PurrPod/cat-in-cup' },
+              { text: 'Download ZIP', link: 'https://github.com/PurrPod/cat-in-cup/archive/refs/heads/main.zip' }
+            ]
+          },
           { text: 'Guide', link: '/en/guide/usage' },
           { text: 'Config', link: '/en/config/' },
           { text: 'Develop', link: '/en/develop/architecture' },

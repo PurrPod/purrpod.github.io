@@ -14,7 +14,7 @@ hero:
       link: /intro
     - theme: brand
       text: 开始使用
-      link: /guide/usage
+      link: /guide/deployment
     - theme: alt
       text: GitHub 查看
       link: https://github.com/PurrPod/cat-in-cup
@@ -25,7 +25,7 @@ features:
     details: 纯 Docker 沙盒执行环境配合严格白名单权限，保障本地文件操作安全。
   - icon: ⚡
     title: 极简 Harness Engineering
-    details: 路由式工具调用，保障大模型 KV Cache 稳定命中，极大降低 API 消耗。
+    details: 路由式工具调用，保障大模型 KV Cache 稳定命中，极大降低 Token 消耗。
   - icon: 🧩
     title: 解耦与强扩展性
-    details: 模块化架构设计，支持从无代码 Skill 到原生 Plugin，以及 Sensor 异步接入。
+    details: 模块化架构设计，支持从无代码 Skill 到原生 Plugin，以及 Harness 接入。
