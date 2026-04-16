@@ -12,15 +12,6 @@ src/
 └── utils/          # 基础设施层：通用工具函数库、日志与重试机制
 ```
 
-## 架构拓扑图
-
-```mermaid
-graph TD
-    Agent[Agent 大脑<br>Harness Engineering] --> Loader[数据接入层<br>RAG 加载器]
-    Agent --> Models[数据结构层<br>LLM & Task]
-    Agent --> Plugins[执行层<br>MCP & Sandbox]
-    Sensor[异步感知层<br>飞书回调/RSS] -.异步事件注入.-> Agent
-```
 
 ## 演进路线图 (Roadmap)
 
@@ -29,7 +20,5 @@ graph TD
 2. **多模型与高可用**：深度适配主流开源/闭源模型，加入 API 故障自动转移与混合调度。
     
 3. **多模态融合**：接入视觉/听觉等多模态大模型接口，拓展操作边界。
-    
-4. **分布式执行**：支持跨节点 Docker 容器调度，应对高并发与重度任务计算。
-    
-5. **生态与记忆系统**：搭建标准化的插件/Skill 市场；研发超越传统 RAG 的长效结构化记忆检索树。
+     
+4. **生态与记忆系统**：搭建标准化的插件/Skill/Harness 市场；研发超越传统 RAG 的长效结构化记忆检索树。

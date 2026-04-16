@@ -15,7 +15,7 @@
 
 原生插件用于拓展框架的硬能力边界（Python 库级别）。 存放在 `src/plugins/plugin_collection`，必须包含三个文件：
 
-```python
+```
 __init__.py       # 插件对外暴露的函数接口
 plugin_name.py    # 插件的具体业务逻辑实现
 plugin_name.yaml  # 参数与 Schema 的详细描述（格式参考现有插件）
@@ -25,11 +25,13 @@ _注：务必在代码中处理好第三方依赖的隔离与引入。_
 
 ## 3. Harness Engineering 开发
 
-框架的调度大脑。核心逻辑集中在 `src/agent/agent.py` 与 `src/models/task.py`。
+对于某些特定行业，可以自己根据行业的工作特点定制自己的 Harness Engineering
 
-- 开发者可根据业务需求，直接修改任务流转逻辑。
+在本框架中，我们给开发者提供了一个 BaseTask 类，定义为通用任务，提供了许多基础内置函数和类内属性
 
-- _预告：未来版本将接入 MoE (Mixture of Experts) 路由系统，支持更细粒度的任务分发。_
+开发者可在 src/models/expert/ 文件夹下定义自己的 Harness Engineering，即给出一个继承 BaseTask 的类，改造或沿用基础内置函数（参考 trading 任务），并实现自己的工作流。
+
+expert 接口为开发者提供了开箱即用的原生工具与插件生态，并享受本框架的 API 轮询、并发兼容等特性
 
 
 ## 4. Sensor 开发 (环境感知)

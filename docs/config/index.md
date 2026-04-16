@@ -9,6 +9,8 @@
 - **Skill 技能安装**： 将包含 `SKILL.md` 的技能文件夹完整拖入 `data/skill/` 目录，重启生效。
     
 - **原生 Plugin 安装**： 将你的 Python 插件包目录放置到 `src/plugins/plugin_collection/` 下，系统会自动扫描解析 YAML 并注册工具。
+
+- **外部 Harness Engineering 接入**：参考对应 README.md 操作即可。
     
 
 ## 2. Sensor (传感器) 配置
