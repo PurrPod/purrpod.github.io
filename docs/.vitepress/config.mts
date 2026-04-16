@@ -17,8 +17,9 @@ export default defineConfig({
         {
           text: '基础指南',
           items: [
+            { text: '部署指南', link: '/guide/deployment' },
             { text: '使用指南', link: '/guide/usage' },
-            { text: '常见问题 (FAQ)', link: '/guide/faq' }
+            { text: '常见问题', link: '/guide/faq' }
           ]
         }
       ],
@@ -51,6 +52,7 @@ export default defineConfig({
         {
           text: 'Basic Guide',
           items: [
+            { text: 'Deployment Guide', link: '/en/guide/deployment' },
             { text: 'Usage Guide', link: '/en/guide/usage' },
             { text: 'FAQ', link: '/en/guide/faq' }
           ]
