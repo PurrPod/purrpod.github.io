@@ -14,7 +14,7 @@ export default defineConfig({
           { text: '下载压缩包', link: 'https://github.com/PurrPod/cat-in-cup/archive/refs/heads/main.zip' }
         ]
       },
-      { text: '指南', link: '/guide/usage' },
+      { text: '指南', link: '/guide/deployment' },
       { text: '配置', link: '/config/' },
       { text: '开发', link: '/develop/architecture' },
       { text: '生态', link: '/community/' }
