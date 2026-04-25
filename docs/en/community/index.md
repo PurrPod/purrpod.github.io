@@ -1,6 +1,6 @@
 # Community Ecosystem
 
-CatInCup is committed to building an open and shared localized Agent ecosystem.
+PurrCat is committed to building an open and shared localized Agent ecosystem.
 
 ## 1. Skill and Plugin Marketplace (Under Construction)
 
