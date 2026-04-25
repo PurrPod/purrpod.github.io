@@ -1,6 +1,6 @@
 # Deployment Guide
 
-Welcome to CatInCup! This document will guide you through deploying and configuring the CatInCup private Agent framework locally from source code.
+Welcome to PurrCat! This document will guide you through deploying and configuring the PurrCat private Agent framework locally from source code.
 
 ## 1. Prerequisites
 
@@ -10,20 +10,20 @@ Before you begin, ensure that the following basic dependencies are installed on 
 
 - **Node.js**: Used to build and run the Next.js frontend application interface.
 
-- **Docker**: Used to build and run CatInCup's exclusive local sandbox environment, ensuring the security of file operations.
+- **Docker**: Used to build and run PurrCat's exclusive local sandbox environment, ensuring the security of file operations.
 
 ## 2. Obtaining Source Code
 
-Please clone the CatInCup source code repository to your local machine and navigate to the project root directory:
+Please clone the PurrCat source code repository to your local machine and navigate to the project root directory:
 
 ```
 git clone <your repository address>
-cd CatInCup
+cd PurrCat
 ```
 
 ## 3. Environment Initialization
 
-CatInCup provides cross-platform one-click deployment scripts designed to automatically complete sandbox image building, backend environment configuration, and frontend dependency installation.
+PurrCat provides cross-platform one-click deployment scripts designed to automatically complete sandbox image building, backend environment configuration, and frontend dependency installation.
 
 **Recommended automatic installation method**:
 
@@ -35,7 +35,7 @@ CatInCup provides cross-platform one-click deployment scripts designed to automa
 
 1. **Build Docker sandbox image**: The script executes `docker build -t my_agent_env:latest .` to create a Docker isolation environment named `my_agent_env`, with automatic switching to domestic acceleration sources to ensure build success rate.
 
-2. **Configure Python backend**: Execute `conda env create -f environment.yml` to create a virtual environment named `CatInCup`. This environment includes Python 3.10 and core dependencies such as OpenAI SDK, Playwright, Faiss, and MCP protocol.
+2. **Configure Python backend**: Execute `conda env create -f environment.yml` to create a virtual environment named `PurrCat`. This environment includes Python 3.10 and core dependencies such as OpenAI SDK, Playwright, Faiss, and MCP protocol.
 
 3. **Configure frontend dependencies**: The script automatically navigates to the `ui` directory and runs `npm install` to install React, Next.js, Tailwind CSS, and related UI component libraries.
 
@@ -53,7 +53,7 @@ The Agent needs to call Large Language Models (LLM) and Vision Language Models (
 
 - **Specialized Models**: If you want to enable advanced features such as image generation, audio processing, or video conversion, you can fill in the corresponding API Key and Base URL in the `specialized_models` configuration block of the same file.
 
-Note: Currently, CatInCup only supports models that can be called via the OpenAI SDK.
+Note: Currently, PurrCat only supports models that can be called via the OpenAI SDK.
 
 ### 4.2 System Basic Configuration (`configs/system.yaml`)
 
@@ -79,4 +79,4 @@ After completing dependency installation and key configuration, you can start th
 
 - **macOS / Linux users**: Run the `scripts/start.sh` script.
 
-The startup script will automatically activate the `CatInCup` conda environment, start the backend service driven by `backend.py`, and simultaneously start the Next.js frontend service (`npm run dev`). After the service is successfully mounted, you can access the local address according to the prompts in the terminal. If you need to close the application, press `Ctrl+C` in the terminal to safely terminate all associated processes.
+The startup script will automatically activate the `PurrCat` conda environment, start the backend service driven by `backend.py`, and simultaneously start the Next.js frontend service (`npm run dev`). After the service is successfully mounted, you can access the local address according to the prompts in the terminal. If you need to close the application, press `Ctrl+C` in the terminal to safely terminate all associated processes.

@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: "CatInCup"
+  name: "PurrCat"
   text: "Local-First Intelligent Agent Framework"
   tagline: "Secure Isolation · Minimal Harness · High Extensibility"
   image:
     src: /logo.png
-    alt: CatInCup Logo
+    alt: PurrCat Logo
   actions:
     - theme: alt
       text: Introduction
@@ -17,7 +17,7 @@ hero:
       link: /en/guide/usage
     - theme: alt
       text: View on GitHub
-      link: https://github.com/PurrPod/cat-in-cup
+      link: https://github.com/PurrPod/purrcat
 
 features:
   - icon: 🛡️

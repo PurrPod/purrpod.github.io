@@ -2,12 +2,12 @@
 layout: home
 
 hero:
-  name: "CatInCup"
+  name: "PurrCat"
   text: "现代化的本地优先 Agent 执行框架"
   tagline: "安全隔离 · 极简大脑 · 强扩展性"
   image:
     src: /logo.png
-    alt: CatInCup Logo
+    alt: PurrCat Logo
   actions:
     - theme: alt
       text: 介绍
@@ -17,7 +17,7 @@ hero:
       link: /guide/deployment
     - theme: alt
       text: GitHub 查看
-      link: https://github.com/PurrPod/cat-in-cup
+      link: https://github.com/PurrPod/purrcat
 
 features:
   - icon: 🛡️
