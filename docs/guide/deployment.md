@@ -1,96 +1,205 @@
 # 从源码开始
 
-欢迎使用 CatInCup！本篇文档将引导您从零开始，通过源代码在本地部署并配置 CatInCup 私人 Agent 框架。
+欢迎使用 PurrCat！本篇文档将引导您从零开始，通过源代码在本地部署并配置 PurrCat 私人 Agent 框架。
 
 ## 1. 准备工作
 
 在开始之前，请确保您的计算机上已安装以下基础依赖：
 
-- **Miniconda 或 Anaconda**：用于管理和隔离 Python 虚拟环境（确保已添加进系统变量里，否则后续一键安装/一键启动脚本可能会出现找不到 conda 命令的错误）
+- **Miniconda 或 Anaconda**：用于管理和隔离 Python 虚拟环境（确保已添加进系统变量里，否则后续脚本可能出现找不到 conda 命令的错误）
+- **Docker**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。请确保 Docker Desktop 已启动并在运行状态。
 
-- **Node.js**：用于构建和运行 Next.js 前端应用界面。
-
-- **Docker**：用于构建和运行 CatInCup 专属的本地沙盒环境，保障文件操作的安全性。
+> 注意：PurrCat 使用 Python Textual TUI 作为用户界面。但如果需要使用 MCP 扩展（如 Playwright、GitHub 等），宿主机仍需安装 **Node.js**（提供 `npx` 命令）和可选的 **uv**（Python 包管理器），具体取决于配置的 MCP Server 类型。
 
 ## 2. 获取源代码
 
-请先将 CatInCup 的源代码仓库克隆到您的本地机器，并进入项目根目录：
+请先将 PurrCat 的源代码仓库克隆到您的本地机器，并进入项目根目录：
 
-```
-git clone https://github.com/PurrPod/cat-in-cup.git
-cd cat-in-cup
+```bash
+git clone https://github.com/PurrPod/purrcat.git
+cd purrcat
 ```
 
 或者，直接在本网页下载压缩包（见导航栏）并正确解压和重命名。
 
-## 3. 环境初始化
+## 3. 一键部署（推荐）
 
-CatInCup 提供了跨平台的一键部署脚本，旨在自动完成沙盒镜像构建、后端环境配置和前端依赖安装。
+PurrCat 提供了统一的 CLI 入口 `purrcat`，一键完成环境初始化：
 
-**推荐的自动安装方式**：
-
-- **Windows 用户**：右键点击 `scripts` 文件夹下的 `setup.bat`，选择"以管理员身份运行"。该脚本会自动解决网络重试问题并下载缺失环境。
-
-- **macOS / Linux 用户**：打开终端，运行 `scripts/setup.sh` 脚本。
-
-**手动安装过程解析**（仅供了解脚本后台原理或在自动安装失败时参考）：
-
-1. **构建 Docker 沙盒镜像**：脚本会执行 `docker build -t my_agent_env:latest .` 命令来创建名为 `my_agent_env` 的 Docker 隔离环境，并支持自动切换国内加速源以保证构建成功率。
-
-2. **配置 Python 后端**：通过 `conda env create -f environment.yml` 创建一个名为 `CatInCup` 的虚拟环境。该环境内置了 Python 3.10，并安装了 OpenAI SDK、Playwright、Faiss 及 MCP 协议等核心依赖。
-
-3. **配置前端依赖**：脚本会自动进入 `ui` 目录，并运行 `npm install` 来安装 React、Next.js、Tailwind CSS 及相关 UI 组件库。
-
-## 4. 必要配置
-
-在正式启动系统之前，必须配置模型 API 密钥以及部分核心系统参数。所有配置文件均存放在 `data/config/` 目录下。
-
-### 4.1 模型密钥配置 (`secrets/models.yaml`)
-
-Agent 需要调用大语言模型（LLM）来处理任务。您需要在这个文件中填入您的 API 凭据。请打开 `data/config/secrets/models.yaml` 文件：
-
-- **大语言模型 (LLM)**：默认配置标识为 `"openai:deepseek-chat"`。请找到 `api_keys` 节点，将 `"api-key-1"` 等占位符替换为您申请的真实 API Key。
-
-- **扩展专用模型 (可选)**：如果您希望启用图像生成、音频处理或视频转换等高级功能，可在同一文件的 `specialized_models` 配置块中填入对应的 API Key 和 Base URL。
-
-注意：
-
-- 目前 CatInCup 仅支持可通过 OpenAI SDK 调用的模型。
-- 请确保至少配置了一个模型（包含名称、 至少一个API Key 、base url）
-
-### 4.2 系统基本配置 (`configs/system.yaml`)
-
-打开 `data/config/configs/system.yaml` 文件：
-
-- **agent_model**：用于指定 Agent 默认驱动模型。系统默认值为 `"openai:deepseek-chat"`。如果您在 `models.yaml` 中修改了主模型的名称映射，请确保此处的值与之匹配。
-
-- **embedding_model**：配置系统使用的文本向量化模型。默认值为 `"BAAI/bge-small-zh-v1.5"`。
-
-### 4.3 MCP 服务器扩展配置（可选）
-
-如果您需要配置 Model Context Protocol (MCP) 相关扩展，系统已预设了例如 `bilibili-search` 的配置项。您可以在 `data/config/configs/mcp_servers.yaml` 中添加或修改执行命令及其参数。
-
-### 4.4 飞书服务扩展（可选）
-
-如果您需要通过飞书与 Agent 对话，可以参考"配置"页的介绍文档获取对应的密钥，填写在 `data/config/secrets/feishu.yaml` 对应字段里。
-
-## 5. 启动服务
-
-完成依赖安装和密钥配置后，即可启动整个框架：
-
-- **Windows 用户**：双击运行 `scripts` 文件夹下的 `start.bat`。
-
-- **macOS / Linux 用户**：运行 `scripts/start.sh` 脚本。
-
-当然，你也可以开启两个终端（进入项目根目录），分别运行：
-
-```
-# 第一个终端
-python backend.py
-
-# 第二个终端
-cd ui
-npm run dev
+```bash
+# 一键部署（沙盒构建 + Conda 环境 + 嵌入模型下载）
+purrcat setup
 ```
 
-启动脚本在运行时会自动激活 `CatInCup` 的 conda 环境，启动由 `backend.py` 驱动的后台服务，并同时启动 Next.js 的前端服务 (`npm run dev`)。服务成功挂载后，您可以根据终端中的提示用浏览器访问本地地址（默认为 `localhost:3000`，具体以实际为准）。如果您需要关闭应用，在终端按下 `Ctrl+C` 即可安全终止所有关联进程。在程序运行过程中，请确保后端和前端终端窗口保持运行！
+
+
+系统会自动完成以下步骤（详见第 4 节拆解说明）：
+1. 检查 Docker 运行状态
+2. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
+3. 构建 Docker 沙盒镜像 `my_agent_env:latest`
+4. 创建/更新 Conda 环境 `PurrCat`
+5. 下载 Embedding 向量化模型
+
+> 整个流程取决于网络状况，首次拉取 Docker 基础镜像可能需要 5~15 分钟，请耐心等待。
+
+## 4. 脚本拆解与手动分步
+
+如果一键部署中途失败，您可以根据下面的拆解说明逐步执行，便于定位问题。
+
+### 4.1 Docker 沙盒构建
+
+```bash
+# 可选：配置国内镜像加速（国内用户推荐）
+# 阿里云镜像
+docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
+
+# 或使用官方源
+docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
+```
+
+**脚本做了哪些事**：
+- 基于 `python:3.10-slim` 基础镜像
+- 安装系统依赖：curl、git、vim、ffmpeg、jq 等
+- 安装 Node.js 20.x（用于沙盒内的工具链）
+- 配置 PyPI 国内镜像（阿里云）
+- 设置工作目录为 `/agent_vm`
+
+**常见失败原因**：
+| 问题 | 解决方案 |
+|------|---------|
+| Docker 未安装或未启动 | 启动 Docker Desktop，确认 `docker info` 能正常执行 |
+| 镜像拉取超时 | 切换 APT 镜像源（阿里云），或配置 Docker 镜像加速器 |
+| 磁盘空间不足 | 清理 Docker 无用的镜像/容器：`docker system prune -a` |
+| Docker Hub 匿名拉取限额 | 登录 Docker Hub 账号，或等待限额重置 |
+
+### 4.2 Conda 环境配置
+
+```bash
+# 创建 Conda 环境
+conda env create -f environment.yml
+
+# 如果环境已存在，更新依赖
+conda env update -f environment.yml --prune
+```
+
+**环境包含的核心依赖**：
+- Python 3.10 + OpenAI SDK + MCP 协议
+- Faiss（向量检索）+ Sentence-Transformers（嵌入模型）
+- Textual（TUI 界面）
+- Docker SDK + Playwright（沙盒与自动化）
+- Lark SDK（飞书通讯）+ Feedparser（RSS 订阅）
+
+**常见失败原因**：
+| 问题 | 解决方案 |
+|------|---------|
+| Conda 命令找不到 | 确保 Miniconda 已添加到系统 PATH |
+| 包下载超时 | 配置 Conda 清华镜像源，或使用 VPN |
+| 环境冲突 | 删除旧环境重新创建：`conda env remove -n PurrCat` |
+
+### 4.3 嵌入模型下载
+
+```bash
+conda run -n PurrCat python scripts/setup_emb.py
+```
+
+该脚本会自动下载 Embedding 模型（默认 `BAAI/bge-small-zh-v1.5`），用于 RAG 检索与记忆系统的向量化。
+
+**常见失败原因**：
+| 问题 | 解决方案 |
+|------|---------|
+| HuggingFace 连接超时 | 配置 HuggingFace 镜像源：`export HF_ENDPOINT=https://hf-mirror.com` |
+| 磁盘空间不足 | 模型约 100MB，确保有足够空间 |
+
+## 5. 必要配置
+
+一键部署完成后，需要配置模型 API 密钥等核心参数。
+
+### 5.1 生成配置文件
+
+```bash
+# 交互式生成 .purrcat/ 配置目录（逐个确认）
+purrcat init
+
+# 如需覆盖已有配置
+purrcat init --force
+```
+
+该命令会在项目根目录生成 `.purrcat/` 文件夹，包含以下文件：
+
+| 文件 | 用途 |
+|------|------|
+| `.purrcat/.model.yaml` | 模型 API Key、Base URL、速率限制配置 |
+| `.purrcat/.sensor.yaml` | 传感器（飞书/RSS/心跳）配置 |
+| `.purrcat/.file.yaml` | 文件系统白名单与沙盒挂载配置 |
+| `.purrcat/mcp_config.json` | MCP 服务器扩展配置 |
+| `.purrcat/.memory.json` | 记忆系统配置 |
+
+### 5.2 配置模型密钥
+
+编辑 `.purrcat/.model.yaml`，替换 API Key 占位符：
+
+```yaml
+main:
+  openai:deepseek-v4-flash:
+    api_keys:
+      - sk-your-first-api-key-here    # ← 替换为真实 Key
+    base_url: https://api.deepseek.com
+    description: LLM worker
+    rpm: 60
+    tpm: 1000000
+    concurrency: 3
+    max_token: 500000
+
+# 任务模型（多 Agent 协作时需要，可与主模型同型号但不能用同一 Key）
+task:
+  # openai:deepseek-v4-flash:
+  #   api_keys:
+  #     - sk-your-task-api-key
+  #   base_url: https://api.deepseek.com
+  #   ...
+```
+
+**注意事项**：
+- 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
+- `main` 段配置全局 Agent 使用的模型
+- `task` 段配置后台子任务使用的模型（多 Agent 协作时必填，且不能用与 main 相同的 API Key）
+- 支持为同一模型配置多个 API Key，系统会自动负载均衡
+
+### 5.3 查看环境变量参考
+
+```bash
+purrcat env
+```
+
+> 注意：当前版本不支持环境变量覆盖配置，请直接编辑 `.purrcat/` 目录下的文件。
+
+## 6. 启动服务
+
+### 6.1 标准启动（TUI 界面）
+
+```bash
+purrcat start
+```
+
+### 6.2 无界面启动（Headless）
+
+```bash
+purrcat start --headless
+```
+
+### 6.3 直接使用脚本启动
+
+```bash
+# macOS / Linux
+bash `purrcat start`
+
+# Windows
+```
+
+启动后系统会自动完成：
+1. 初始化 MCP 连接并拉取工具 Schema
+2. 启动 Agent 主循环
+3. 自动发现并启动已配置的 Sensor（飞书、RSS 等）
+4. 加载 TUI 界面（headless 模式跳过）
+
+**关闭服务**：在终端按下 `Ctrl+C` 即可安全终止所有进程。

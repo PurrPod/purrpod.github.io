@@ -1,8 +1,8 @@
 import { defineConfig } from 'vitepress'
 
 export default defineConfig({
-  title: "CatInCup",
-  description: "CatInCup 官方文档",
+  title: "PurrCat",
+  description: "PurrCat 官方文档",
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
@@ -10,8 +10,8 @@ export default defineConfig({
       {
         text: '下载',
         items: [
-          { text: 'Git Clone', link: 'https://github.com/PurrPod/cat-in-cup' },
-          { text: '下载压缩包', link: 'https://github.com/PurrPod/cat-in-cup/archive/refs/heads/main.zip' }
+          { text: 'Git Clone', link: 'https://github.com/PurrPod/purrcat' },
+          { text: '下载压缩包', link: 'https://github.com/PurrPod/purrcat/archive/refs/heads/main.zip' }
         ]
       },
       { text: '指南', link: '/guide/deployment' },
@@ -92,10 +92,10 @@ export default defineConfig({
       ]
     },
     socialLinks: [
-      { icon: 'github', link: 'https://github.com/PurrPod/cat-in-cup' }
+      { icon: 'github', link: 'https://github.com/PurrPod/purrcat' }
     ],
     footer: {
-      copyright: '© 2026 CatInCup. Licensed under GNU GPL-3.0.'
+      copyright: '© 2026 PurrCat. Licensed under GNU GPL-3.0.'
     }
   },
   locales: {
@@ -113,8 +113,8 @@ export default defineConfig({
           {
             text: 'Download',
             items: [
-              { text: 'Git Clone', link: 'https://github.com/PurrPod/cat-in-cup' },
-              { text: 'Download ZIP', link: 'https://github.com/PurrPod/cat-in-cup/archive/refs/heads/main.zip' }
+              { text: 'Git Clone', link: 'https://github.com/PurrPod/purrcat' },
+              { text: 'Download ZIP', link: 'https://github.com/PurrPod/purrcat/archive/refs/heads/main.zip' }
             ]
           },
           { text: 'Guide', link: '/en/guide/usage' },
