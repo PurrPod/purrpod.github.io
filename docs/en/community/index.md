@@ -2,19 +2,19 @@
 
 PurrCat is committed to building an open and shared localized Agent ecosystem.
 
-## 1. Skill and Plugin Marketplace (Under Construction)
+## 1. Skill & Extension Marketplace (Under Construction)
 
-The official ecosystem library is being prepared. In the future, you can one-click pull the following from community developers here：
+The official ecosystem library is being prepared. In the future, you can one-click pull the following from community developers:
 - Efficient office Skill templates
-- Data analysis and bioinformatics tool Plugins
-- Sensors for specific academic websites
+- Modular Tool packages
+- Sensors (Feishu, RSS, etc.)
 - Harness Engineering customized for specific industry workflows
 
 ## 2. Communication and Feedback
 
-- **Bug Tracking & Feature Suggestions**： Please go to the GitHub Issues section. Please use the search function before submitting to avoid duplicate questions.
-- **Experience Sharing**： Welcome to share your Harness Engineering optimization experience or interesting sandbox experiments in the GitHub Discussions section.
+- **Bug Tracking & Feature Suggestions**: Go to GitHub Issues. Please search before submitting to avoid duplicates.
+- **Experience Sharing**: Share your Harness Engineering tips or sandbox experiments in GitHub Discussions.
 
-## 3. Co-construction Guide
+## 3. Contribution Guide
 
-As long as it complies with the GPL-3.0 protocol, we warmly welcome developers to Fork this repository. Whether it's fixing underlying Docker mounting issues or submitting a new Feishu Sensor, the community will conduct timely Code Review and merge high-quality code.
+As long as it complies with the GPL-3.0 license, we warmly welcome forks. Whether fixing core issues or submitting new Tool modules / Experts / Sensors, the community will conduct timely Code Review and merge quality code.

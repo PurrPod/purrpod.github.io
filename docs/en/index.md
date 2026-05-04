@@ -4,7 +4,7 @@ layout: home
 hero:
   name: "PurrCat"
   text: "Local-First Intelligent Agent Framework"
-  tagline: "Secure Isolation · Minimal Harness · High Extensibility"
+  tagline: "Sandbox Isolation · 99%+ Cache Hit · Atomic Construction"
   image:
     src: /logo.png
     alt: PurrCat Logo
@@ -22,10 +22,13 @@ hero:
 features:
   - icon: 🛡️
     title: Local-First & Sandbox Isolation
-    details: Pure Docker sandbox execution environment with strict whitelist permissions to ensure local file operation security.
+    details: Pure Docker sandbox with strict whitelist permissions. All code execution is confined within containers; host files are accessed only on-demand, eliminating Agent runaway risks at the source.
   - icon: ⚡
-    title: Minimal Harness Engineering
-    details: Router-based tool calls ensure stable KV Cache hits for large models, greatly reducing API consumption.
+    title: 99%+ KV Cache Hit Rate
+    details: Proprietary router-based distribution decouples tool schemas from System Prompts, maintaining 99%+ KV Cache hit rates. Delivers extreme token economy and millisecond-level response times.
   - icon: 🧩
-    title: Decoupled & Highly Extensible
-    details: Modular architecture design supports everything from no-code Skills to native Plugins, and Sensor asynchronous access to the physical world.
+    title: Atomic Harness Architecture
+    details: BaseTask exposes a complete set of atomic modules — LLM communication, tool parsing, state persistence, memory compression, and more. Compose them freely to build custom Expert workflows.
+  - icon: ⚙️
+    title: Smart Scheduling & Multi-Core
+    details: APIKeyManager auto-balances active task loads across API keys. Background subtasks bind independent keys with persistent state machines — main session never blocks, delivering true multi-core concurrency.

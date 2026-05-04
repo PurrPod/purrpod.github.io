@@ -9,11 +9,12 @@ Have you heard others' horror stories: "The Agent ran random commands and messed
 ::: details 💡 PurrCat's Solution
 In PurrCat, you don't have to endure such system-level disasters caused by Agent going rogue. The confidence to let Agent handle high-risk tasks unattended comes from our innovative **two-level environment isolation and whitelist control**:
 
-- **Docker Sandbox Environment**: Agent's "exclusive playground". All code execution and efficient command-line tool usage are forced to run within containers, completely isolated from the physical host.
-- **Local File System (Permission Hierarchy)**: Define the interaction boundary between the physical machine and sandbox through strict configuration files:
-  - `dont_read`: **Privacy Restricted Zone**. Completely shields personal keys and other private data, preventing unintentional leakage by large models.
-  - `sandbox_dir`: **Operation Domain**. Strictly regulates Agent's writable and overwritable space in the local file system.
-  - `docker_mount`: **Mounting Channel**. Explicitly opens the bridge between local and sandbox, authorizing sandbox scripts to directly process specified local data. (Note: Files in these folders will be directly affected by the sandbox environment, please pay attention to security)
+- **Docker Sandbox Environment**: Agent's "exclusive playground". All code execution (Bash tool) is forced to run within containers, completely isolated from the physical host.
+- **Local File System (Permission Hierarchy)**: Define the interaction boundary through `.purrcat/.file.yaml`:
+  - `dont_read_dirs`: **Privacy Restricted Zone**. Shields private keys and personal data from model leakage.
+  - `sandbox_dirs`: **Operation Domain**. Regulates writable/overwritable space in the local file system.
+  - `docker_mount`: **Mounting Channel**. Bridges local and sandbox directories for Bash tool access (Note: files in mounted dirs are directly exposed to sandbox).
+  - `allowed_export_dirs`: **Export Whitelist**. Restricts where sandbox files can be exported on the host.
 :::
 
 ### 2. Dimensionality Reduction Architecture: Customizable Harness Engineering
@@ -24,7 +25,7 @@ Other frameworks are still struggling with basic Skills and prompts, but a new c
 Traditional Agents are often locked by a single system prompt, but in PurrCat, you can seamlessly dispatch multiple **Experts** such as AI research assistants, quantitative traders, and senior programmers within the same system. We expose highly extensible interfaces:
 
 - **Regular Integration**: Supports standard **Skill** (Anthropic-compliant) and **MCP Service** (one-click access to external services with built-in recycling mechanism).
-- **Plugin (Native Plugin)**: Shared infrastructure for all Experts in the framework, written in pure Python (package as tool), greatly reducing tool development barriers.
+- **Tool (Modular Tool)**: Each tool is an independent module under `src/tool/` (with schema, exceptions, main function), dynamically loaded by `dispatch_tool()`, written in pure Python, greatly reducing tool development barriers.
 - **Expert (Expert Workflow)**: For complex industry-specific needs, Skill's constraints are often insufficient. Developers can inherit `BaseTask` under `src/harness/expert/`, completely rewrite built-in functions and state transitions, tailor-made Harness Engineering workflows, and directly enjoy the framework's API concurrency and polling acceleration.
 :::
 
@@ -35,7 +36,7 @@ Have you heard others complain: "Asking a certain shrimp to modify a small file 
 ::: details 💡 PurrCat's Solution
 In PurrCat, you don't have to worry about bill explosions. After months of in-depth experimental verification, we have made extensive optimizations in context management. Under model vendors with KV Cache mechanism, **these underlying optimizations that save you money and speed up include but are not limited to**:
 
-- **Static Route Allocation**: Abandon the traditional approach of dynamically inserting Tool Schema into System Prompt. Since model vendors usually inject Tool Schema after System Prompt, dynamic mounting causes direct cache invalidation. We use the idea of route tool allocation to ensure that large model KV Cache hit rate always remains at an extremely high level (the latest architecture's main Agent average hit rate has stabilized at 93.1%).
+- **Static Route Allocation**: Abandon the traditional approach of dynamically inserting Tool Schema into System Prompt. Since model vendors usually inject Tool Schema after System Prompt, dynamic mounting causes direct cache invalidation. We use the idea of route tool allocation to ensure that large model KV Cache hit rate always remains at an extremely high level (the latest architecture's main Agent average hit rate has stabilized at 99%+).
 - **Response Speed Transformation**: Extremely high cache hit rate not only significantly reduces token bills but also brings visible improvement in response speed for each round of dialogue.
 :::
 
@@ -73,6 +74,7 @@ In PurrCat, Agent will automatically summarize experience and lessons, update yo
 
 - **Abandon Bloating**: Through practice, we found that traditional memory systems like RAG or Mem0 are too inefficient and lack logic in **personal use scenarios**. PurrCat simplifies and uses an extremely low-loss lightweight memo-driven memory system.
 - **Soul Definition (SOUL.md)**: Open underlying personality interface. You can inject unique "soul" settings and behavioral styles into your exclusive personal assistant by modifying this file.
+- **System Heartbeat (HARNESS.md + Heartbeat Sensor)**: Built-in heartbeat mechanism (every 30 min by default). The `src/agent/core/HARNESS.md` defines maintenance checklists and suggested activities. The Heartbeat Sensor periodically injects Harness instructions, guiding Agent to auto-check code quality, fix TODOs/FIXMEs, and detect potential issues — true unattended self-iteration.
 :::
 
 ## 🗺️ Evolution Roadmap

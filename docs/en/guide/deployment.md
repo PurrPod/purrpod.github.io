@@ -6,77 +6,202 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 Before you begin, ensure that the following basic dependencies are installed on your computer:
 
-- **Miniconda or Anaconda**: Used to manage and isolate Python virtual environments.
+- **Miniconda or Anaconda**: Used to manage and isolate Python virtual environments (ensure it's added to your system PATH).
+- **Docker**: Used to build and run PurrCat's exclusive local sandbox environment. Make sure Docker Desktop is running.
 
-- **Node.js**: Used to build and run the Next.js frontend application interface.
-
-- **Docker**: Used to build and run PurrCat's exclusive local sandbox environment, ensuring the security of file operations.
+> Note: PurrCat uses a Python Textual TUI as its user interface. However, if you plan to use MCP extensions (Playwright, GitHub, etc.), **Node.js** (providing `npx`) and optionally **uv** (Python package manager) are still required on the host, depending on your MCP Server configuration.
 
 ## 2. Obtaining Source Code
 
-Please clone the PurrCat source code repository to your local machine and navigate to the project root directory:
+Clone the PurrCat source code repository to your local machine and navigate to the project root directory:
 
+```bash
+git clone https://github.com/PurrPod/purrcat.git
+cd purrcat
 ```
-git clone <your repository address>
-cd PurrCat
+
+Alternatively, download the ZIP archive from the navigation bar above and extract it.
+
+## 3. One-Click Deployment (Recommended)
+
+PurrCat provides a unified CLI entry point `purrcat` for environment initialization:
+
+```bash
+purrcat setup
 ```
 
-## 3. Environment Initialization
 
-PurrCat provides cross-platform one-click deployment scripts designed to automatically complete sandbox image building, backend environment configuration, and frontend dependency installation.
 
-**Recommended automatic installation method**:
+The script will automatically complete the following steps (see Section 4 for detailed breakdown):
+1. Check Docker status
+2. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
+3. Build Docker sandbox image `my_agent_env:latest`
+4. Create/update Conda environment `PurrCat`
+5. Download Embedding model
 
-- **Windows users**: Right-click on `setup.bat` in the `scripts` folder and select **"Run as administrator"**. This script will automatically resolve network retry issues and download missing dependencies.
+> The entire process depends on network conditions. The first Docker image pull may take 5~15 minutes.
 
-- **macOS / Linux users**: Open the terminal and run the `scripts/setup.sh` script.
+## 4. Script Breakdown & Manual Steps
 
-**Manual installation process breakdown** (for understanding the script's underlying principles or in case of automatic installation failure):
+If the one-click deployment fails, use the breakdown below to execute steps individually and locate the issue.
 
-1. **Build Docker sandbox image**: The script executes `docker build -t my_agent_env:latest .` to create a Docker isolation environment named `my_agent_env`, with automatic switching to domestic acceleration sources to ensure build success rate.
+### 4.1 Docker Sandbox Build
 
-2. **Configure Python backend**: Execute `conda env create -f environment.yml` to create a virtual environment named `PurrCat`. This environment includes Python 3.10 and core dependencies such as OpenAI SDK, Playwright, Faiss, and MCP protocol.
+```bash
+# For users in China (faster with Aliyun mirror):
+docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
 
-3. **Configure frontend dependencies**: The script automatically navigates to the `ui` directory and runs `npm install` to install React, Next.js, Tailwind CSS, and related UI component libraries.
+# Using official source:
+docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
+```
 
-## 4. Necessary Configuration
+**What the script does**:
+- Builds on `python:3.10-slim` base image
+- Installs system packages: curl, git, vim, ffmpeg, jq, etc.
+- Installs Node.js 20.x (for in-sandbox toolchains)
+- Configures PyPI mirror (Aliyun)
+- Sets working directory to `/agent_vm`
 
-Before officially starting the system, you must configure the model API keys and some core system parameters. All configuration files are stored in the `data/config/` directory.
+**Common failures**:
 
-### 4.1 Model Key Configuration (`secrets/models.yaml`)
+| Issue | Solution |
+|-------|----------|
+| Docker not installed or not running | Start Docker Desktop, verify `docker info` works |
+| Image pull timeout | Switch APT mirror, or configure Docker mirror accelerator |
+| Insufficient disk space | Clean up: `docker system prune -a` |
+| Docker Hub anonymous pull limit | Log in to a Docker Hub account or wait for reset |
 
-The Agent needs to call Large Language Models (LLM) and Vision Language Models (VLM) to process tasks. You need to fill in your API credentials in this file. Please open the `data/config/secrets/models.yaml` file:
+### 4.2 Conda Environment Setup
 
-- **Large Language Model (LLM)**: The default configuration identifier is `"openai:deepseek-chat"`. Find the `api_keys` node and replace the placeholder `"api-key-1"` with your actual API Key.
+```bash
+# Create Conda environment
+conda env create -f environment.yml
 
-- **Vision Language Model (VLM)**: The default configuration identifier is `"openai:qwen3-vl-plus"`. Similarly, replace the placeholder under `api_keys` with your actual API Key.
+# Update if environment already exists
+conda env update -f environment.yml --prune
+```
 
-- **Specialized Models**: If you want to enable advanced features such as image generation, audio processing, or video conversion, you can fill in the corresponding API Key and Base URL in the `specialized_models` configuration block of the same file.
+**Core dependencies**:
+- Python 3.10 + OpenAI SDK + MCP protocol
+- Faiss (vector search) + Sentence-Transformers (embeddings)
+- Textual (TUI framework)
+- Docker SDK + Playwright (sandbox & automation)
+- Lark SDK (Feishu) + Feedparser (RSS)
 
-Note: Currently, PurrCat only supports models that can be called via the OpenAI SDK.
+**Common failures**:
 
-### 4.2 System Basic Configuration (`configs/system.yaml`)
+| Issue | Solution |
+|-------|----------|
+| Conda command not found | Ensure Miniconda is in your system PATH |
+| Package download timeout | Configure Conda mirror or use a VPN |
+| Environment conflict | Remove and recreate: `conda env remove -n PurrCat` |
 
-Open the `data/config/configs/system.yaml` file:
+### 4.3 Embedding Model Download
 
-- **agent_model**: Used to specify the Agent's default driving model. The system default value is `"openai:deepseek-chat"`. If you modified the main model's name mapping in `models.yaml`, ensure that the value here matches it.
+```bash
+conda run -n PurrCat python scripts/setup_emb.py
+```
 
-- **embedding_model**: Configures the text vectorization model used by the system. The default value is `"BAAI/bge-small-zh-v1.5"`.
+Downloads the Embedding model (default: `BAAI/bge-small-zh-v1.5`) for RAG and memory vectorization.
 
-### 4.3 MCP Server Extension Configuration (Optional)
+**Common failures**:
 
-If you need to configure Model Context Protocol (MCP) related extensions, the system has preset configuration items such as `bilibili-search`. You can add or modify execution commands and their parameters in `data/config/configs/mcp_servers.yaml`.
+| Issue | Solution |
+|-------|----------|
+| HuggingFace connection timeout | Set mirror: `export HF_ENDPOINT=https://hf-mirror.com` |
+| Disk space | Model is ~100MB, ensure sufficient space |
 
-### 4.4 Feishu Service Extension (Optional)
+## 5. Configuration
 
-If you need to chat with the Agent via Feishu (Lark), you can refer to the introduction document on the "Configuration" page to obtain the corresponding keys and fill them in the corresponding fields of `data/config/secrets/feishu.yaml`.
+After deployment, configure the model API keys and core parameters.
 
-## 5. Starting the Service
+### 5.1 Generate Config Files
 
-After completing dependency installation and key configuration, you can start the entire framework:
+```bash
+# Interactive config generation (confirm one by one)
+purrcat init
 
-- **Windows users**: Double-click to run `start.bat` in the `scripts` folder.
+# Force overwrite existing configs
+purrcat init --force
+```
 
-- **macOS / Linux users**: Run the `scripts/start.sh` script.
+This creates a `.purrcat/` directory in the project root with the following files:
 
-The startup script will automatically activate the `PurrCat` conda environment, start the backend service driven by `backend.py`, and simultaneously start the Next.js frontend service (`npm run dev`). After the service is successfully mounted, you can access the local address according to the prompts in the terminal. If you need to close the application, press `Ctrl+C` in the terminal to safely terminate all associated processes.
+| File | Purpose |
+|------|---------|
+| `.purrcat/.model.yaml` | Model API keys, Base URL, rate limits |
+| `.purrcat/.sensor.yaml` | Sensor config (Feishu/RSS/heartbeat) |
+| `.purrcat/.file.yaml` | File system whitelist & sandbox mounts |
+| `.purrcat/mcp_config.json` | MCP server extensions |
+| `.purrcat/.memory.json` | Memory system config |
+
+### 5.2 Configure Model Keys
+
+Edit `.purrcat/.model.yaml` and replace the API key placeholders:
+
+```yaml
+main:
+  openai:deepseek-v4-flash:
+    api_keys:
+      - sk-your-first-api-key-here    # ← Replace with your real key
+    base_url: https://api.deepseek.com
+    description: LLM worker
+    rpm: 60
+    tpm: 1000000
+    concurrency: 3
+    max_token: 500000
+
+# Task model (required for multi-agent, can use same model but different key)
+task:
+  # openai:deepseek-v4-flash:
+  #   api_keys:
+  #     - sk-your-task-api-key
+  #   base_url: https://api.deepseek.com
+  #   ...
+```
+
+**Notes**:
+- PurrCat currently supports only OpenAI SDK-compatible models
+- `main` section: model used by the global Agent
+- `task` section: model used by background subtasks (must use a different API key from `main`)
+- Multiple API keys can be configured — the system will auto-balance load
+
+### 5.3 View Environment Reference
+
+```bash
+purrcat env
+```
+
+> Note: The current version does not support environment variable overrides. Edit `.purrcat/` files directly.
+
+## 6. Starting the Service
+
+### 6.1 Standard Mode (TUI)
+
+```bash
+purrcat start
+```
+
+### 6.2 Headless Mode (No UI)
+
+```bash
+purrcat start --headless
+```
+
+### 6.3 Using Scripts Directly
+
+```bash
+# macOS / Linux
+bash `purrcat start`
+
+# Windows
+# Double-click `purrcat start`
+```
+
+On startup, the system will:
+1. Initialize MCP connections and fetch tool schemas
+2. Start the Agent main loop
+3. Auto-discover and start configured Sensors (Feishu, RSS, etc.)
+4. Launch the TUI interface (skipped in headless mode)
+
+**Shutdown**: Press `Ctrl+C` in the terminal to safely terminate all processes.

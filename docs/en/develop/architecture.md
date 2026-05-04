@@ -1,106 +1,149 @@
-# 架构介绍
+# Architecture
 
-## 项目结构树
+## Project Structure
 
-PurrCat 采用极致的解耦设计，核心代码位于 `src/` 目录：
+PurrCat adopts a highly decoupled modular design. Core code lives under `src/`:
 
 ```
 src/
-├── agent/              # Agent 核心大脑
-│   ├── SOUL.md         # Agent 人格定义
-│   ├── agent.py        # 主循环与对话管理
-│   ├── manager.py      # 全局单例管理器
-│   └── system_rules/   # 系统指令层
+├── agent/                  # Agent brain
+│   ├── agent.py            # Main loop & dialog
+│   ├── manager.py          # Global singleton
+│   ├── core/               # Agent kernel definitions
+│   │   ├── HARNESS.md      # Heartbeat Harness
+│   │   ├── MEMORY.md       # Memory system guide
+│   │   └── SOUL.md         # Personality definition
+│   └── system_rules/       # System instructions
 │
-├── harness/            # 任务与专家系统
-│   ├── task.py         # BaseTask 基类
+├── harness/                # Task & Expert system
+│   ├── task.py             # BaseTask (atomic modules)
 │   └── expert/
-│       ├── coding/     # 代码专家（含 extend_tool 工具集）
-│       └── trading/    # 交易专家（多角色辩论工作流）
+│       ├── coding/         # Coding expert (extend_tool)
+│       └── .../            # More domain experts
 │
-├── loader/             # 数据加载层
-│   ├── memory.py       # 分层对话记忆（日/月归档）
-│   └── rag.py          # RAG 检索器（FAISS + BM25 + RRF）
+├── model/                  # LLM scheduling layer
+│   ├── facade/model.py     # Model lightweight entry
+│   ├── manager/
+│   │   ├── key_manager.py  # APIKeyManager
+│   │   └── concurrency.py  # Concurrency control
+│   └── core/llm_client.py  # LLM client
 │
-├── model/              # 大模型调度层
-│   └── model.py        # LLMDispatcher + Worker 线程池
+├── sensor/                 # Sensor layer (gateway)
+│   ├── base.py             # BaseSensor abstract
+│   ├── gateway.py          # SensorGateway
+│   ├── message/feishu.py   # Feishu sensor
+│   ├── subscribe/rss.py    # RSS sensor
+│   └── system/const.py     # Clock sensor
 │
-├── plugins/            # 工具与执行层
-│   ├── plugin_manager.py   # 工具调度核心（parse_tool）
-│   ├── plugin_collection/  # 本地插件集合
-│   └── route/              # 工具路由（base/agent/local/mcp）
+├── memory/                 # Memory system
+│   └── purrmemo/           # Local memory engine
 │
-├── sensor/             # 异步感知层
-│   ├── const.py        # 时钟/闹钟传感器
-│   ├── feishu.py       # 飞书 WebSocket
-│   └── rss.py          # RSS 订阅
+├── tool/                   # Tool layer (modular)
+│   ├── bash/               # Sandbox shell
+│   ├── callmcp/            # MCP calling
+│   ├── cron/               # Scheduled tasks
+│   ├── fetch/              # Unified fetch
+│   ├── filesystem/         # File system
+│   ├── memo/               # Memory tool
+│   ├── search/             # Unified search
+│   ├── task/               # Task scheduling
+│   └── utils/              # Tool routing & format
 │
 └── utils/
-    └── config.py       # 分级配置加载
+    ├── config.py           # Config loading
+    └── enums.py            # Enums
 
 data/
-├── skill/              # 技能包（SKILL.md + 脚本）
-├── config/             # 配置（secrets/ + configs/）
-├── memory/             # 对话记忆存储
-├── database/           # RAG 知识库
-└── checkpoints/        # 任务检查点
+├── skill/                  # Skill packages
+├── memory/                 # Conversation storage
+├── database/               # RAG knowledge base
+└── checkpoints/            # Task checkpoints
 ```
 
-## 核心架构分层
+## Architecture Layers
 
 ```
 ┌─────────────────────────────────────────┐
-│  Sensor 层                              │
-│  飞书 / RSS / 时钟 → force_push()       │
-└────────────────┬────────────────────────┘
-                 ▼
+│  Sensor Layer (Gateway)                 │
+│  Feishu / RSS / Clock                   │
+│    → observe() → Gateway.push()         │
+└──────────────────┬──────────────────────┘
+                   ▼
 ┌─────────────────────────────────────────┐
-│  Agent 层                               │
-│  对话管理 / 记忆整理 / 调度              │
-└────────────────┬────────────────────────┘
-                 ▼
+│  Agent Layer                            │
+│  Dialog / force_push / Memory           │
+│  Gateway.send() ← reply                 │
+└──────────────────┬──────────────────────┘
+                   ▼
 ┌─────────────────────────────────────────┐
-│  Model 层 (LLMDispatcher)               │
-│  Worker 线程池 / TPM 限流 / 重试        │
-└────────────────┬────────────────────────┘
-                 ▼
+│  Model Layer (APIKeyManager)            │
+│  Model.chat() → LLMClient               │
+│  Least-busy key allocation              │
+└──────────────────┬──────────────────────┘
+                   ▼
 ┌─────────────────────────────────────────┐
-│  Tool 层 (parse_tool)                   │
-│  base / agent / local / mcp 四路路由    │
-└────────────────┬────────────────────────┘
-                 ▼
+│  Tool Layer (Dynamic Loading)           │
+│  dispatch_tool() dynamic import         │
+│  Bash / Fetch / FileSystem / Search     │
+│  Memo / CallMCP / Cron / Task           │
+│  Unified error handling + truncation    │
+└──────────────────┬──────────────────────┘
+                   ▼
 ┌─────────────────────────────────────────┐
-│  Harness 层 (BaseTask)                  │
-│  CodingTask / TradingTask / 自定义专家  │
+│  Harness Layer (Atomic BaseTask)        │
+│  CodingTask / Custom Expert             │
+│  Atomic: run_llm_step / run_tool_       │
+│  calling / check_memory / checkpoints   │
 └─────────────────────────────────────────┘
 ```
 
-## 关键设计决策
+## Key Design Decisions
 
-### 两层文件系统
+### Two-Layer File System
 
 ```
-宿主机:  project_root/    ← extend_tool / file_edit 等读写
-宿主机:  agent_vm/  ──→  沙盒: /agent_vm/  ← execute_command 读写
+Host:      project_root/    ← extend_tool / file_edit read/write
+Host:      agent_vm/  ──→  Sandbox: /agent_vm/  ← Bash tool read/write
 ```
 
-- `execute_command` 运行在 Docker 沙盒，只能访问 `/agent_vm/`
-- extend_tool（file_edit/code_search 等）运行在宿主机进程，可直接读写项目文件
+- `Bash` tool runs in Docker sandbox, only accesses `/agent_vm/`
+- extend_tool (file_edit/code_search etc.) runs on the host process, can read/write project files directly
 
-### 工具路由
+### Tool Routing
 
-`parse_tool()` 统一调度四路路由：
+`dispatch_tool()` serves as the core routing hub, dynamically **imports** by tool name `src.tool.{name}.{name}` and executes the function.Mapped via `TOOL_FUNC_MAP`:
 
-| 路由 | 用途 | 示例 |
-|------|------|------|
-| base_tool | 基础操作 | execute_command, search_in_system |
-| agent_tool | Agent 操作 | add_task, send_message, update_memo |
-| local_tool | 本地插件 | filesystem, web, schedule |
-| mcp_tool | MCP 服务 | 动态加载的外部工具 |
+```python
+TOOL_FUNC_MAP = {
+    "filesystem": "FileSystem",
+    "bash": "Bash",
+    "cron": "Cron",
+    "callmcp": "CallMCP",
+    "memo": "Memo",
+    "search": "Search",
+    "fetch": "Fetch",
+    "task": "Task"
+}
+```
 
-## 演进路线图
+Eight native tools:
 
-1. **核心引擎优化**：打磨 Harness Engineering，提升 KV Cache 命中率
-2. **多模型与高可用**：深度适配主流开源/闭源模型
-3. **多模态融合**：接入视觉/听觉等多模态大模型接口
-4. **生态与记忆系统**：搭建标准化的插件/Skill/Harness 市场
+| Tool | Description |
+|------|-------------|
+| Bash | Docker sandbox shell execution |
+| FileSystem | Host file import/export/browse |
+| Fetch | Get skill/MCP/web/Harness/TODO content |
+| Search | Web search or local skill/MCP search |
+| Cron | Scheduled alarms |
+| Memo | Long-term memory write & search |
+| CallMCP | Dispatch MCP external tools |
+| Task | Sub-task create/kill/list |
+
+MCP tools are dispatched via the unified `CallMCP` entry point, separate from native tool routing.
+
+## Roadmap
+
+1. **Multi-model support**: Deep adaptation of mainstream open-source/closed-source models
+2. **Multi-modal fusion**: Visual/audio model interfaces
+3. **Skill marketplace**: Standardized plugin/Skill/Harness ecosystem
+4. **Memory evolution**: More advanced personal memory system
