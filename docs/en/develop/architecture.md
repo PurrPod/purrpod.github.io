@@ -15,11 +15,33 @@ src/
 │   │   └── SOUL.md         # Personality definition
 │   └── system_rules/       # System instructions
 │
-├── harness/                # Task & Expert system
-│   ├── task.py             # BaseTask (atomic modules)
-│   └── expert/
-│       ├── coding/         # Coding expert (extend_tool)
-│       └── .../            # More domain experts
+├── harness/                # DAG Workflow Engine
+│   ├── process.py          # Async concurrent scheduler
+│   ├── enums.py            # State enums (READY/WAITING/RUNNING/ERROR/COMPLETED)
+│   ├── graph/              # DAG graph definitions (JSON)
+│   │   └── default.json
+│   ├── node/               # Node implementations (modular)
+│   │   ├── base.py         # BaseNode abstract class
+│   │   ├── appender/       # Message appender
+│   │   ├── file_input/     # File input node
+│   │   ├── file_output_loop/ # LLM thinking loop
+│   │   ├── flusher/        # Memory compression
+│   │   ├── llm_chat/       # Single LLM call
+│   │   ├── log/            # Log node
+│   │   ├── message_card_builder/ # Feishu card builder
+│   │   ├── skill_fetcher/  # Skill extraction
+│   │   ├── str_adapter/    # String adapter
+│   │   ├── summary_output_loop/ # Summary output loop
+│   │   ├── task_input/     # Task entry
+│   │   ├── task_output/    # Task exit
+│   │   ├── tool_executor/  # Tool execution
+│   │   ├── tool_kit/       # Tool assembly
+│   │   └── truncker/       # Message truncation
+│   ├── tools/              # Built-in tools
+│   │   └── core/
+│   │       ├── task_done/      # Task completion
+│   │       └── yield_to_human/ # Yield control to human
+│   └── utils/              # Helper functions
 │
 ├── model/                  # LLM scheduling layer
 │   ├── facade/model.py     # Model lightweight entry
@@ -90,10 +112,9 @@ data/
 └──────────────────┬──────────────────────┘
                    ▼
 ┌─────────────────────────────────────────┐
-│  Harness Layer (Atomic BaseTask)        │
-│  CodingTask / Custom Expert             │
-│  Atomic: run_llm_step / run_tool_       │
-│  calling / check_memory / checkpoints   │
+│  Harness Layer (DAG Workflow Engine)    │
+│  process.py: async concurrent           │
+│  graph/ + node/ atomic nodes            │
 └─────────────────────────────────────────┘
 ```
 
@@ -102,12 +123,12 @@ data/
 ### Two-Layer File System
 
 ```
-Host:      project_root/    ← extend_tool / file_edit read/write
+Host:      project_root/    ← FileSystem tool (whitelist-based)
 Host:      agent_vm/  ──→  Sandbox: /agent_vm/  ← Bash tool read/write
 ```
 
 - `Bash` tool runs in Docker sandbox, only accesses `/agent_vm/`
-- extend_tool (file_edit/code_search etc.) runs on the host process, can read/write project files directly
+- `FileSystem` tool handles host file import/export, controlled by `.purrcat/.file.yaml` whitelist
 
 ### Tool Routing
 

@@ -58,142 +58,66 @@ command_to_run
 
 Skill scripts run inside the **Docker sandbox** via the `Bash` tool, only accessing files under `/agent_vm/`. They **cannot directly read/write host files**.
 
-To operate host files, use an Expert's extend_tool (see below).
+To operate host files, use the FileSystem tool (controlled by `.purrcat/.file.yaml` whitelist).
 
 ---
 
-## 3. Expert / Harness Development (Domain Expert)
+## 3. Harness / Node Development (DAG Workflow)
 
-The Expert system is used for **complex workflow orchestration** and **host file operations**.
+Harness is PurrCat's DAG workflow engine that orchestrates AI pipelines through **configuration-driven + atomic nodes**. Each node is an independent Python module inheriting `BaseNode` implementing the `execute` method.
 
-### Directory Structure
+### Key Concepts
 
-```
-src/harness/expert/your_expert/
-├── task.py                # Task definition (inherits BaseTask)
-└── extend_tool/           # Extended tools (optional)
-    ├── __init__.py
-    └── your_tool.py
-```
+- **`process.py`**: Main scheduler using `asyncio.gather(return_exceptions=True)` for concurrent scheduling
+- **`BaseNode`**: Base node class — inherit and implement `async execute(inputs, force_push_msgs, context)`
+- **`graph/*.json`**: DAG definition files describing topology and dependencies
+- **Node states**: `READY → WAITING → RUNNING → COMPLETED | ERROR`, with checkpoint recovery
+- **`yield_to_human`**: Built-in tool allowing Agent to surrender control when stuck
+- **Error isolation**: Failed nodes don't affect independent branches; human fixes only retry the errored node
 
-### Minimal Implementation
+### Creating a New Node
 
+Create folder `src/harness/node/your_node/` with two files:
+
+**`node.py`**:
 ```python
-from src.harness.task import BaseTask
+from src.harness.node.base import BaseNode
 
-class YourExpertTask(
-    BaseTask,
-    expert_type="your_expert",        # Value used in add_task's expert parameter
-    description="Your expert description",
-    parameters={}
-):
-    def __init__(self, task_name, prompt, core):
-        super().__init__(task_name, prompt, core)
-
-    def _build_system_prompt(self):
-        return """# Role Definition\nYou are a..."""
+class Node(BaseNode):
+    async def execute(self, inputs, force_push_msgs, context):
+        # Implement your logic
+        result = await self._process(inputs)
+        return {"output": result}
 ```
 
-### Auto-Registration
-
-Expert classes are **auto-registered** via `BaseTask.__init_subclass__`. The `Task` tool calls `auto_discover_experts()` to scan `src/harness/expert/` — no manual config changes needed.
-
-### Overridable Hooks
-
-| Method | Purpose |
-|--------|---------|
-| `_build_system_prompt()` | Custom System Prompt |
-| `get_available_tools()` | Inject domain tool schemas (including extend_tool) |
-| `_handle_extend_tool()` | Intercept and execute extended tools |
-| `_on_save_state()` / `_on_restore_state()` | State persistence and recovery |
-| `run()` | Completely override execution logic |
-
-### Atomic Methods (Provided by BaseTask)
-
-BaseTask provides a complete set of atomic modules for composing custom workflows:
-
-| Method | Purpose |
-|--------|---------|
-| `check_kill()` | Detect external kill signal, abort gracefully |
-| `check_request()` | Pop pending force-push instructions |
-| `check_tool(history)` | Sanitize broken Tool Calls from history |
-| `run_llm_step(messages, tools)` | Pure LLM communication |
-| `track_token(response)` | Extract token usage stats |
-| `_extract_tool_calling(response)` | Extract and clean OpenAI-format tool_calls |
-| `check_completed(tool_calling)` | Detect task_done flag |
-| `handle_completed(tool_calling)` | Completion audit + hallucination check + cleanup |
-| `run_tool_calling(response)` | Full tool execution loop |
-| `check_memory()` | Monitor token/history limits, auto compact |
-| `save_checkpoints()` | Persist state to disk |
-
-### Extend Tool Development
-
-extend_tool runs on the **host process** and can directly read/write host files (limited by project_root).
-
-Reference the existing coding extend_tool suite:
-
-```
-src/harness/expert/coding/extend_tool/
-├── __init__.py       # Unified registration
-├── path_utils.py     # Path security validation
-├── file_edit.py      # search/replace editing
-├── code_search.py    # glob + grep search
-├── file_read.py      # Smart file reading
-├── file_create.py    # File creation
-├── lsp_tool.py       # Code intelligence
-└── planning.py       # Plan manager
-```
-
-An extend_tool file structure:
-
-```python
-import json
-
-YOUR_TOOL_SCHEMA = {
-    "type": "function",
-    "function": {
-        "name": "your_tool",
-        "description": "Tool description",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "param": {"type": "string", "description": "Parameter description"}
-            },
-            "required": ["param"]
-        }
+**`your_node.json`** (input/output schema):
+```json
+{
+    "inputs": {
+        "input1": {"type": "str", "description": "Input description"}
+    },
+    "outputs": {
+        "output": {"type": "str", "description": "Output description"}
     }
 }
-
-def execute_your_tool(arguments: dict, task=None) -> str:
-    param = arguments.get("param", "")
-    result = f"Processed: {param}"
-    return json.dumps({"type": "text", "content": result})
 ```
 
-Register in `extend_tool/__init__.py`:
+Nodes are auto-discovered via `importlib.import_module` — no registry needed.
 
-```python
-from .your_tool import YOUR_TOOL_SCHEMA, execute_your_tool
+### Node I/O Specification
 
-EXTEND_TOOLS_SCHEMA = [..., YOUR_TOOL_SCHEMA]
-EXTEND_TOOL_FUNCTIONS = {..., "your_tool": execute_your_tool}
-```
+Each node declares its input/output Schema in `your_node.json`. The engine auto-validates type matching during scheduling.
 
-Then in your Expert's `task.py`:
+| Basic Type | Description |
+|------|------|
+| `MessageCard` | OpenAI format message dict |
+| `MessageList` | OpenAI format message list |
+| `ToolSchema` | OpenAI Function Calling Schema |
+| `ToolList` | List of ToolSchema |
+| `ToolMessage` | Tool return message |
+| `Str` | String |
 
-```python
-from src.harness.expert.your_expert.extend_tool import (
-    handle_extend_tool, get_extend_tools_schema
-)
-
-class YourExpertTask(BaseTask, expert_type=..., ...):
-    def get_base_tool_schema(self) -> list:
-        return super().get_base_tool_schema() + get_extend_tools_schema()
-
-    def _handle_extend_tool(self, tool_name: str, arguments: dict) -> str:
-        success, result = handle_extend_tool(tool_name, arguments, self)
-        return result if success else super()._handle_extend_tool(tool_name, arguments)
-```
+Nodes receive inputs via `async execute(inputs, force_push_msgs, context)` and return `Dict[str, Any]`. A node executes automatically once all its inputs are ready.
 
 ---
 

@@ -65,7 +65,7 @@ Run `git pull` to fetch the latest code, then re-run `purrcat setup` to update t
 
 - **Local-First**: Pure Docker sandbox with strict whitelist permissions.
 - **99%+ KV Cache Hit Rate**: `dispatch_tool()` decouples tool schemas from System Prompts, ensuring stable cache hits.
-- **Atomic Harness Architecture**: BaseTask provides 12 atomic methods for composing custom Expert workflows.
+- **Atomic Harness Architecture**: Harness DAG engine uses graph/ + node/ for composing custom workflows.
 - **APIKeyManager Smart Scheduling**: Auto load-balances across API keys (least-busy-first).
 - **Sensor Gateway**: Unified message gateway for multi-channel communication.
 
