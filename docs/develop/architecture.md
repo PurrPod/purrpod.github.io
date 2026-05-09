@@ -15,11 +15,33 @@ src/
 │   │   └── SOUL.md         # Agent 人格定义
 │   └── system_rules/       # 系统指令层
 │
-├── harness/                # 任务与专家系统
-│   ├── task.py             # BaseTask 基类（原子化模块）
-│   └── expert/
-│       ├── coding/         # 代码专家（含 extend_tool 工具集）
-│       └── .../            # 更多领域专家
+├── harness/                # DAG 工作流引擎
+│   ├── process.py          # 主调度引擎（异步并发）
+│   ├── enums.py            # 状态枚举（READY/WAITING/RUNNING/ERROR/COMPLETED）
+│   ├── graph/              # DAG 图定义 (JSON)
+│   │   └── default.json
+│   ├── node/               # 节点实现（模块化，每个节点独立文件夹）
+│   │   ├── base.py         # BaseNode 抽象基类
+│   │   ├── appender/       # 消息追加节点
+│   │   ├── file_input/     # 文件输入节点
+│   │   ├── file_output_loop/ # LLM 循环思考节点
+│   │   ├── flusher/        # 记忆压缩节点
+│   │   ├── llm_chat/       # 单次 LLM 调用节点
+│   │   ├── log/            # 日志节点
+│   │   ├── message_card_builder/ # 消息卡片构建
+│   │   ├── skill_fetcher/  # 技能提取节点
+│   │   ├── str_adapter/    # 字符串适配节点
+│   │   ├── summary_output_loop/ # 摘要输出循环
+│   │   ├── task_input/     # 任务入口节点
+│   │   ├── task_output/    # 任务出口节点
+│   │   ├── tool_executor/  # 工具执行节点
+│   │   ├── tool_kit/       # 工具包装配节点
+│   │   └── truncker/       # 截断节点
+│   ├── tools/              # 内置工具
+│   │   └── core/
+│   │       ├── task_done/      # 完成任务
+│   │       └── yield_to_human/ # 交还控制权给人类
+│   └── utils/              # 辅助函数
 │
 ├── model/                  # 大模型调度层
 │   ├── facade/model.py     # Model 轻量级入口
@@ -52,48 +74,41 @@ src/
 └── utils/
     ├── config.py           # 分级配置加载
     └── enums.py            # 枚举定义
-
-data/
-├── skill/                  # 技能包（SKILL.md + 脚本）
-├── memory/                 # 对话记忆存储
-├── database/               # RAG 知识库
-└── checkpoints/            # 任务检查点
 ```
 
 ## 核心架构分层
 
 ```
 ┌─────────────────────────────────────────┐
-│  Sensor 层 (网关架构)                    │
+│  Sensor 层 (网关架构)                     │
 │  Feishu / RSS / Clock                   │
 │    → observe() → Gateway.push()         │
-└──────────────────┬──────────────────────┘
-                   ▼
+└─────────────────────────────────────────┘
+                   
 ┌─────────────────────────────────────────┐
 │  Agent 层                               │
-│  对话管理 / force_push / 记忆整理       │
+│  对话管理 / force_push / 记忆整理          │
 │  Gateway.send() ← 回复                  │
-└──────────────────┬──────────────────────┘
-                   ▼
+└─────────────────────────────────────────┘
+                   
 ┌─────────────────────────────────────────┐
 │  Model 层 (APIKeyManager)               │
 │  Model.chat() → LLMClient               │
-│  智能分配最闲 Key / 按前缀恢复          │
-└──────────────────┬──────────────────────┘
-                   ▼
+│  智能分配最闲 Key / 按前缀恢复              │
+└─────────────────────────────────────────┘
+                  
 ┌─────────────────────────────────────────┐
-│  Tool 层 (动态加载)                     │
-│  dispatch_tool() 动态 import 模块       │
+│  Tool 层 (动态加载)                       │
+│  dispatch_tool() 动态 import 模块        │
 │  Bash / Fetch / FileSystem / Search     │
 │  Memo / CallMCP / Cron / Task           │
-│  统一异常链路 + 超长截断落盘            │
-└──────────────────┬──────────────────────┘
-                   ▼
+│  统一异常链路 + 超长截断落盘                │
+└─────────────────────────────────────────┘
+                  
 ┌─────────────────────────────────────────┐
-│  Harness 层 (BaseTask 原子化)           │
-│  CodingTask / 自定义 Expert             │
-│  原子方法：run_llm_step / run_tool_     │
-│  calling / check_memory / checkpoints   │
+│  Harness 层 (DAG 工作流引擎)              │
+│  process.py 后台异步并发调度                  │
+│  graph/ + node/ 原子节点编排              │
 └─────────────────────────────────────────┘
 ```
 
@@ -102,12 +117,12 @@ data/
 ### 两层文件系统
 
 ```
-宿主机:  project_root/    ← extend_tool / file_edit 等读写
-宿主机:  agent_vm/  ──→  沙盒: /agent_vm/  ← Bash 工具读写
+宿主机:  本地文件系统                                ← FileSystem 工具 (受白名单约束)
+宿主机:  agent_vm/  ──→  沙盒: /agent_vm/           ← Bash 工具读写
 ```
 
 - `Bash` 工具运行在 Docker 沙盒，只能访问 `/agent_vm/`
-- extend_tool（file_edit/code_search 等）运行在宿主机进程，可直接读写项目文件
+- `FileSystem` 工具负责宿主机文件导入/导出，受 `.purrcat/.file.yaml` 白名单约束
 
 ### 工具路由
 

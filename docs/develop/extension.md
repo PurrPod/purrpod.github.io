@@ -7,7 +7,7 @@
 ```
                        难度
                         ↑
-               Harness (原子化 Expert)   ← 最高
+               Harness (DAG 工作流)      ← 最高
           Sensor (感知器/网关)            ← 较高
         Tool (模块化工具)                ← 中等
    Skill (能力包) / SOUL.md (人格)       ← 低
@@ -60,172 +60,55 @@ xxx
 
 Skill 的脚本通过 `Bash` 工具运行在 **Docker 沙盒**中，只能访问 `/agent_vm/` 目录下的文件，**不能直接读写宿主机文件**。
 
-如果需要操作宿主机文件，请使用 Expert 的 extend_tool（见下文）。
+如需操作宿主机文件，请使用 FileSystem 工具（受 `.purrcat/.file.yaml` 白名单约束）。
 
 ---
 
-## 3. Expert / Harness 开发（领域专家）
+## 3. Harness / 节点开发（DAG 工作流）
 
-Expert 系统用于实现**复杂工作流编排**、**宿主机文件操作**或**需要敏感令牌或权限才可运行的行为**。
+Harness 是 PurrCat 的 DAG 工作流引擎，通过 **配置驱动 + 原子节点** 的方式编排 AI 流程。每个节点是一个独立的 Python 模块，继承 `BaseNode` 实现 `execute` 方法。
 
-### 目录结构
+::: tip 低代码可视化构建工作流项目即将到来
+PurrCat 正在致力于构建一个可视化编排并编译为json文件的可视化平台，预计在不久后即可和大家见面，敬请期待。
+:::
 
-```
-src/harness/expert/your_expert/
-├── task.py                # 任务定义（继承 BaseTask）
-└── extend_tool/           # 扩展工具（可选）
-    ├── __init__.py
-    └── your_tool.py
-```
+### 关键概念
 
-### 最小实现
+- **`process.py`**：主调度引擎，使用 `asyncio.gather(return_exceptions=True)` 实现并发调度
+- **`BaseNode`**：节点基类，所有节点继承它并实现 `async execute(inputs, force_push_msgs, context)`
+- **`graph/*.json`**：DAG 图定义，描述节点间的拓扑关系和依赖
+- **节点状态**：`READY → WAITING → RUNNING → COMPLETED | ERROR`，支持断点恢复
+- **`yield_to_human`**：内置工具，允许 Agent 在无法完成任务时主动交还控制权
+- **错误隔离**：失败的节点不影响其他独立分支，人类修复后仅重跑报错节点
 
+### 创建新的节点
+
+新建文件夹 `src/harness/node/your_node/`，包含两个文件：
+
+**`node.py`**：
 ```python
-from src.harness.task import BaseTask
+from src.harness.node.base import BaseNode
 
-class YourExpertTask(
-    BaseTask,
-    expert_type="your_expert",        # add_task 时的 expert 参数值
-    description="你的领域专家描述",
-    parameters={}
-):
-    def __init__(self, task_name, prompt, core):
-        super().__init__(task_name, prompt, core)
-
-    def _build_system_prompt(self):
-        return """# 角色定义\n你是一个..."""
+class Node(BaseNode):
+    async def execute(self, inputs, force_push_msgs, context):
+        # 实现你的节点逻辑
+        result = await self._process(inputs)
+        return {"output": result}
 ```
 
-### 自动注册
-
-Expert 通过 `BaseTask.__init_subclass__` **自动注册**。只需确保 `task.py` 被导入即可——`Task` 工具在调用 `add` 操作时会自动调用 `auto_discover_experts()` 扫描 `src/harness/expert/` 下的所有子类。
-
-无需手动修改任何注册文件。
-
-### 原子方法（BaseTask 提供）
-
-BaseTask 提供了完整的原子模块清单，可在自定义 `run()` 中自由调用：
-
-| 方法 | 用途 |
-|------|------|
-| `check_kill()` | 检测外部强杀标志位，主动中断 |
-| `check_request()` | 弹出队列中的临时强制追加指令 |
-| `check_tool(history)` | 清理断层 Tool Calls，返回安全 History |
-| `run_llm_step(messages, tools)` | 纯粹的大模型通讯发包 |
-| `track_token(response)` | 提取 Token 用量统计 |
-| `_extract_tool_calling(response)` | 提取并清洗 OpenAI 格式的 tool_calls |
-| `check_completed(tool_calling)` | 检测 task_done 标识判断完结 |
-| `handle_completed(tool_calling)` | 完结审计 + 幻觉检测 + 资源回收 |
-| `run_tool_calling(response)` | 工具解析与执行闭环（JSON 纠错 → 参数抽取 → 分发执行 → 回传入栈） |
-| `check_memory()` | 监控 window_token 与历史长度，超标自动压缩 |
-| `save_checkpoints()` | 即时封印类状态、Token 数据、通信历史到硬盘 |
-
-### 可重写的钩子
-
-| 方法 | 用途 |
-|------|------|
-| `_build_system_prompt()` | 定制 System Prompt |
-| `get_available_tools()` | 注入领域工具 Schema（含 extend_tool） |
-| `_handle_extend_tool()` | 拦截执行扩展工具 |
-| `_on_save_state()` / `_on_restore_state()` | 状态持久化与恢复 |
-| `run()` | 完全重写执行逻辑 |
-
-### 典型线性任务循环
-
-```python
-def run(self):
-    while not self.check_completed(...):
-        self.check_kill()              # 检测强杀
-        self.check_request()           # 弹出追加指令
-        history = self.check_tool(history)  # 清理断层
-        response = self.run_llm_step(history, tools)  # LLM 通讯
-        self.track_token(response)     # 统计 Token
-        tool_calling = self._extract_tool_calling(response)
-        if self.check_completed(tool_calling):
-            self.handle_completed(tool_calling)
-            break
-        history = self.run_tool_calling(response)  # 工具执行
-        self.check_memory()            # 记忆压缩
-        self.save_checkpoints()        # 状态持久化
-```
-
-### Extend Tool 开发
-
-extend_tool 运行在**宿主机进程**中，可以直接读写宿主机文件系统（受 project_root 限制），适合实现与本地文件交互的工具。
-
-参考已有的 coding extend_tool 工具集：
-
-```
-src/harness/expert/coding/extend_tool/
-├── __init__.py       # 统一注册入口
-├── path_utils.py     # 路径安全校验
-├── file_edit.py      # search/replace 精准编辑
-├── code_search.py    # glob + grep 代码搜索
-├── file_read.py      # 智能文件读取
-├── file_create.py    # 新建文件
-├── lsp_tool.py       # 代码智能分析
-└── planning.py       # 计划管理器
-```
-
-一个 extend_tool 文件的基本结构：
-
-```python
-import json
-
-YOUR_TOOL_SCHEMA = {
-    "type": "function",
-    "function": {
-        "name": "your_tool",
-        "description": "工具描述",
-        "parameters": {
-            "type": "object",
-            "properties": {
-                "param": {"type": "string", "description": "参数说明"}
-            },
-            "required": ["param"]
-        }
+**`your_node.json`**（描述输入输出 Schema）：
+```json
+{
+    "inputs": {
+        "input1": {"type": "str", "description": "输入描述"}
+    },
+    "outputs": {
+        "output": {"type": "str", "description": "输出描述"}
     }
 }
-
-def execute_your_tool(arguments: dict, task=None) -> str:
-    param = arguments.get("param", "")
-    result = f"处理结果: {param}"
-    return json.dumps({"type": "text", "content": result})
 ```
 
-在 `extend_tool/__init__.py` 中注册：
-
-```python
-from .your_tool import YOUR_TOOL_SCHEMA, execute_your_tool
-
-# 加入 Schema 列表
-EXTEND_TOOLS_SCHEMA = [..., YOUR_TOOL_SCHEMA]
-
-# 加入执行函数映射
-EXTEND_TOOL_FUNCTIONS = {
-    ..., 
-    "your_tool": execute_your_tool,
-}
-```
-
-然后在 Expert 的 `task.py` 中重写 `_handle_extend_tool` 指向统一入口：
-
-```python
-from src.harness.expert.your_expert.extend_tool import (
-    handle_extend_tool, get_extend_tools_schema
-)
-
-class YourExpertTask(BaseTask, expert_type=..., ...):
-    def get_base_tool_schema(self) -> list:
-        base_schemas = super().get_base_tool_schema()
-        return base_schemas + get_extend_tools_schema()
-
-    def _handle_extend_tool(self, tool_name: str, arguments: dict) -> str:
-        success, result = handle_extend_tool(tool_name, arguments, self)
-        if success:
-            return result
-        return super()._handle_extend_tool(tool_name, arguments)
-```
+系统通过 `importlib.import_module` 动态加载节点，无需维护注册表。
 
 ---
 

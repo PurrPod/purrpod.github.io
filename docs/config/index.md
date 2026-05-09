@@ -159,9 +159,9 @@ skill_dir:
 
 将包含 `SKILL.md` 的技能文件夹完整放入 `skill/` 目录，重启系统后即可生效。Agent 可通过 `Fetch(source="skill", name="your_skill")` 加载使用。
 
-### Harness / Expert 接入
+### Harness / DAG 流程接入
 
-参考对应 Expert 的 README.md 操作。Expert 类继承 `BaseTask` 后通过 `__init_subclass__` 自动注册到系统，无需手动修改配置文件。
+在 `src/harness/graph/` 下创建 JSON 图定义文件，在 `src/harness/node/` 下创建节点实现（每个节点独立文件夹）。系统通过 `importlib.import_module` 自动发现节点，无需注册。
 
 ### Tool 模块
 

@@ -22,11 +22,11 @@ In PurrCat, you don't have to endure such system-level disasters caused by Agent
 Other frameworks are still struggling with basic Skills and prompts, but a new concept of dimensionality reduction is emerging: Harness Engineering!
 
 ::: details 💡 PurrCat's Solution
-Traditional Agents are often locked by a single system prompt, but in PurrCat, you can seamlessly dispatch multiple **Experts** such as AI research assistants, quantitative traders, and senior programmers within the same system. We expose highly extensible interfaces:
+PurrCat exposes highly extensible interfaces:
 
 - **Regular Integration**: Supports standard **Skill** (Anthropic-compliant) and **MCP Service** (one-click access to external services with built-in recycling mechanism).
 - **Tool (Modular Tool)**: Each tool is an independent module under `src/tool/` (with schema, exceptions, main function), dynamically loaded by `dispatch_tool()`, written in pure Python, greatly reducing tool development barriers.
-- **Expert (Expert Workflow)**: For complex industry-specific needs, Skill's constraints are often insufficient. Developers can inherit `BaseTask` under `src/harness/expert/`, completely rewrite built-in functions and state transitions, tailor-made Harness Engineering workflows, and directly enjoy the framework's API concurrency and polling acceleration.
+- **Harness (DAG Workflow)**: For complex workflows, define JSON graph topologies in `src/harness/graph/` and develop atomic nodes in `src/harness/node/` (one folder per node). The engine uses `asyncio.gather` for concurrent scheduling of all ready nodes, with error isolation (Blast Radius) ensuring single-node failures don't affect independent branches. Built-in `yield_to_human` tool lets the Agent surrender control when stuck.
 :::
 
 ### 3. Extreme Context Economics
@@ -60,7 +60,7 @@ Asking Agent to help with a big project only to have the entire chat window free
 In PurrCat, we completely break the inefficient "one question one answer, single-threaded blocking" mode of traditional Agents, giving you true **multi-task coordination ability**. This benefit from our underlying subtask scheduling design:
 
 - **Background Silent Operation, Main Interface Never Blocked**: When you issue complex instructions (such as batch processing documents, crawling hundreds of web pages), the task will be cut into the background by Agent as a subtask. Your main session window is **absolutely free** - you can continue to discuss other issues with Agent, or directly throw it the next new task.
-- **Multi-Agent/Expert Concurrent Collaboration**: Combined with the customizable workflow mentioned earlier, you can truly experience the feeling of "leading a team". Due to the underlying implementation of API thread-level isolation and KV Cache independent binding, you can let Coding Agent run compilation in the background sandbox while letting Trading Agent help you pull the latest A-share research reports. **Your personal assistant is no longer a single-threaded robot, but an elite team that can work concurrently with multiple cores.**
+- **Multi-Agent Concurrent Collaboration**: Combined with the DAG workflow mentioned earlier, you can truly experience the feeling of "leading a team". Due to the underlying implementation of API thread-level isolation and KV Cache independent binding, you can have multiple Agents running different tasks concurrently in the background. **Your personal assistant is no longer a single-threaded robot, but an elite team that can work concurrently with multiple cores.**
 - **God's Eye View of Progress Control**: Even if all tasks are running in the background, you can still check the real-time state machine flow progress of each subtask or dynamically inject instructions through the system's task scheduling center. You are not just a user, but a commander who controls the overall situation.
 - **Freedom to Inject Instructions Anytime**: PurrCat provides a forced instruction injection function, allowing you to inject your instructions or opinions at any time while Agent is busy.
 :::

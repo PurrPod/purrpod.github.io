@@ -159,9 +159,9 @@ On system startup, `initialize_mcp()` automatically fetches and caches the compl
 
 Place a skill folder containing `SKILL.md` into the `skill/` directory. It will take effect after restart. The Agent can load it via `Fetch(source="skill", name="your_skill")`.
 
-### Harness / Expert Integration
+### Harness / DAG Workflow Setup
 
-Refer to the corresponding Expert's README.md. Expert classes inherit from `BaseTask` and auto-register via `__init_subclass__` — no manual config file modification needed.
+Create a JSON graph definition in `src/harness/graph/` and node implementations in `src/harness/node/` (one folder per node). Nodes are auto-discovered via `importlib.import_module` — no registration needed.
 
 ### Tool Module
 

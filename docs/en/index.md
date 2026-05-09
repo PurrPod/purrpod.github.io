@@ -28,7 +28,7 @@ features:
     details: Proprietary router-based distribution decouples tool schemas from System Prompts, maintaining 99%+ KV Cache hit rates. Delivers extreme token economy and millisecond-level response times.
   - icon: 🧩
     title: Atomic Harness Architecture
-    details: BaseTask exposes a complete set of atomic modules — LLM communication, tool parsing, state persistence, memory compression, and more. Compose them freely to build custom Expert workflows.
+    details: Harness DAG workflow engine defines graph topology via graph/ JSON, implements atomic nodes in node/, and schedules concurrently via process.py. Compose them freely to build custom AI workflows.
   - icon: ⚙️
     title: Smart Scheduling & Multi-Core
     details: APIKeyManager auto-balances active task loads across API keys. Background subtasks bind independent keys with persistent state machines — main session never blocks, delivering true multi-core concurrency.
