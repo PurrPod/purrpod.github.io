@@ -1,4 +1,12 @@
-.VPHero .VPImage img {
-  width: 400px !important;
-  height: 400px !important;
+.VPHome .VPHero .container {
+  display: flex;
+  flex-direction: row-reverse;
+}
+
+.VPHome .VPHero .VPImage {
+  width: auto !important;
+  height: auto !important;
+  max-width: 280px;
+  max-height: 280px;
+  margin-right: 24px;
 }
