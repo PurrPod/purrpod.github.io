@@ -6,7 +6,7 @@ hero:
   text: "安全、稳定、轻量、经济的本地 Agent 框架"
   tagline: "沙盒隔离 · 99%+ 缓存命中 · 原子化构建"
   image:
-    src: /logo.png
+    src: /purrcat-logo.svg
     alt: PurrCat Logo
   actions:
     - theme: alt
