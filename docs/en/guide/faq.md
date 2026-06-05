@@ -2,7 +2,7 @@
 
 ## 1. Environment Deployment
 
-**1. What are the prerequisites for running?** Core dependencies are: **Miniconda** (Python environment), **Docker** (sandbox isolation). **Node.js** (providing `npx`) is optional — only needed if using MCP extensions.
+**1. What are the prerequisites for running?** Core dependencies are: **uv** (Python package manager, install with one command), **Node.js** (provides `npx`), **Docker** (sandbox isolation).
 
 
 **2. What to do if script execution has permission errors?**
@@ -12,24 +12,22 @@
 
 **3. Installation timeout or failure?**
 
-Built-in retry logic. If it continues to fail, configure domestic mirror sources (Conda Tsinghua source, Docker image acceleration), or install dependencies offline first.
+Built-in retry logic. If it continues to fail, configure domestic mirror sources (uv mirror, Docker image acceleration), or install dependencies offline first.
 
 **4. Must Docker be installed?**
 
 **Must be installed**. The framework's local sandbox, Shell execution, and read-write isolation all depend on Docker. Core functionality cannot run without it.
 
 **5. Do I need Node.js?**
-PurrCat itself doesn't require Node.js (UI is Python TUI). However, if you plan to use MCP extensions (Playwright, GitHub, etc.), you need **Node.js** (provides `npx`) and optionally **uv** (Python package manager).
+**Yes, required.** Node.js provides `npx`, which PurrCat relies on for MCP extensions and the WebUI frontend.
 
 **6. Docker build fails with network errors?**
 Select the Aliyun mirror (option 2) during `purrcat setup`, or configure a Docker mirror accelerator manually.
 
-**7. Conda environment creation very slow?**
-Configure a Conda mirror:
+**7. uv sync very slow?**
+Configure a uv mirror:
 ```bash
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/free/
-conda config --add channels https://mirrors.tuna.tsinghua.edu.cn/anaconda/pkgs/main/
-conda config --set show_channel_urls yes
+uv config set index-url https://mirrors.aliyun.com/pypi/simple/
 ```
 
 **8. `purrcat` command not found?**

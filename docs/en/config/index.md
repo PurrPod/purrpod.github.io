@@ -234,7 +234,7 @@ The system auto-fetches all MCP Server tool Schemas on startup and caches them.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `purrcat setup` | One-click deploy (sandbox + Conda + model) | `purrcat setup` |
+| `purrcat setup` | One-click deploy (sandbox + Python deps + model) | `purrcat setup` |
 | `purrcat init` | Generate `.purrcat/` config interactively | `purrcat init --force` |
 | `purrcat install` | Install extensions (skill/node/graph) | `purrcat install skill <url>` |
 | `purrcat update` | Update framework from GitHub Releases | `purrcat update --version="2026.05.15"` |

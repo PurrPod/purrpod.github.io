@@ -6,10 +6,9 @@
 
 在开始之前，请确保您的计算机上已安装以下基础依赖：
 
-- **Miniconda 或 Anaconda**：用于管理和隔离 Python 虚拟环境（确保已添加进系统变量里，否则后续脚本可能出现找不到 conda 命令的错误）
+- **uv**：Python 包管理器（安装命令：`curl -LsSf https://astral.sh/uv/install.sh | sh`），用于解析和安装 PurrCat 的所有 Python 依赖
+- **Node.js**：提供 `npx` 命令，用于运行 MCP 扩展工具和 WebUI 前端
 - **Docker 或 Podman**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。系统会自动检测可用的容器引擎（Docker 优先）。请确保引擎服务已启动并在运行状态。
-
-> 注意：PurrCat 使用 Python Textual TUI 作为用户界面。但如果需要使用 MCP 扩展（如 Playwright、GitHub 等），宿主机仍需安装 **Node.js**（提供 `npx` 命令）和可选的 **uv**（Python 包管理器），具体取决于配置的 MCP Server 类型。
 
 ## 2. 获取源代码
 
@@ -27,18 +26,16 @@ cd purrcat
 PurrCat 提供了统一的 CLI 入口 `purrcat`，一键完成环境初始化：
 
 ```bash
-# 一键部署（沙盒构建 + Conda 环境 + 嵌入模型下载）
+# 一键部署（沙盒构建 + Python 依赖安装 + 嵌入模型下载）
 purrcat setup
 ```
-
-
 
 系统会自动完成以下步骤（详见第 4 节拆解说明）：
 1. 自动检测容器引擎（支持 **Docker / Podman**）
 2. 选择沙盒镜像版本（完整版 `Dockerfile.full` 或轻量版 `Dockerfile.light`）
 3. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
 4. 构建沙盒镜像 `my_agent_env:latest`
-5. 创建/更新 Conda 环境 `PurrCat`
+5. 自动解析并安装 Python 依赖（`uv sync`）
 6. 下载 Embedding 向量化模型
 7. 可选安装 **WebUI** 前端依赖（npm install）
 
@@ -63,7 +60,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 - 基于 `python:3.10-slim` 基础镜像
 - 安装系统依赖：curl、git、vim、ffmpeg、jq 等
 - 安装 Node.js 20.x（用于沙盒内的工具链）
-- 配置 PyPI 国内镜像（阿里云）
+- 配置 PyPI 国内镜像（阿里云） + 安装 uv
 - 设置工作目录为 `/agent_vm`
 
 **常见失败原因**：
@@ -74,37 +71,38 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 | 磁盘空间不足 | 清理 Docker 无用的镜像/容器：`docker system prune -a` |
 | Docker Hub 匿名拉取限额 | 登录 Docker Hub 账号，或等待限额重置 |
 
-### 4.2 Conda 环境配置
+### 4.2 Python 依赖安装
 
 ```bash
-# 创建 Conda 环境
-conda env create -f environment.yml
-
-# 如果环境已存在，更新依赖
-conda env update -f environment.yml --prune
+# 使用 uv 一键解析并安装所有依赖
+uv sync
 ```
+
+> `uv sync` 会根据 `pyproject.toml` 自动创建虚拟环境（`.venv`）并安装所有依赖。一键完成，无需手动 activate。
 
 **环境包含的核心依赖**：
 - Python 3.10 + OpenAI SDK + MCP 协议
-- Faiss（向量检索）+ Sentence-Transformers（嵌入模型）
+- Sentence-Transformers + ChromaDB（向量检索与记忆系统）
 - Textual（TUI 界面）
 - Docker SDK + Playwright（沙盒与自动化）
 - Lark SDK（飞书通讯）+ Feedparser（RSS 订阅）
+- FastAPI + Uvicorn（Web 后端）
 
 **常见失败原因**：
 | 问题 | 解决方案 |
 |------|---------|
-| Conda 命令找不到 | 确保 Miniconda 已添加到系统 PATH |
-| 包下载超时 | 配置 Conda 清华镜像源，或使用 VPN |
-| 环境冲突 | 删除旧环境重新创建：`conda env remove -n PurrCat` |
+| uv 命令找不到 | 执行 `curl -LsSf https://astral.sh/uv/install.sh | sh` 安装 uv |
+| 包下载超时 | 配置 uv 镜像源：`uv config set index-url https://mirrors.aliyun.com/pypi/simple/` |
+| Python 版本不满足 | 确保 Python >= 3.10，或使用 `uv python install 3.10` 自动安装 |
+| PyTorch 下载慢 | uv 已自动配置 CPU-only PyTorch 镜像，若仍慢可手动设置 `UV_INDEX_PYTORCH_CPU` |
 
 ### 4.3 嵌入模型下载
 
 ```bash
-conda run -n PurrCat python scripts/setup_emb.py
+uv run python scripts/setup_emb.py
 ```
 
-该脚本会自动下载 Embedding 模型（默认 `BAAI/bge-small-zh-v1.5`），用于 RAG 检索与记忆系统的向量化。
+该脚本会自动下载 Embedding 模型（默认 `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`），用于 RAG 检索与记忆系统的向量化。
 
 **常见失败原因**：
 | 问题 | 解决方案 |
@@ -164,9 +162,6 @@ purrcat init --force
 }
 ```
 
-
-
-
 **注意事项**：
 - 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
 - `main` 段配置全局 Agent 使用的模型
@@ -193,9 +188,8 @@ purrcat start
 ### 6.2 无界面启动（Headless）
 
 ```bash
-purrcat start --webui
+purrcat start --headless
 ```
-
 
 启动后系统会自动完成：
 1. 初始化 MCP 连接并拉取工具 Schema

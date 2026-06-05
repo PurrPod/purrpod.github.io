@@ -256,7 +256,7 @@
 
 | 命令 | 用途 | 示例 |
 |------|------|------|
-| `purrcat setup` | 一键部署（沙盒构建 + Conda 环境 + 嵌入模型） | `purrcat setup` |
+| `purrcat setup` | 一键部署（沙盒构建 + Python 依赖安装 + 嵌入模型） | `purrcat setup` |
 | `purrcat init` | 交互式生成 `.purrcat/` 配置 | `purrcat init --force` |
 | `purrcat install` | 安装扩展（skill / node / graph） | `purrcat install skill <url>` |
 | `purrcat update` | 从 GitHub Releases 更新框架 | `purrcat update --version="2026.05.15"` |
@@ -284,7 +284,7 @@ purrcat update
 purrcat update --version="2026.05.15"
 ```
 
-更新流程：拉取 tag → checkout → 同步 Conda 环境 → 执行 post-update 迁移脚本。
+更新流程：拉取 tag → checkout → 同步 Python 依赖（uv sync）→ 执行 post-update 迁移脚本。
 
 ---
 

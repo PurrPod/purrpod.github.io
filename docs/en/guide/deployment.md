@@ -6,10 +6,9 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 Before you begin, ensure that the following basic dependencies are installed on your computer:
 
-- **Miniconda or Anaconda**: Used to manage and isolate Python virtual environments (ensure it's added to your system PATH).
+- **uv**: Python package manager (install with `curl -LsSf https://astral.sh/uv/install.sh | sh`). PurrCat uses uv to resolve and install all Python dependencies from `pyproject.toml`.
+- **Node.js**: Provides `npx`, required for running MCP extensions and the WebUI frontend.
 - **Docker or Podman**: Used to build and run PurrCat's exclusive local sandbox environment. The system auto-detects available container engines (Docker preferred). Make sure the engine service is running.
-
-> Note: PurrCat uses a Python Textual TUI as its user interface. However, if you plan to use MCP extensions (Playwright, GitHub, etc.), **Node.js** (providing `npx`) and optionally **uv** (Python package manager) are still required on the host, depending on your MCP Server configuration.
 
 ## 2. Obtaining Source Code
 
@@ -27,17 +26,16 @@ Alternatively, download the ZIP archive from the navigation bar above and extrac
 PurrCat provides a unified CLI entry point `purrcat` for environment initialization:
 
 ```bash
+# One-click deploy (sandbox build + Python deps + embedding model)
 purrcat setup
 ```
-
-
 
 The script will automatically complete the following steps (see Section 4 for detailed breakdown):
 1. Auto-detect container engine (supports **Docker / Podman**)
 2. Select sandbox image variant (full `Dockerfile.full` or light `Dockerfile.light`)
 3. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
 4. Build sandbox image `my_agent_env:latest`
-5. Create/update Conda environment `PurrCat`
+5. Resolve and install Python dependencies (`uv sync`)
 6. Download Embedding model
 7. Optionally install **WebUI** frontend dependencies (npm install)
 
@@ -61,7 +59,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 - Builds on `python:3.10-slim` base image
 - Installs system packages: curl, git, vim, ffmpeg, jq, etc.
 - Installs Node.js 20.x (for in-sandbox toolchains)
-- Configures PyPI mirror (Aliyun)
+- Configures PyPI mirror (Aliyun) + installs uv
 - Sets working directory to `/agent_vm`
 
 **Common failures**:
@@ -73,38 +71,39 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 | Insufficient disk space | Clean up: `docker system prune -a` |
 | Docker Hub anonymous pull limit | Log in to a Docker Hub account or wait for reset |
 
-### 4.2 Conda Environment Setup
+### 4.2 Python Dependencies with uv
 
 ```bash
-# Create Conda environment
-conda env create -f environment.yml
-
-# Update if environment already exists
-conda env update -f environment.yml --prune
+# One command to resolve and install all dependencies
+uv sync
 ```
+
+> `uv sync` automatically creates a virtual environment (`.venv`) and installs all dependencies from `pyproject.toml`. No manual `activate` needed.
 
 **Core dependencies**:
 - Python 3.10 + OpenAI SDK + MCP protocol
-- Faiss (vector search) + Sentence-Transformers (embeddings)
+- Sentence-Transformers + ChromaDB (vector search & memory system)
 - Textual (TUI framework)
 - Docker SDK + Playwright (sandbox & automation)
 - Lark SDK (Feishu) + Feedparser (RSS)
+- FastAPI + Uvicorn (Web backend)
 
 **Common failures**:
 
 | Issue | Solution |
 |-------|----------|
-| Conda command not found | Ensure Miniconda is in your system PATH |
-| Package download timeout | Configure Conda mirror or use a VPN |
-| Environment conflict | Remove and recreate: `conda env remove -n PurrCat` |
+| uv command not found | Install: `curl -LsSf https://astral.sh/uv/install.sh | sh` |
+| Package download timeout | Set uv mirror: `uv config set index-url https://mirrors.aliyun.com/pypi/simple/` |
+| Python version too low | Ensure Python >= 3.10, or use `uv python install 3.10` to auto-install |
+| PyTorch download slow | uv auto-configures CPU-only PyTorch; set `UV_INDEX_PYTORCH_CPU` if needed |
 
 ### 4.3 Embedding Model Download
 
 ```bash
-conda run -n PurrCat python scripts/setup_emb.py
+uv run python scripts/setup_emb.py
 ```
 
-Downloads the Embedding model (default: `BAAI/bge-small-zh-v1.5`) for RAG and memory vectorization.
+Downloads the Embedding model (default: `sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2`) for RAG and memory vectorization.
 
 **Common failures**:
 
@@ -192,16 +191,6 @@ purrcat start
 
 ```bash
 purrcat start --headless
-```
-
-### 6.3 Using Scripts Directly
-
-```bash
-# macOS / Linux
-bash `purrcat start`
-
-# Windows
-# Double-click `purrcat start`
 ```
 
 On startup, the system will:
