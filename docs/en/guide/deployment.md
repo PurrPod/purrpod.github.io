@@ -169,6 +169,7 @@ Edit `.purrcat/model.json` and replace the API key placeholders:
 - PurrCat currently supports only OpenAI SDK-compatible models
 - `main` section: model used by the global Agent
 - `task` section: model used by background subtasks (must use a different API key from `main`)
+- `vision` section: multimodal vision model (optional, provides a dedicated Vision consultant for non-vision LLMs)
 - Multiple API keys can be configured — the system will auto-balance load
 
 ### 5.3 View Environment Reference

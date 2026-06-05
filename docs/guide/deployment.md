@@ -171,6 +171,7 @@ purrcat init --force
 - 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
 - `main` 段配置全局 Agent 使用的模型
 - `task` 段配置后台子任务使用的模型（多 Agent 协作时必填，且不能用与 main 相同的 API Key）
+- `vision` 段配置多模态视觉模型（可选，给不支持多模态的大模型配专属视觉顾问）
 - 支持为同一模型配置多个 API Key，系统会自动负载均衡
 
 ### 5.3 查看环境变量参考
