@@ -159,6 +159,9 @@ task:
   #   ...
 ```
 
+
+
+
 **注意事项**：
 - 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
 - `main` 段配置全局 Agent 使用的模型
@@ -184,17 +187,9 @@ purrcat start
 ### 6.2 无界面启动（Headless）
 
 ```bash
-purrcat start --headless
+purrcat start --webui
 ```
 
-### 6.3 直接使用脚本启动
-
-```bash
-# macOS / Linux
-bash `purrcat start`
-
-# Windows
-```
 
 启动后系统会自动完成：
 1. 初始化 MCP 连接并拉取工具 Schema

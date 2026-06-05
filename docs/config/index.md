@@ -40,6 +40,9 @@ task:
     max_token: 500000
 ```
 
+### 视觉模型
+
+
 ### 嵌入模型
 
 ```yaml
@@ -173,5 +176,4 @@ skill_dir:
 
 部分工具需要对应 API 才能调用：
 
-- **Web 搜索**：需要 [Tavily API](https://www.tavily.com/)（也可用 Playwright MCP 工具替代，后者返回结果更结构化）
 - **MCP 服务**：需在 `mcp_config.json` 中配置对应 Server 的启动命令和参数

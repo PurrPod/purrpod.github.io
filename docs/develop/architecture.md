@@ -26,12 +26,16 @@ src/
 │   │   ├── file_input/     # 文件输入节点
 │   │   ├── file_output_loop/ # LLM 循环思考节点
 │   │   ├── flusher/        # 记忆压缩节点
+│   │   ├── image_generator/ # 图片生成节点（文生图/图生图）
+│   │   ├── if_else_router/ # 条件路由节点（意图分流）
+│   │   ├── human_intervention/ # 人工干预节点（挂起等待人类输入）
 │   │   ├── llm_chat/       # 单次 LLM 调用节点
 │   │   ├── log/            # 日志节点
 │   │   ├── message_card_builder/ # 消息卡片构建
 │   │   ├── skill_fetcher/  # 技能提取节点
 │   │   ├── str_adapter/    # 字符串适配节点
 │   │   ├── summary_output_loop/ # 摘要输出循环
+│   │   ├── switch_router/  # 多路开关路由节点
 │   │   ├── task_input/     # 任务入口节点
 │   │   ├── task_output/    # 任务出口节点
 │   │   ├── tool_executor/  # 工具执行节点
@@ -53,9 +57,10 @@ src/
 ├── sensor/                 # 传感器感知层（网关架构）
 │   ├── base.py             # BaseSensor 抽象基类
 │   ├── gateway.py          # SensorGateway 消息网关
-│   ├── message/feishu.py   # 飞书传感器
+│   ├── audio/              # 环境语音传感器（Whisper）
+│   ├── message/feishu.py   # 飞书传感器（双向Markdown卡片）
 │   ├── subscribe/rss.py    # RSS 订阅传感器
-│   └── system/const.py     # 时钟/闹钟传感器
+│   └── system/const.py     # 系统时钟/闹钟传感器
 │
 ├── memory/                 # 记忆系统
 │   └── purrmemo/           # 本地记忆引擎
@@ -113,6 +118,31 @@ src/
 ```
 
 ## 关键设计决策
+
+### 混合记忆与知识图谱系统 (PurrMemo)
+
+PurrCat 的记忆系统设计参考了神经科学对记忆类型的理论模型：
+
+- **短时工作记忆**：常驻内存的 `memo` 变量，保留最近多次 Agent 浓缩总结，跨越会话断层。
+- **核心通用记忆**：`MEMORY.md` 系统级档案，固化用户画像与工作经验，会话初始化时作为 System Prompt 注入。
+- **长期结构化记忆 (PurrMemo)**：
+  - **情景记忆引擎**：基于 SQLite + FTS5，时间线与全文 BM25 的事件溯源。
+  - **语义记忆引擎**：基于 ChromaDB（向量语义聚类）与 NetworkX（认知图谱三元组），支持关系的强化与削弱，提供 HTML 可视化图谱导出。
+- **RRF 混合检索**：BM25（关键词）与 Vector（语义）进行倒数排名融合（Reciprocal Rank Fusion）。
+- **异步记忆消化与艾宾浩斯遗忘**：前台认知先存入 pending，后台守护进程转化为三元组写入图谱。长时间未强化的记忆边权重自然衰减并清理。
+
+### 传感器独立进程架构（类 MCP）
+
+最新重构后的 Sensor 系统全面摒弃传统强耦合插件模式：
+
+- 所有 Sensor 作为独立子进程运行，集成 uv + PEP 723 单文件内联依赖规范，拉起时自动创建虚拟环境并安装依赖。
+- **物理级防崩溃**：单个 Sensor 崩溃不影响主 Agent 存活。
+- **Stdio JSON-RPC 通信**：采用标准输入输出管道进行通信，零网络开销。
+- **防污染护盾**：拦截重定向子进程 `sys.stdout` 到 `stderr`，仅合法 JSON 协议数据进入主程序解析器。
+
+### 生命周期 API Key 强绑定
+
+在 `APIKeyManager` 中实现任务/会话与单一密钥的强绑定，杜绝因负载均衡切换 API Key 导致 KV Cache 瞬间清零、命中率雪崩的致命问题。
 
 ### 两层文件系统
 
