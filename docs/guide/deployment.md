@@ -30,7 +30,9 @@ PurrCat 提供了统一的 CLI 入口 `purrcat`，一键完成环境初始化：
 purrcat setup
 ```
 
-系统会自动完成以下步骤（详见第 4 节拆解说明）：
+> ⚠️ `purrcat setup` 是交互式的，运行过程中会依次提问以下选项，请根据提示做出选择：
+
+执行过程中会依次提问（详见第 4 节拆解说明）：
 1. 自动检测容器引擎（支持 **Docker / Podman**）
 2. 选择沙盒镜像版本（完整版 `Dockerfile.full` 或轻量版 `Dockerfile.light`）
 3. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
@@ -185,16 +187,16 @@ purrcat env
 purrcat start
 ```
 
-### 6.2 无界面启动（Headless）
+### 6.2 启动 WebUI
 
 ```bash
-purrcat start --headless
+purrcat start --webui
 ```
 
 启动后系统会自动完成：
 1. 初始化 MCP 连接并拉取工具 Schema
 2. 启动 Agent 主循环
 3. 自动发现并启动已配置的 Sensor（飞书、RSS 等）
-4. 加载 TUI 界面（headless 模式跳过）
+4. 加载 TUI 界面（--webui 模式跳过，仅启动 API + 前端）
 
 **关闭服务**：在终端按下 `Ctrl+C` 即可安全终止所有进程。

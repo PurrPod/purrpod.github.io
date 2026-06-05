@@ -30,7 +30,9 @@ PurrCat provides a unified CLI entry point `purrcat` for environment initializat
 purrcat setup
 ```
 
-The script will automatically complete the following steps (see Section 4 for detailed breakdown):
+> ⚠️ `purrcat setup` is interactive. It will prompt you with the following questions during execution:
+
+The script will guide you through the following steps (see Section 4 for detailed breakdown):
 1. Auto-detect container engine (supports **Docker / Podman**)
 2. Select sandbox image variant (full `Dockerfile.full` or light `Dockerfile.light`)
 3. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
@@ -187,16 +189,16 @@ purrcat env
 purrcat start
 ```
 
-### 6.2 Headless Mode (No UI)
+### 6.2 WebUI Mode
 
 ```bash
-purrcat start --headless
+purrcat start --webui
 ```
 
 On startup, the system will:
 1. Initialize MCP connections and fetch tool schemas
 2. Start the Agent main loop
 3. Auto-discover and start configured Sensors (Feishu, RSS, etc.)
-4. Launch the TUI interface (skipped in headless mode)
+4. Launch the TUI interface (skipped in --webui mode, only API + frontend are started)
 
 **Shutdown**: Press `Ctrl+C` in the terminal to safely terminate all processes.
