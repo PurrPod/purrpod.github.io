@@ -25,7 +25,7 @@
 
 ## 2. Skill 开发（无代码/低代码扩展）
 
-遵循 Anthropic 官方规范。一个 Skill 就是 `skills/` 下的一个目录，核心是 `SKILL.md` 文件。
+遵循 [Anthropic Skill 官方规范](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)。一个 Skill 就是 `skills/` 下的一个目录，核心是 `SKILL.md` 文件。
 
 ### 目录结构
 
@@ -68,8 +68,8 @@ Skill 的脚本通过 `Bash` 工具运行在 **Docker 沙盒**中，只能访问
 
 Harness 是 PurrCat 的 DAG 工作流引擎，通过 **配置驱动 + 原子节点** 的方式编排 AI 流程。每个节点是一个独立的 Python 模块，继承 `BaseNode` 实现 `execute` 方法。
 
-::: tip 低代码可视化构建工作流项目即将到来
-PurrCat 正在致力于构建一个可视化编排并编译为json文件的可视化平台，预计在不久后即可和大家见面，敬请期待。
+::: tip 可视化 DAG 编排
+WebUI 支持拖拽节点和连线来动态编排工作流，编排完成后点击部署即可自动编译为 JSON 图定义并热加载。
 :::
 
 ### 关键概念

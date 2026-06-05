@@ -25,7 +25,7 @@ Edit `.purrcat/core/SOUL.md` to change the Agent's personality, tone, and values
 
 ## 2. Skill Development (No-Code / Low-Code)
 
-Follow the Anthropic standard. A Skill is a directory under `skills/` with `SKILL.md` as its core.
+Follow the [Anthropic Skill specification](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills). A Skill is a directory under `skills/` with `SKILL.md` as its core.
 
 ### Directory Structure
 
@@ -65,6 +65,10 @@ To operate host files, use the FileSystem tool (controlled by `.purrcat/file.jso
 ## 3. Harness / Node Development (DAG Workflow)
 
 Harness is PurrCat's DAG workflow engine that orchestrates AI pipelines through **configuration-driven + atomic nodes**. Each node is an independent Python module inheriting `BaseNode` implementing the `execute` method.
+
+::: tip Visual DAG Editing
+The WebUI supports drag-and-drop node wiring for dynamic workflow orchestration. Click deploy after editing to auto-compile into JSON graph definitions and hot-load.
+:::
 
 ### Key Concepts
 
