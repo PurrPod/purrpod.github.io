@@ -6,7 +6,9 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 Before you begin, ensure that the following basic dependencies are installed on your computer:
 
-- **uv**: Python package manager (install with `curl -LsSf https://astral.sh/uv/install.sh | sh`). PurrCat uses uv to resolve and install all Python dependencies from `pyproject.toml`.
+- **uv**: Python package manager for resolving and installing all Python dependencies.
+  - Linux / macOS: `curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 - **Node.js**: Provides `npx`, required for running MCP extensions and the WebUI frontend.
 - **Docker or Podman**: Used to build and run PurrCat's exclusive local sandbox environment. The system auto-detects available container engines (Docker preferred). Make sure the engine service is running.
 
@@ -35,7 +37,7 @@ purrcat setup
 The script will guide you through the following steps (see Section 4 for detailed breakdown):
 1. Auto-detect container engine (supports **Docker / Podman**)
 2. Select sandbox image variant (full `Dockerfile.full` or light `Dockerfile.light`)
-3. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
+3. Interactive APT mirror selection (prefer option 1 for official source; Aliyun mirror is a backup)
 4. Build sandbox image `my_agent_env:latest`
 5. Resolve and install Python dependencies (`uv sync`)
 6. Download Embedding model
@@ -50,6 +52,7 @@ If the one-click deployment fails, use the breakdown below to execute steps indi
 ### 4.1 Docker Sandbox Build
 
 ```bash
+# Optional: configure APT mirror (prefer official source, Aliyun as backup)
 # For users in China (faster with Aliyun mirror):
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
 
@@ -94,7 +97,7 @@ uv sync
 
 | Issue | Solution |
 |-------|----------|
-| uv command not found | Install: `curl -LsSf https://astral.sh/uv/install.sh | sh` |
+| uv command not found | Linux/Mac: `curl -LsSf https://astral.sh/uv/install.sh | sh`; Windows: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"` |
 | Package download timeout | Set uv mirror: `uv config set index-url https://mirrors.aliyun.com/pypi/simple/` |
 | Python version too low | Ensure Python >= 3.10, or use `uv python install 3.10` to auto-install |
 | PyTorch download slow | uv auto-configures CPU-only PyTorch; set `UV_INDEX_PYTORCH_CPU` if needed |

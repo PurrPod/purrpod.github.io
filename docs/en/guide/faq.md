@@ -22,7 +22,7 @@ Built-in retry logic. If it continues to fail, configure domestic mirror sources
 **Yes, required.** Node.js provides `npx`, which PurrCat relies on for MCP extensions and the WebUI frontend.
 
 **6. Docker build fails with network errors?**
-Select the Aliyun mirror (option 2) during `purrcat setup`, or configure a Docker mirror accelerator manually.
+Use the official source (option 1) if possible, or switch to Aliyun mirror (option 2) during `purrcat setup`. You can also configure a Docker mirror accelerator manually.
 
 **7. uv sync very slow?**
 Configure a uv mirror:

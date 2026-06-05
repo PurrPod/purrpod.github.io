@@ -6,7 +6,9 @@
 
 在开始之前，请确保您的计算机上已安装以下基础依赖：
 
-- **uv**：Python 包管理器（安装命令：`curl -LsSf https://astral.sh/uv/install.sh | sh`），用于解析和安装 PurrCat 的所有 Python 依赖
+- **uv**：Python 包管理器，用于解析和安装 PurrCat 的所有 Python 依赖
+  - Linux / macOS：`curl -LsSf https://astral.sh/uv/install.sh | sh`
+  - Windows：`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
 - **Node.js**：提供 `npx` 命令，用于运行 MCP 扩展工具和 WebUI 前端
 - **Docker 或 Podman**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。系统会自动检测可用的容器引擎（Docker 优先）。请确保引擎服务已启动并在运行状态。
 
@@ -35,7 +37,7 @@ purrcat setup
 执行过程中会依次提问（详见第 4 节拆解说明）：
 1. 自动检测容器引擎（支持 **Docker / Podman**）
 2. 选择沙盒镜像版本（完整版 `Dockerfile.full` 或轻量版 `Dockerfile.light`）
-3. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
+3. 交互选择 APT 镜像源（如能访问外网优先选 1 官方源；阿里云镜像备选）
 4. 构建沙盒镜像 `my_agent_env:latest`
 5. 自动解析并安装 Python 依赖（`uv sync`）
 6. 下载 Embedding 向量化模型
@@ -50,7 +52,7 @@ purrcat setup
 ### 4.1 Docker 沙盒构建
 
 ```bash
-# 可选：配置国内镜像加速（国内用户推荐）
+# 可选：配置 APT 镜像源（优先选官方源，阿里云镜像备选）
 # 阿里云镜像
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
 
@@ -93,7 +95,7 @@ uv sync
 **常见失败原因**：
 | 问题 | 解决方案 |
 |------|---------|
-| uv 命令找不到 | 执行 `curl -LsSf https://astral.sh/uv/install.sh | sh` 安装 uv |
+| uv 命令找不到 | Linux/Mac: `curl -LsSf https://astral.sh/uv/install.sh | sh`；Windows: `powershell ... irm https://astral.sh/uv/install.ps1 | iex` |
 | 包下载超时 | 配置 uv 镜像源：`uv config set index-url https://mirrors.aliyun.com/pypi/simple/` |
 | Python 版本不满足 | 确保 Python >= 3.10，或使用 `uv python install 3.10` 自动安装 |
 | PyTorch 下载慢 | uv 已自动配置 CPU-only PyTorch 镜像，若仍慢可手动设置 `UV_INDEX_PYTORCH_CPU` |
