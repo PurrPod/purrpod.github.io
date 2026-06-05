@@ -9,7 +9,7 @@ Welcome to PurrCat development. The framework's design philosophy is modular and
                          ↑
           Harness (Atomic Expert)     ← Highest
      Sensor (Gateway)                 ← High
-   Tool (Modular)                    ← Medium
+   MCP Tool (External Extension)     ← Medium
 Skill / SOUL.md                      ← Low
 ```
 
@@ -121,39 +121,27 @@ Nodes receive inputs via `async execute(inputs, force_push_msgs, context)` and r
 
 ---
 
-## 4. Modular Tool Development (Tool)
+## 4. Custom Tools (via MCP Protocol)
 
-Each tool is an independent module under `src/tool/`:
+PurrCat's 8 native tools (Bash / FileSystem / Fetch / Search / Cron / Memo / CallMCP / Task) are not modifiable. To add custom tools, use the standard **MCP (Model Context Protocol)**:
 
-```
-src/tool/your_tool/
-├── __init__.py       # Module init
-├── your_tool.py      # Main entry function
-├── schema.py         # Tool schema definition
-└── exceptions.py     # Custom exceptions
-```
+1. Write an MCP Server in any language following the MCP docs
+2. Register it in `.purrcat/mcp_config.json` under `mcpServers`
+3. The system auto-fetches Schema and hot-loads on startup
 
-### Requirements
-
-1. **Entry function**: Export a function with the same name as the tool (e.g., `Bash()`, `Fetch()`)
-2. **Return format**: Use `src.tool.utils.format`:
-   - `text_response(data, snip)` — Success
-   - `warning_response(msg, snip)` — Warning
-   - `error_response(msg, snip)` — Error (with guidance)
-3. **Error handling**: Every known error should provide clear guidance
-
-### Registration
-
-Add to `TOOL_FUNC_MAP` in `src/tool/utils/route.py`:
-
-```python
-TOOL_FUNC_MAP = {
-    ...
-    "your_tool": "YourTool",
+```json
+{
+  "mcpServers": {
+    "your-tool": {
+      "command": "node",
+      "args": ["path/to/mcp-server.js"],
+      "env": {}
+    }
+  }
 }
 ```
 
-Then import and register in the routing system.
+See [MCP Documentation](https://modelcontextprotocol.io).
 
 ---
 

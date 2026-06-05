@@ -9,7 +9,7 @@
                         ↑
                Harness (DAG 工作流)      ← 最高
           Sensor (感知器/网关)            ← 较高
-        Tool (模块化工具)                ← 中等
+     MCP 工具（外部扩展）               ← 中等
    Skill (能力包) / SOUL.md (人格)       ← 低
 ```
 
@@ -126,39 +126,27 @@ class Node(BaseNode):
 
 ---
 
-## 4. 模块化工具开发（Tool）
+## 4. 自定义工具（通过 MCP 协议）
 
-每个工具是 `src/tool/` 下的独立模块，拥有自己的目录结构：
+PurrCat 的八大原生工具（Bash / FileSystem / Fetch / Search / Cron / Memo / CallMCP / Task）不可修改。如需新增工具，请走标准 **MCP (Model Context Protocol)** 协议：
 
-```
-src/tool/your_tool/
-├── __init__.py       # 模块初始化
-├── your_tool.py      # 主入口函数
-├── schema.py         # 工具 Schema 定义
-└── exceptions.py     # 自定义异常
-```
+1. 按照 MCP 官方教程使用任意语言编写 MCP Server
+2. 在 `.purrcat/mcp_config.json` 的 `mcpServers` 中注册
+3. 系统启动时自动拉取 Schema 并热加载
 
-### 规范要求
-
-1. **主入口函数**：导出一个与工具名同名的函数（如 `Bash()`、`Fetch()`），接收 `**kwargs`
-2. **返回值**：必须返回 JSON 字符串，通过 `src.tool.utils.format` 格式化：
-   - `text_response(data, snip)` — 成功返回
-   - `warning_response(msg, snip)` — 警告返回
-   - `error_response(msg, snip)` — 错误返回
-3. **异常处理**：每个已知异常场景都应有明确的错误提示，引导用户/Agent 下一步操作
-
-### 注册到系统
-
-在 `src/tool/utils/route.py` 的 `TOOL_FUNC_MAP` 中添加映射：
-
-```python
-TOOL_FUNC_MAP = {
-    ...
-    "your_tool": "YourTool",  # 驼峰命名
+```json
+{
+  "mcpServers": {
+    "your-tool": {
+      "command": "node",
+      "args": ["path/to/mcp-server.js"],
+      "env": {}
+    }
+  }
 }
 ```
 
-然后在 `base_tool` 路由中 import 并注册调用即可。
+详见 [MCP 官方文档](https://modelcontextprotocol.io)。
 
 ---
 
