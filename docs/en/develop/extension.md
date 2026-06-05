@@ -7,10 +7,9 @@ Welcome to PurrCat development. The framework's design philosophy is modular and
 ```
                       Difficulty
                          ↑
-          Harness (Atomic Expert)     ← Highest
-     Sensor (Gateway)                 ← High
-   MCP Tool (External Extension)     ← Medium
-Skill / SOUL.md                      ← Low
+         Node / Sensor / MCP Tool      ← Highest
+          Skill / Graph                 ← Medium
+          SOUL.md / SOLO.md             ← Low
 ```
 
 ---
@@ -193,7 +192,33 @@ The system auto-scans and registers enabled sensors at startup:
 
 ---
 
-## 7. Development Principles
+## 6. Graph Workflow (Visual Orchestration)
+
+A Graph is the **workflow definition file** (JSON format) for the Harness engine, describing the topological relationships and dependency order between nodes. You can create a Graph in two ways:
+
+- **Visual drag-and-drop**: In the WebUI editor page, drag and connect nodes visually, then save to auto-generate the JSON graph file
+- **Write JSON manually**: Edit `harness/graph/*.json` directly to define node types, inputs/outputs, and connections
+
+A Graph file contains a list of nodes and edges. Each node references an extension implementation under `node/extensions/`. The system auto-discovers nodes via `importlib.import_module` — no manual registry maintenance needed.
+
+Graphs support hot-plugging: import a JSON config file to dynamically load and hot-update a workflow, making it easy to distribute and reuse complex workflows.
+
+---
+
+## 7. Configure Autonomous Patrol Rules (SOLO.md)
+
+SOLO.md is the **behavior specification file** for when the Agent is idle, located at `.purrcat/core/SOLO.md`. When the system clock triggers a heartbeat and there is no user interaction, the Agent automatically reads SOLO.md and follows the rules to execute tasks.
+
+SOLO.md consists of two parts:
+
+- **Absolute Rules**: Non-negotiable safety and behavior boundaries, such as "Host system read-only principle" and "Information security code"
+- **Expected Activities**: A list of tasks the Agent can autonomously perform during idle time, such as cleaning temporary files, auditing project code, checking for version updates, organizing memories, etc.
+
+You are free to edit SOLO.md and add new expected activities to customize the Agent's autonomous behavior.
+
+---
+
+## 8. Development Principles
 
 1. **One PR, one problem** — avoid giant mixed commits
 2. **Backward compatibility** — don't break existing features

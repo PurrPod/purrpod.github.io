@@ -4,13 +4,69 @@
 
 ## 1. 准备工作
 
-在开始之前，请确保您的计算机上已安装以下基础依赖：
+PurrCat 的运行需要以下依赖：**uv**（Python 包管理器）、**Node.js**（提供 `npx`）和 **Docker**（或 Podman，沙盒环境）。您可以尝试使用我们提供的命令行进行安装，以下命令均会自动配置系统环境变量。
 
-- **uv**：Python 包管理器，用于解析和安装 PurrCat 的所有 Python 依赖
-  - Linux / macOS：`curl -LsSf https://astral.sh/uv/install.sh | sh`
-  - Windows：`powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
-- **Node.js**：提供 `npx` 命令，用于运行 MCP 扩展工具和 WebUI 前端
-- **Docker 或 Podman**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。系统会自动检测可用的容器引擎（Docker 优先）。请确保引擎服务已启动并在运行状态。
+### uv（Python 包管理器）
+
+用于安装 PurrCat 的所有 Python 依赖。
+
+- **Linux / macOS：**
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+- **Windows（PowerShell）：**
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+### Node.js
+
+提供 `npx` 命令，用于运行 MCP 扩展工具和 WebUI 前端。
+
+- **Windows：**
+  ```powershell
+  winget install OpenJS.NodeJS
+  ```
+- **macOS：**
+  ```bash
+  brew install node
+  ```
+- **Linux（Ubuntu/Debian 为例）：**
+  ```bash
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+  ```
+
+### Docker 或 Podman
+
+用于构建和运行 PurrCat 专属的本地沙盒环境，保障 Agent 文件操作的安全性。系统会自动检测并优先使用 Docker。
+
+- **Windows：** `winget install Docker.DockerDesktop`
+- **macOS：** `brew install --cask docker`
+- **Linux：** `curl -fsSL https://get.docker.com | sh`
+
+> **注意：**
+> 1. 以上工具安装完成后，请**务必重启您的命令行终端**，以确保自动配置的环境变量生效。
+> 2. 运行 PurrCat 前，请确认 Docker 或 Podman 的后台服务已处于运行状态。
+
+### 验证安装
+
+重启终端后，执行以下命令确认各工具安装成功：
+
+```bash
+# 验证 uv
+uv --version
+
+# 验证 Node.js 和 npx
+node --version
+npx --version
+
+# 验证 Docker
+docker --version
+docker info
+```
+
+所有命令均正常输出版本号即表示安装成功。
 
 ## 2. 获取源代码
 

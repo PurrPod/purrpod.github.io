@@ -4,13 +4,69 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 ## 1. Prerequisites
 
-Before you begin, ensure that the following basic dependencies are installed on your computer:
+PurrCat requires the following dependencies: **uv** (Python package manager), **Node.js** (provides `npx`), and **Docker** (or Podman for the sandbox environment). You can install them using the commands below — they will automatically configure the necessary system environment variables.
 
-- **uv**: Python package manager for resolving and installing all Python dependencies.
-  - Linux / macOS: `curl -LsSf https://astral.sh/uv/install.sh | sh`
-  - Windows: `powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"`
-- **Node.js**: Provides `npx`, required for running MCP extensions and the WebUI frontend.
-- **Docker or Podman**: Used to build and run PurrCat's exclusive local sandbox environment. The system auto-detects available container engines (Docker preferred). Make sure the engine service is running.
+### uv (Python Package Manager)
+
+Used to install all of PurrCat's Python dependencies.
+
+- **Linux / macOS:**
+  ```bash
+  curl -LsSf https://astral.sh/uv/install.sh | sh
+  ```
+- **Windows (PowerShell):**
+  ```powershell
+  powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+  ```
+
+### Node.js
+
+Provides the `npx` command, required for running MCP extensions and the WebUI frontend.
+
+- **Windows:**
+  ```powershell
+  winget install OpenJS.NodeJS
+  ```
+- **macOS:**
+  ```bash
+  brew install node
+  ```
+- **Linux (Ubuntu/Debian):**
+  ```bash
+  curl -fsSL https://deb.nodesource.com/setup_20.x | sudo -E bash -
+  sudo apt-get install -y nodejs
+  ```
+
+### Docker or Podman
+
+Used to build and run PurrCat's exclusive local sandbox environment, ensuring safe file operations. The system auto-detects Docker first, then falls back to Podman.
+
+- **Windows:** `winget install Docker.DockerDesktop`
+- **macOS:** `brew install --cask docker`
+- **Linux:** `curl -fsSL https://get.docker.com | sh`
+
+> **Note:**
+> 1. After installing the tools above, **restart your terminal** to ensure the environment variables take effect.
+> 2. Before running PurrCat, make sure Docker Desktop or Podman service is running in the background.
+
+### Verify Installation
+
+After restarting your terminal, run the following commands to confirm everything is installed correctly:
+
+```bash
+# Check uv
+uv --version
+
+# Check Node.js and npx
+node --version
+npx --version
+
+# Check Docker
+docker --version
+docker info
+```
+
+If all commands output a version number without errors, the installation is successful.
 
 ## 2. Obtaining Source Code
 
