@@ -9,60 +9,73 @@ src/
 ├── agent/                  # Agent brain
 │   ├── agent.py            # Main loop & dialog
 │   ├── manager.py          # Global singleton
-│   ├── core/               # Agent kernel definitions
-│   │   ├── HARNESS.md      # Heartbeat Harness
-│   │   ├── MEMORY.md       # Memory system guide
-│   │   └── SOUL.md         # Personality definition
-│   └── system_rules/       # System instructions
+│   ├── session_store.py    # Session storage & branching
+│   └── system_rules/
+│       └── AGENTS.md       # System instructions
 │
 ├── harness/                # DAG Workflow Engine
-│   ├── process.py          # Async concurrent scheduler
-│   ├── enums.py            # State enums (READY/WAITING/RUNNING/ERROR/COMPLETED)
+│   ├── process.py          # Async concurrent scheduler with checkpoint resume
+│   ├── enums.py            # State enums (READY/WAITING/RUNNING/COMPLETED/ERROR)
 │   ├── graph/              # DAG graph definitions (JSON)
-│   │   └── default.json
-│   ├── node/               # Node implementations (modular)
+│   │   ├── financial.json
+│   │   ├── my_awesome_flow2.json
+│   │   └── test_all_nodes.json
+│   ├── node/               # Node implementations
 │   │   ├── base.py         # BaseNode abstract class
-│   │   ├── appender/       # Message appender
-│   │   ├── file_input/     # File input node
-│   │   ├── file_output_loop/ # LLM thinking loop
-│   │   ├── flusher/        # Memory compression
-│   │   ├── llm_chat/       # Single LLM call
-│   │   ├── log/            # Log node
-│   │   ├── message_card_builder/ # Feishu card builder
-│   │   ├── skill_fetcher/  # Skill extraction
-│   │   ├── str_adapter/    # String adapter
-│   │   ├── summary_output_loop/ # Summary output loop
-│   │   ├── task_input/     # Task entry
-│   │   ├── task_output/    # Task exit
-│   │   ├── tool_executor/  # Tool execution
-│   │   ├── tool_kit/       # Tool assembly
-│   │   └── truncker/       # Message truncation
-│   ├── tools/              # Built-in tools
-│   │   └── core/
-│   │       ├── task_done/      # Task completion
-│   │       └── yield_to_human/ # Yield control to human
-│   └── utils/              # Helper functions
+│   │   ├── agent_node.py   # Agent session node
+│   │   └── extensions/     # Extension nodes (one folder per node)
+│   │       ├── agent_loop/           # LLM thinking loop
+│   │       ├── appender/            # Message appender
+│   │       ├── env_loader/          # Environment variable loader
+│   │       ├── file_writer/         # File writer
+│   │       ├── html_viewer/         # HTML preview
+│   │       ├── human_intervention/  # Human intervention (pause & wait)
+│   │       ├── if_else_router/      # Conditional routing
+│   │       ├── image_generator/     # Image generator (txt2img/img2img)
+│   │       ├── json_builder/        # JSON builder
+│   │       ├── json_extractor/      # JSON extractor
+│   │       ├── message_card_builder/ # Message card builder
+│   │       ├── switch_router/       # Multi-way switch router
+│   │       ├── task_input/          # Task entry
+│   │       ├── task_output/         # Task exit
+│   │       ├── template_renderer/   # Template renderer
+│   │       └── text_file_reader/    # Text file reader
+│   └── utils/
+│       ├── llm_helper.py   # LLM helper
+│       └── tool_helper.py  # Tool helper
+│
+├── memory/                 # Memory system
+│   └── purrmemo/           # PurrMemo local memory engine
+│       ├── client.py               # Memory client
+│       ├── visualize_graph.py      # Graph HTML visualization
+│       └── core/
+│           ├── search_tool.py      # Hybrid search (BM25+Vector RRF)
+│           ├── utils.py            # Utilities
+│           ├── memory_worker/      # Background memory digestion daemon
+│           └── storage/            # Storage engines
+│               ├── event_engine.py   # Episodic memory (SQLite+FTS5)
+│               ├── graph_engine.py   # Semantic graph (NetworkX)
+│               └── vector_engine.py  # Vector engine (ChromaDB)
 │
 ├── model/                  # LLM scheduling layer
 │   ├── facade/model.py     # Model lightweight entry
 │   ├── manager/
-│   │   ├── key_manager.py  # APIKeyManager
-│   │   └── concurrency.py  # Concurrency control
+│   │   ├── key_manager.py  # APIKeyManager (least-busy-first)
+│   │   └── concurrency.py  # Concurrency (Semaphore + Exponential Backoff)
 │   └── core/llm_client.py  # LLM client
 │
-├── sensor/                 # Sensor layer (gateway)
+├── sensor/                 # Sensor layer
 │   ├── base.py             # BaseSensor abstract
 │   ├── gateway.py          # SensorGateway
-│   ├── message/feishu.py   # Feishu sensor
-│   ├── subscribe/rss.py    # RSS sensor
-│   └── system/const.py     # Clock sensor
+│   ├── manager.py          # Sensor subprocess manager (uv + PEP 723)
+│   └── extension/          # Sensor implementations
+│       ├── feishu_bot.py       # Feishu bot (bidirectional Markdown)
+│       ├── rss_watcher.py      # RSS subscription watcher
+│       ├── system_clock.py     # System clock / alarm poller
+│       └── audio_assistant.py  # Audio assistant (Whisper + TTS)
 │
 ├── memory/                 # Memory system
 │   └── purrmemo/           # Local memory engine
-│
-├── tool/                   # Tool layer (modular)
-│   ├── bash/               # Sandbox shell
-│   ├── callmcp/            # MCP calling
 │   ├── cron/               # Scheduled tasks
 │   ├── fetch/              # Unified fetch
 │   ├── filesystem/         # File system

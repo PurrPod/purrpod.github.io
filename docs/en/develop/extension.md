@@ -17,7 +17,7 @@ Skill / SOUL.md                      ← Low
 
 ## 1. Modify Agent Personality (SOUL.md)
 
-Edit `src/agent/core/SOUL.md` to change the Agent's personality, tone, and values.
+Edit `.purrcat/core/SOUL.md` to change the Agent's personality, tone, and values.
 
 **Note**: Only modify `SOUL.md`. Do not touch files under `src/agent/system_rules/` — they contain tool guidelines and behavior rules essential for proper tool calling.
 
@@ -25,12 +25,12 @@ Edit `src/agent/core/SOUL.md` to change the Agent's personality, tone, and value
 
 ## 2. Skill Development (No-Code / Low-Code)
 
-Follow the Anthropic standard. A Skill is a directory under `skill/` with `SKILL.md` as its core.
+Follow the Anthropic standard. A Skill is a directory under `skills/` with `SKILL.md` as its core.
 
 ### Directory Structure
 
 ```
-skill/your_skill/
+skills/your_skill/
 ├── SKILL.md           # ★ Core: skill instruction document
 ├── LICENSE.txt        # Optional: license
 └── scripts/           # Optional: helper scripts
@@ -77,7 +77,7 @@ Harness is PurrCat's DAG workflow engine that orchestrates AI pipelines through 
 
 ### Creating a New Node
 
-Create folder `src/harness/node/your_node/` with two files:
+Extension nodes go in `src/harness/node/extensions/`. Create folder `src/harness/node/extensions/your_node/` with two files:
 
 **`node.py`**:
 ```python

@@ -9,76 +9,138 @@ src/
 ├── agent/                  # Agent 核心大脑
 │   ├── agent.py            # 主循环与对话管理
 │   ├── manager.py          # 全局单例管理器
-│   ├── core/               # Agent 内核定义
-│   │   ├── HARNESS.md      # 系统心跳 Harness
-│   │   ├── MEMORY.md       # 记忆系统指南
-│   │   └── SOUL.md         # Agent 人格定义
-│   └── system_rules/       # 系统指令层
+│   ├── session_store.py    # 会话存储与分支管理
+│   └── system_rules/
+│       └── AGENTS.md       # 系统指令层
 │
 ├── harness/                # DAG 工作流引擎
-│   ├── process.py          # 主调度引擎（异步并发）
-│   ├── enums.py            # 状态枚举（READY/WAITING/RUNNING/ERROR/COMPLETED）
+│   ├── process.py          # 主调度引擎（异步并发，支持断点重连）
+│   ├── enums.py            # 状态枚举（READY/WAITING/RUNNING/COMPLETED/ERROR）
 │   ├── graph/              # DAG 图定义 (JSON)
-│   │   └── default.json
-│   ├── node/               # 节点实现（模块化，每个节点独立文件夹）
+│   │   ├── financial.json
+│   │   ├── my_awesome_flow2.json
+│   │   └── test_all_nodes.json
+│   ├── node/               # 节点实现
 │   │   ├── base.py         # BaseNode 抽象基类
-│   │   ├── appender/       # 消息追加节点
-│   │   ├── file_input/     # 文件输入节点
-│   │   ├── file_output_loop/ # LLM 循环思考节点
-│   │   ├── flusher/        # 记忆压缩节点
-│   │   ├── image_generator/ # 图片生成节点（文生图/图生图）
-│   │   ├── if_else_router/ # 条件路由节点（意图分流）
-│   │   ├── human_intervention/ # 人工干预节点（挂起等待人类输入）
-│   │   ├── llm_chat/       # 单次 LLM 调用节点
-│   │   ├── log/            # 日志节点
-│   │   ├── message_card_builder/ # 消息卡片构建
-│   │   ├── skill_fetcher/  # 技能提取节点
-│   │   ├── str_adapter/    # 字符串适配节点
-│   │   ├── summary_output_loop/ # 摘要输出循环
-│   │   ├── switch_router/  # 多路开关路由节点
-│   │   ├── task_input/     # 任务入口节点
-│   │   ├── task_output/    # 任务出口节点
-│   │   ├── tool_executor/  # 工具执行节点
-│   │   ├── tool_kit/       # 工具包装配节点
-│   │   └── truncker/       # 截断节点
-│   ├── tools/              # 内置工具
-│   │   └── core/
-│   │       ├── task_done/      # 完成任务
-│   │       └── yield_to_human/ # 交还控制权给人类
-│   └── utils/              # 辅助函数
+│   │   ├── agent_node.py   # Agent 会话节点
+│   │   └── extensions/     # 扩展节点（每个独立文件夹）
+│   │       ├── agent_loop/           # LLM 循环思考
+│   │       ├── appender/            # 消息追加
+│   │       ├── env_loader/          # 环境变量加载
+│   │       ├── file_writer/         # 文件写入
+│   │       ├── html_viewer/         # HTML 预览
+│   │       ├── human_intervention/  # 人工干预（挂起等待人类）
+│   │       ├── if_else_router/      # 条件路由（意图分流）
+│   │       ├── image_generator/     # 图片生成（文生图/图生图）
+│   │       ├── json_builder/        # JSON 构建
+│   │       ├── json_extractor/      # JSON 提取
+│   │       ├── message_card_builder/ # 消息卡片构建
+│   │       ├── switch_router/       # 多路开关路由
+│   │       ├── task_input/          # 任务入口
+│   │       ├── task_output/         # 任务出口
+│   │       ├── template_renderer/   # 模板渲染
+│   │       └── text_file_reader/    # 文本文件读取
+│   └── utils/
+│       ├── llm_helper.py   # LLM 调用辅助
+│       └── tool_helper.py  # 工具调用辅助
+│
+├── memory/                 # 记忆系统
+│   └── purrmemo/           # PurrMemo 本地记忆引擎
+│       ├── client.py               # 记忆客户端
+│       ├── visualize_graph.py      # 图谱 HTML 可视化
+│       └── core/
+│           ├── search_tool.py      # 混合检索（BM25+Vector RRF）
+│           ├── utils.py            # 工具函数
+│           ├── memory_worker/      # 记忆消化守护进程
+│           └── storage/            # 存储引擎
+│               ├── event_engine.py   # 情景记忆 (SQLite+FTS5)
+│               ├── graph_engine.py   # 语义图谱 (NetworkX)
+│               └── vector_engine.py  # 向量引擎 (ChromaDB)
 │
 ├── model/                  # 大模型调度层
 │   ├── facade/model.py     # Model 轻量级入口
 │   ├── manager/
-│   │   ├── key_manager.py  # APIKeyManager 智能调度
-│   │   └── concurrency.py  # 并发控制
+│   │   ├── key_manager.py  # APIKeyManager 智能调度（最少活跃优先）
+│   │   └── concurrency.py  # 并发控制（Semaphore + 指数退避）
 │   └── core/llm_client.py  # LLM 客户端
 │
-├── sensor/                 # 传感器感知层（网关架构）
+├── sensor/                 # 传感器感知层
 │   ├── base.py             # BaseSensor 抽象基类
 │   ├── gateway.py          # SensorGateway 消息网关
-│   ├── audio/              # 环境语音传感器（Whisper）
-│   ├── message/feishu.py   # 飞书传感器（双向Markdown卡片）
-│   ├── subscribe/rss.py    # RSS 订阅传感器
-│   └── system/const.py     # 系统时钟/闹钟传感器
+│   ├── manager.py          # 传感器子进程管理器（uv + PEP 723）
+│   └── extension/          # 传感器实现
+│       ├── feishu_bot.py       # 飞书机器人（双向 Markdown 卡片）
+│       ├── rss_watcher.py      # RSS 订阅定时抓取
+│       ├── system_clock.py     # 系统时钟 / 闹钟轮询
+│       └── audio_assistant.py  # 环境语音监听（Whisper + TTS）
 │
-├── memory/                 # 记忆系统
-│   └── purrmemo/           # 本地记忆引擎
-│
-├── tool/                   # 工具层（模块化）
+├── tool/                   # 工具层（八大原生工具）
 │   ├── bash/               # Bash 沙盒执行
-│   ├── callmcp/            # MCP 调用（全 Schema 缓存）
+│   │   ├── bash.py
+│   │   ├── docker_env.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
+│   ├── callmcp/            # MCP 动态路由调用
+│   │   ├── callmcp.py
+│   │   ├── schema_manager.py
+│   │   ├── session_manager.py
+│   │   ├── tool_caller.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
 │   ├── cron/               # 定时任务
+│   │   ├── cron.py
+│   │   ├── cron_operations.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
 │   ├── fetch/              # 统一获取
+│   │   ├── fetch.py
+│   │   ├── mcp_fetch.py
+│   │   ├── skill_fetch.py
+│   │   ├── web_content_fetch.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
 │   ├── filesystem/         # 文件系统
-│   ├── memo/               # 记忆工具
+│   │   ├── filesystem.py
+│   │   ├── export_file.py
+│   │   ├── import_file.py
+│   │   ├── list_filesystem.py
+│   │   ├── read_picture.py
+│   │   ├── text_ops.py
+│   │   ├── utils.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
+│   ├── memo/               # 记忆交互
+│   │   ├── memo.py
+│   │   ├── memo_operations.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
 │   ├── search/             # 统一搜索
-│   ├── task/               # 任务调度
+│   │   ├── search.py
+│   │   ├── mcp_search.py
+│   │   ├── skill_search.py
+│   │   ├── semantic_utils.py
+│   │   ├── web_search.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
+│   ├── task/               # 子任务调度
+│   │   ├── task.py
+│   │   ├── task_operations.py
+│   │   ├── schema.py
+│   │   └── exceptions.py
 │   └── utils/              # 工具路由与格式化
+│       ├── route.py
+│       └── format.py
 │
-└── utils/
-    ├── config.py           # 分级配置加载
-    └── enums.py            # 枚举定义
+├── utils/                  # 通用工具
+│   ├── config.py           # 分级配置加载
+│   ├── graph_api.py        # Harness 图 API
+│   ├── log_api.py          # 日志
+│   ├── skill_helper.py     # 技能辅助
+│   ├── task_api.py         # 任务 API
+│   └── tracker.py          # 性能追踪器
+│
+├── server/                 # API 服务
+└── tui/                    # 终端 UI
 ```
 
 ## 核心架构分层
