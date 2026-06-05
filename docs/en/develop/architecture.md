@@ -128,7 +128,7 @@ Host:      agent_vm/  ──→  Sandbox: /agent_vm/  ← Bash tool read/write
 ```
 
 - `Bash` tool runs in Docker sandbox, only accesses `/agent_vm/`
-- `FileSystem` tool handles host file import/export, controlled by `.purrcat/.file.yaml` whitelist
+- `FileSystem` tool handles host file import/export, controlled by `.purrcat/file.json` whitelist
 
 ### Tool Routing
 

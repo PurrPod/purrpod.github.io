@@ -41,17 +41,17 @@ Ensure you're in the project root directory. You can also use `purrcat setup` an
 
 **2. How does the Agent remember my preferences?** Built-in **lightweight memo system** (Memo tool + PurrMemo local engine). Simply tell your preferences in the conversation, and the system will persist them with extremely low token consumption.
 
-**3. What to do if API calls are restricted?** Add multiple API Keys to the `api_keys` list in `.purrcat/.model.yaml`. The system will automatically load-balance via APIKeyManager (least-busy-first).
+**3. What to do if API calls are restricted?** Add multiple API Keys to the `api_keys` list in `.purrcat/model.json`. The system will automatically load-balance via APIKeyManager (least-busy-first).
 
 **4. Agent says Docker sandbox is unavailable?** Docker Desktop may not be running, or the sandbox image hasn't been built yet. Run `purrcat setup` first.
 
-**5. Is the sandbox mechanism secure enough?** All Shell and code execution is forcibly blocked within Docker containers. Host access uses **strict whitelist** (`.purrcat/.file.yaml`); unauthorized directories are completely invisible. **Follow the principle of least privilege.**
+**5. Is the sandbox mechanism secure enough?** All Shell and code execution is forcibly blocked within Docker containers. Host access uses **strict whitelist** (`.purrcat/file.json`); unauthorized directories are completely invisible. **Follow the principle of least privilege.**
 
 **6. How to add multiple API keys?**
-Add them to the `api_keys` list in `.purrcat/.model.yaml`. The system automatically selects the least busy key via APIKeyManager.
+Add them to the `api_keys` list in `.purrcat/model.json`. The system automatically selects the least busy key via APIKeyManager.
 
 **7. How to configure Feishu/Lark bot?**
-Edit `.purrcat/.sensor.yaml`, set `feishu.enabled` to `true`, and fill in `app_id`, `app_secret`, `chat_id`.
+Edit `.purrcat/activate_sensor.json`, set `feishu_bot.enabled` to `true`, and fill in `env` with `FEISHU_APP_ID`, `FEISHU_APP_SECRET`, `FEISHU_CHAT_ID`.
 
 **8. TUI doesn't show up on startup?**
 Your terminal may not support Textual. Try `purrcat start --headless` for headless mode.
@@ -69,7 +69,7 @@ Run `git pull` to fetch the latest code, then re-run `purrcat setup` to update t
 - **APIKeyManager Smart Scheduling**: Auto load-balances across API keys (least-busy-first).
 - **Sensor Gateway**: Unified message gateway for multi-channel communication.
 
-**2. Is the sandbox mechanism secure enough?** All Shell execution is forcibly blocked within Docker containers. Host access uses a **strict whitelist** defined in `.purrcat/.file.yaml`; unauthorized directories are completely invisible. However, if you actively add high-risk directories to the whitelist, there is still a risk. **Follow the principle of least privilege, at your own risk.**
+**2. Is the sandbox mechanism secure enough?** All Shell execution is forcibly blocked within Docker containers. Host access uses a **strict whitelist** defined in `.purrcat/file.json`; unauthorized directories are completely invisible. However, if you actively add high-risk directories to the whitelist, there is still a risk. **Follow the principle of least privilege, at your own risk.**
 
 ## 4. Security and Compliance
 

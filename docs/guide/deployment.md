@@ -7,7 +7,7 @@
 在开始之前，请确保您的计算机上已安装以下基础依赖：
 
 - **Miniconda 或 Anaconda**：用于管理和隔离 Python 虚拟环境（确保已添加进系统变量里，否则后续脚本可能出现找不到 conda 命令的错误）
-- **Docker**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。请确保 Docker Desktop 已启动并在运行状态。
+- **Docker 或 Podman**：用于构建和运行 PurrCat 专属的本地沙盒环境，保障文件操作的安全性。系统会自动检测可用的容器引擎（Docker 优先）。请确保引擎服务已启动并在运行状态。
 
 > 注意：PurrCat 使用 Python Textual TUI 作为用户界面。但如果需要使用 MCP 扩展（如 Playwright、GitHub 等），宿主机仍需安装 **Node.js**（提供 `npx` 命令）和可选的 **uv**（Python 包管理器），具体取决于配置的 MCP Server 类型。
 
@@ -34,13 +34,15 @@ purrcat setup
 
 
 系统会自动完成以下步骤（详见第 4 节拆解说明）：
-1. 检查 Docker 运行状态
-2. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
-3. 构建 Docker 沙盒镜像 `my_agent_env:latest`
-4. 创建/更新 Conda 环境 `PurrCat`
-5. 下载 Embedding 向量化模型
+1. 自动检测容器引擎（支持 **Docker / Podman**）
+2. 选择沙盒镜像版本（完整版 `Dockerfile.full` 或轻量版 `Dockerfile.light`）
+3. 交互选择 APT 镜像源（国内用户选 2 阿里云镜像可大幅加速）
+4. 构建沙盒镜像 `my_agent_env:latest`
+5. 创建/更新 Conda 环境 `PurrCat`
+6. 下载 Embedding 向量化模型
+7. 可选安装 **WebUI** 前端依赖（npm install）
 
-> 整个流程取决于网络状况，首次拉取 Docker 基础镜像可能需要 5~15 分钟，请耐心等待。
+> 整个流程取决于网络状况，首次拉取基础镜像可能需要 5~15 分钟，请耐心等待。引擎偏好保存至 `~/.purrcat/settings.json`。
 
 ## 4. 脚本拆解与手动分步
 
@@ -128,35 +130,38 @@ purrcat init --force
 
 | 文件 | 用途 |
 |------|------|
-| `.purrcat/.model.yaml` | 模型 API Key、Base URL、速率限制配置 |
-| `.purrcat/.sensor.yaml` | 传感器（飞书/RSS/心跳）配置 |
-| `.purrcat/.file.yaml` | 文件系统白名单与沙盒挂载配置 |
+| `.purrcat/model.json` | 模型 API Key、Base URL、速率限制配置 |
+| `.purrcat/activate_sensor.json` | 传感器（飞书/RSS/时钟/语音）配置 |
+| `.purrcat/file.json` | 文件系统白名单与沙盒挂载配置 |
 | `.purrcat/mcp_config.json` | MCP 服务器扩展配置 |
-| `.purrcat/.memory.json` | 记忆系统配置 |
+| `.purrcat/memory.json` | 记忆系统配置 |
+| `.purrcat/note.json` | 笔记工具偏好配置 |
+| `.purrcat/core/cron.json` | 定时任务列表 |
+| `.purrcat/core/MEMORY.md` | 系统级记忆档案 |
+| `.purrcat/core/SOUL.md` | Agent 人格定义 |
+| `.purrcat/core/SOLO.md` | 自主巡查规约 |
 
 ### 5.2 配置模型密钥
 
-编辑 `.purrcat/.model.yaml`，替换 API Key 占位符：
+编辑 `.purrcat/model.json`，替换 API Key 占位符：
 
-```yaml
-main:
-  openai:deepseek-v4-flash:
-    api_keys:
-      - sk-your-first-api-key-here    # ← 替换为真实 Key
-    base_url: https://api.deepseek.com
-    description: LLM worker
-    rpm: 60
-    tpm: 1000000
-    concurrency: 3
-    max_token: 500000
-
-# 任务模型（多 Agent 协作时需要，可与主模型同型号但不能用同一 Key）
-task:
-  # openai:deepseek-v4-flash:
-  #   api_keys:
-  #     - sk-your-task-api-key
-  #   base_url: https://api.deepseek.com
-  #   ...
+```json
+{
+  "embedding": "embedding",
+  "main": {
+    "openai:deepseek-v4-flash": {
+      "api_keys": ["sk-your-first-api-key-here"],
+      "base_url": "https://api.deepseek.com",
+      "description": "LLM worker",
+      "rpm": 60,
+      "tpm": 1000000,
+      "concurrency": 3,
+      "max_token": 500000
+    }
+  },
+  "task": {},
+  "vision": {}
+}
 ```
 
 

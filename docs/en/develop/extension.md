@@ -58,7 +58,7 @@ command_to_run
 
 Skill scripts run inside the **Docker sandbox** via the `Bash` tool, only accessing files under `/agent_vm/`. They **cannot directly read/write host files**.
 
-To operate host files, use the FileSystem tool (controlled by `.purrcat/.file.yaml` whitelist).
+To operate host files, use the FileSystem tool (controlled by `.purrcat/file.json` whitelist).
 
 ---
 

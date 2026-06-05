@@ -7,7 +7,7 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 Before you begin, ensure that the following basic dependencies are installed on your computer:
 
 - **Miniconda or Anaconda**: Used to manage and isolate Python virtual environments (ensure it's added to your system PATH).
-- **Docker**: Used to build and run PurrCat's exclusive local sandbox environment. Make sure Docker Desktop is running.
+- **Docker or Podman**: Used to build and run PurrCat's exclusive local sandbox environment. The system auto-detects available container engines (Docker preferred). Make sure the engine service is running.
 
 > Note: PurrCat uses a Python Textual TUI as its user interface. However, if you plan to use MCP extensions (Playwright, GitHub, etc.), **Node.js** (providing `npx`) and optionally **uv** (Python package manager) are still required on the host, depending on your MCP Server configuration.
 
@@ -33,13 +33,15 @@ purrcat setup
 
 
 The script will automatically complete the following steps (see Section 4 for detailed breakdown):
-1. Check Docker status
-2. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
-3. Build Docker sandbox image `my_agent_env:latest`
-4. Create/update Conda environment `PurrCat`
-5. Download Embedding model
+1. Auto-detect container engine (supports **Docker / Podman**)
+2. Select sandbox image variant (full `Dockerfile.full` or light `Dockerfile.light`)
+3. Interactive APT mirror selection (select 2 for Aliyun mirror if you're in China)
+4. Build sandbox image `my_agent_env:latest`
+5. Create/update Conda environment `PurrCat`
+6. Download Embedding model
+7. Optionally install **WebUI** frontend dependencies (npm install)
 
-> The entire process depends on network conditions. The first Docker image pull may take 5~15 minutes.
+> The entire process depends on network conditions. The first image pull may take 5~15 minutes. Engine preference is saved to `~/.purrcat/settings.json`.
 
 ## 4. Script Breakdown & Manual Steps
 
@@ -129,35 +131,38 @@ This creates a `.purrcat/` directory in the project root with the following file
 
 | File | Purpose |
 |------|---------|
-| `.purrcat/.model.yaml` | Model API keys, Base URL, rate limits |
-| `.purrcat/.sensor.yaml` | Sensor config (Feishu/RSS/heartbeat) |
-| `.purrcat/.file.yaml` | File system whitelist & sandbox mounts |
+| `.purrcat/model.json` | Model API keys, Base URL, rate limits |
+| `.purrcat/activate_sensor.json` | Sensor config (Feishu/RSS/Clock/Audio) |
+| `.purrcat/file.json` | File system whitelist & sandbox mounts |
 | `.purrcat/mcp_config.json` | MCP server extensions |
-| `.purrcat/.memory.json` | Memory system config |
+| `.purrcat/memory.json` | Memory system config |
+| `.purrcat/note.json` | Note tool preferences |
+| `.purrcat/core/cron.json` | Scheduled tasks |
+| `.purrcat/core/MEMORY.md` | System memory archive |
+| `.purrcat/core/SOUL.md` | Agent personality |
+| `.purrcat/core/SOLO.md` | Autonomous patrol rules |
 
 ### 5.2 Configure Model Keys
 
-Edit `.purrcat/.model.yaml` and replace the API key placeholders:
+Edit `.purrcat/model.json` and replace the API key placeholders:
 
-```yaml
-main:
-  openai:deepseek-v4-flash:
-    api_keys:
-      - sk-your-first-api-key-here    # ← Replace with your real key
-    base_url: https://api.deepseek.com
-    description: LLM worker
-    rpm: 60
-    tpm: 1000000
-    concurrency: 3
-    max_token: 500000
-
-# Task model (required for multi-agent, can use same model but different key)
-task:
-  # openai:deepseek-v4-flash:
-  #   api_keys:
-  #     - sk-your-task-api-key
-  #   base_url: https://api.deepseek.com
-  #   ...
+```json
+{
+  "embedding": "embedding",
+  "main": {
+    "openai:deepseek-v4-flash": {
+      "api_keys": ["sk-your-first-api-key-here"],
+      "base_url": "https://api.deepseek.com",
+      "description": "LLM worker",
+      "rpm": 60,
+      "tpm": 1000000,
+      "concurrency": 3,
+      "max_token": 500000
+    }
+  },
+  "task": {},
+  "vision": {}
+}
 ```
 
 **Notes**:

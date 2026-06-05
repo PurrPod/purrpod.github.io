@@ -13,7 +13,7 @@ Every morning, the Agent automatically fetches your subscribed RSS feeds, arXiv 
 During lectures or when reading literature, when encountering complex mathematical formulas or code logic, you can make simple marks and instruct the Agent to help you organize, derive, or format notes in the background.
 
 ::: danger Note
-You must mount the target files to the sandbox directory or explicitly grant permissions in the system's **read-write whitelist** (`.purrcat/.file.yaml`); otherwise, the Agent cannot modify host files.
+You must mount the target files to the sandbox directory or explicitly grant permissions in the system's **read-write whitelist** (`.purrcat/file.json`); otherwise, the Agent cannot modify host files.
 :::
 
 ### 3. Feishu / Cloud Platform Automation

@@ -152,7 +152,7 @@ PurrCat 的记忆系统设计参考了神经科学对记忆类型的理论模型
 ```
 
 - `Bash` 工具运行在 Docker 沙盒，只能访问 `/agent_vm/`
-- `FileSystem` 工具负责宿主机文件导入/导出，受 `.purrcat/.file.yaml` 白名单约束
+- `FileSystem` 工具负责宿主机文件导入/导出，受 `.purrcat/file.json` 白名单约束
 
 ### 工具路由
 

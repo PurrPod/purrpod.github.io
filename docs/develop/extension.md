@@ -60,7 +60,7 @@ xxx
 
 Skill 的脚本通过 `Bash` 工具运行在 **Docker 沙盒**中，只能访问 `/agent_vm/` 目录下的文件，**不能直接读写宿主机文件**。
 
-如需操作宿主机文件，请使用 FileSystem 工具（受 `.purrcat/.file.yaml` 白名单约束）。
+如需操作宿主机文件，请使用 FileSystem 工具（受 `.purrcat/file.json` 白名单约束）。
 
 ---
 
