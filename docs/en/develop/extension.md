@@ -201,40 +201,6 @@ The system auto-scans and registers enabled sensors at startup:
 
 ---
 
-## 6. Tool Routing
-
-`dispatch_tool()` is the core routing hub. It dynamically imports `src.tool.{name}.{name}` by tool name. Mapping via `TOOL_FUNC_MAP`:
-
-```python
-TOOL_FUNC_MAP = {
-    "filesystem": "FileSystem",
-    "bash": "Bash",
-    "cron": "Cron",
-    "callmcp": "CallMCP",
-    "memo": "Memo",
-    "search": "Search",
-    "fetch": "Fetch",
-    "task": "Task"
-}
-```
-
-Eight native tools:
-
-| Tool | Description |
-|------|-------------|
-| Bash | Docker sandbox shell execution |
-| FileSystem | Host file import/export/browse |
-| Fetch | Get skill/MCP/web/Harness/TODO content |
-| Search | Web search or local skill/MCP search |
-| Cron | Scheduled alarms |
-| Memo | Long-term memory write & search |
-| CallMCP | Dispatch MCP external tools |
-| Task | Sub-task create/kill/list |
-
-MCP tools are dispatched via `CallMCP`, separate from native tool routing.
-
----
-
 ## 7. Development Principles
 
 1. **One PR, one problem** — avoid giant mixed commits

@@ -250,19 +250,6 @@ class YourSensor(BaseSensor):
 
 ---
 
-## 6. 工具路由
-
-工具通过 `dispatch_tool()` 统一调度四路路由：
-
-| 路由 | 用途 | 示例 |
-|------|------|------|
-| base_tool | 原生工具（`src/tool/`） | Bash, Fetch, FileSystem, Search |
-| agent_tool | Agent 操作 | add_task, send_message, update_memo |
-| local_tool | 本地插件 | 自定义 Plugin（旧架构兼容） |
-| mcp_tool | MCP 服务 | 动态加载的外部工具 |
-
----
-
 ## 7. 开发原则
 
 1. **一个 PR 只解决一个问题**，避免巨型混合提交
