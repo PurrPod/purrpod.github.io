@@ -36,12 +36,13 @@ purrcat setup
 
 The script will guide you through the following steps (see Section 4 for detailed breakdown):
 1. Auto-detect container engine (supports **Docker / Podman**)
-2. Select sandbox image variant (full `Dockerfile.full` or light `Dockerfile.light`)
-3. Interactive APT mirror selection (prefer option 1 for official source; Aliyun mirror is a backup)
-4. Build sandbox image `my_agent_env:latest`
-5. Resolve and install Python dependencies (`uv sync`)
-6. Download Embedding model
-7. Optionally install **WebUI** frontend dependencies (npm install)
+2. Select sandbox image variant (lightweight or full)
+3. Choose image source (**pull from ghcr.io recommended**, or build locally)
+4. If building locally, select APT mirror
+5. Obtain sandbox image (pull or build)
+6. Resolve and install Python dependencies (`uv sync`)
+7. Download Embedding model
+8. Optionally install **WebUI** frontend dependencies (npm install)
 
 > The entire process depends on network conditions. The first image pull may take 5~15 minutes. Engine preference is saved to `~/.purrcat/settings.json`.
 
@@ -49,18 +50,35 @@ The script will guide you through the following steps (see Section 4 for detaile
 
 If the one-click deployment fails, use the breakdown below to execute steps individually and locate the issue.
 
-### 4.1 Docker Sandbox Build
+### 4.1 Docker Sandbox Image
+
+`purrcat setup` offers two ways to get the sandbox image:
+
+**Option A: Pull from ghcr.io (recommended)**
 
 ```bash
-# Optional: configure APT mirror (prefer official source, Aliyun as backup)
-# For users in China (faster with Aliyun mirror):
+# Lightweight
+docker pull ghcr.io/purrpod/purrcat-sandbox:light
+docker tag ghcr.io/purrpod/purrcat-sandbox:light my_agent_env:latest
+
+# Full (includes Chromium, ffmpeg, etc.)
+docker pull ghcr.io/purrpod/purrcat-sandbox:full
+docker tag ghcr.io/purrpod/purrcat-sandbox:full my_agent_env:latest
+```
+
+> Pre-built images are maintained by CI. Pulling is much faster than building locally.
+
+**Option B: Build locally (fallback)**
+
+```bash
+# Using Aliyun mirror (faster for users in China):
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
 
 # Using official source:
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 ```
 
-**What the script does**:
+**What the build does**:
 - Builds on `python:3.10-slim` base image
 - Installs system packages: curl, git, vim, ffmpeg, jq, etc.
 - Installs Node.js 20.x (for in-sandbox toolchains)
@@ -72,7 +90,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 | Issue | Solution |
 |-------|----------|
 | Docker not installed or not running | Start Docker Desktop, verify `docker info` works |
-| Image pull timeout | Switch APT mirror, or configure Docker mirror accelerator |
+| Image pull/build timeout | Switch to ghcr.io pull method, or configure Docker mirror accelerator |
 | Insufficient disk space | Clean up: `docker system prune -a` |
 | Docker Hub anonymous pull limit | Log in to a Docker Hub account or wait for reset |
 

@@ -36,12 +36,13 @@ purrcat setup
 
 执行过程中会依次提问（详见第 4 节拆解说明）：
 1. 自动检测容器引擎（支持 **Docker / Podman**）
-2. 选择沙盒镜像版本（完整版 `Dockerfile.full` 或轻量版 `Dockerfile.light`）
-3. 交互选择 APT 镜像源（如能访问外网优先选 1 官方源；阿里云镜像备选）
-4. 构建沙盒镜像 `my_agent_env:latest`
-5. 自动解析并安装 Python 依赖（`uv sync`）
-6. 下载 Embedding 向量化模型
-7. 可选安装 **WebUI** 前端依赖（npm install）
+2. 选择沙盒镜像版本（完整版或轻量版）
+3. 选择镜像来源（**推荐从 ghcr.io 拉取**，也可本地构建）
+4. 如选择本地构建，再选 APT 镜像源
+5. 获取沙盒镜像（拉取或构建）
+6. 自动解析并安装 Python 依赖（`uv sync`）
+7. 下载 Embedding 向量化模型
+8. 可选安装 **WebUI** 前端依赖（npm install）
 
 > 整个流程取决于网络状况，首次拉取基础镜像可能需要 5~15 分钟，请耐心等待。引擎偏好保存至 `~/.purrcat/settings.json`。
 
@@ -49,7 +50,25 @@ purrcat setup
 
 如果一键部署中途失败，您可以根据下面的拆解说明逐步执行，便于定位问题。
 
-### 4.1 Docker 沙盒构建
+### 4.1 Docker 沙盒镜像获取
+
+`purrcat setup` 提供两种方式获取沙盒镜像：
+
+**方式一：从 ghcr.io 拉取（推荐）**
+
+```bash
+# 轻量版
+docker pull ghcr.io/purrpod/purrcat-sandbox:light
+docker tag ghcr.io/purrpod/purrcat-sandbox:light my_agent_env:latest
+
+# 完整版（包含 Chromium、ffmpeg 等）
+docker pull ghcr.io/purrpod/purrcat-sandbox:full
+docker tag ghcr.io/purrpod/purrcat-sandbox:full my_agent_env:latest
+```
+
+> 预构建镜像由 CI 自动维护，省去本地构建时间，网络通畅时秒级完成。
+
+**方式二：本地构建（备选）**
 
 ```bash
 # 可选：配置 APT 镜像源（优先选官方源，阿里云镜像备选）
@@ -60,7 +79,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" 
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 ```
 
-**脚本做了哪些事**：
+**构建过程简述**：
 - 基于 `python:3.10-slim` 基础镜像
 - 安装系统依赖：curl、git、vim、ffmpeg、jq 等
 - 安装 Node.js 20.x（用于沙盒内的工具链）
@@ -71,7 +90,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 | 问题 | 解决方案 |
 |------|---------|
 | Docker 未安装或未启动 | 启动 Docker Desktop，确认 `docker info` 能正常执行 |
-| 镜像拉取超时 | 切换 APT 镜像源（阿里云），或配置 Docker 镜像加速器 |
+| 镜像拉取/构建超时 | 切换到 ghcr.io 拉取方式，或配置 Docker 镜像加速器 |
 | 磁盘空间不足 | 清理 Docker 无用的镜像/容器：`docker system prune -a` |
 | Docker Hub 匿名拉取限额 | 登录 Docker Hub 账号，或等待限额重置 |
 
