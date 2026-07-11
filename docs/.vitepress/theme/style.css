@@ -1,6 +1,154 @@
+/* 1. 彻底删除顶部的 @import url('https://fonts...Google Fonts...'); */
+
+/* 2. 新增：本地字体声明（指向你刚才放入 public 目录的字体） */
+@font-face {
+  font-family: 'PurrCatDoodle';
+  /* 注意这里的路径，Vitepress 会将 public 目录下的文件映射到根目录 */
+  src: url('/fonts/doodle-font.woff2') format('woff2'),
+       url('/fonts/doodle-font.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* 原有基础样式保留... */
 .VPHome .VPHero .VPImage {
   width: auto !important;
   height: auto !important;
   max-width: 280px;
   max-height: 280px;
+}
+
+@keyframes fadeInSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(15px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+#app {
+  animation: fadeInSlideUp 0.8s ease-out forwards;
+}
+
+.VPHero {
+  background-color: #ffffff;
+  position: relative;
+  overflow: hidden;
+}
+
+.VPHero::before,
+.VPHero::after {
+  content: '';
+  position: absolute;
+  width: 150px;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(100, 150, 255, 0.6), transparent);
+  border-radius: 50%;
+  transform: rotate(-45deg);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.VPHero::before {
+  top: 80%;
+  left: -10%;
+  animation: flowingSparks 6s ease-in-out infinite;
+  animation-delay: 0s;
+}
+
+.VPHero::after {
+  top: 50%;
+  left: -20%;
+  animation: flowingSparks 8s ease-in-out infinite;
+  animation-delay: 3s;
+}
+
+@keyframes flowingSparks {
+  0% {
+    transform: translateX(0) translateY(0) rotate(-45deg);
+    opacity: 0;
+  }
+  20% { opacity: 1; }
+  80% { opacity: 0; }
+  100% {
+    transform: translateX(1200px) translateY(-1200px) rotate(-45deg);
+    opacity: 0;
+  }
+}
+
+/* 3. 修改：名字的样式和打字机效果 */
+.VPHero .name {
+  /* 本地字体和回退字体 */
+  font-family: 'PurrCatDoodle', 'Comic Sans MS', 'Chalkboard SE', cursive;
+  font-weight: 700;
+  position: relative;
+  display: inline-block;
+  
+  /* 添加 transition 用于鼠标悬浮和移开时的平滑过渡 */
+  transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), text-shadow 0.3s ease;
+  
+  background: linear-gradient(120deg, #2a5298, #667eea);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+
+  overflow: hidden;
+  white-space: nowrap;
+  /* 基础状态下光标（右边框）是透明的 */
+  border-right: 4px solid transparent;
+  vertical-align: bottom;
+  
+  /* 
+    动画控制：
+    1. typing: 1.5秒打字效果。
+    2. blinkCursor: 0.5秒闪一次，仅执行 3 次（总计1.5秒）。
+       1.5秒后动画结束，自动恢复到上面的 transparent 透明状态，光标消失。
+  */
+  animation: 
+    typing 1.5s steps(7, end) forwards,
+    blinkCursor 0.5s step-end 3;
+}
+
+/* 4. 新增打字机动画 */
+@keyframes typing {
+  from { width: 0; }
+  /* 根据最终加载的字体宽度，这里可能需要微调。4.5em 约等于 7 个字符的宽度 */
+  to { width: 4.5em; } 
+}
+
+@keyframes blinkCursor {
+  0%, 100% { border-right-color: transparent; }
+  50% { border-right-color: #667eea; }
+}
+
+/* 4. 修改：鼠标悬浮时才提起来一点，移开自动恢复（依靠上面的 transition） */
+.VPHero .name:hover {
+  transform: translateY(-8px);
+  text-shadow: 0 0 15px rgba(100, 150, 255, 0.4);
+}
+
+/* 5. features 图标和标题同行显示 */
+.VPFeatures .VPFeature .box {
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+}
+
+.VPFeatures .VPFeature .box > .icon {
+  margin-bottom: 0;
+  width: 24px;
+  height: 24px;
+  font-size: 18px;
+}
+
+.VPFeatures .VPFeature .box > :deep(.VPImage) {
+  margin-bottom: 0;
+}
+
+.VPFeatures .VPFeature .title {
+  margin: 0;
 }

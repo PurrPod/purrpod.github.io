@@ -1,25 +1,31 @@
 {
-  "hash": "685766fd",
-  "configHash": "56037ad9",
-  "lockfileHash": "615a206a",
-  "browserHash": "2114a581",
+  "hash": "52bb35cd",
+  "configHash": "8e37ee79",
+  "lockfileHash": "b70026e2",
+  "browserHash": "57ff3317",
   "optimized": {
     "vue": {
       "src": "../../../../node_modules/vue/dist/vue.runtime.esm-bundler.js",
       "file": "vue.js",
-      "fileHash": "db687c16",
+      "fileHash": "e54961c8",
       "needsInterop": false
     },
     "vitepress > @vue/devtools-api": {
       "src": "../../../../node_modules/@vue/devtools-api/lib/esm/index.js",
       "file": "vitepress___@vue_devtools-api.js",
-      "fileHash": "3d97fc90",
+      "fileHash": "9bae4647",
       "needsInterop": false
     },
     "vitepress > @vueuse/core": {
       "src": "../../../../node_modules/@vueuse/core/index.mjs",
       "file": "vitepress___@vueuse_core.js",
-      "fileHash": "1f10c338",
+      "fileHash": "6fa2d5e9",
+      "needsInterop": false
+    },
+    "canvas-confetti": {
+      "src": "../../../../node_modules/canvas-confetti/dist/confetti.module.mjs",
+      "file": "canvas-confetti.js",
+      "fileHash": "0a76631c",
       "needsInterop": false
     }
   },

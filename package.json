@@ -9,5 +9,8 @@
   },
   "devDependencies": {
     "vitepress": "1.0.0-rc.35"
+  },
+  "dependencies": {
+    "canvas-confetti": "^1.9.4"
   }
 }

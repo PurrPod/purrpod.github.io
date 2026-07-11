@@ -1,5 +1,25 @@
-// 使用默认主题
 import DefaultTheme from 'vitepress/theme'
 import './style.css'
+import confetti from 'canvas-confetti'
+import { watch } from 'vue'
 
-export default DefaultTheme
+export default {
+  extends: DefaultTheme,
+  enhanceApp({ app, router }) {
+    if (typeof window !== 'undefined') {
+      watch(() => router.route.data.relativePath, (path) => {
+        if (path === 'index.md') {
+          setTimeout(() => {
+            confetti({
+              particleCount: 80,
+              spread: 100,
+              origin: { y: 0.6 },
+              colors: ['#a8c0ff', '#3f2b96', '#ffffff', '#ff7eb3'],
+              disableForReducedMotion: true
+            });
+          }, 300);
+        }
+      }, { immediate: true });
+    }
+  }
+}
