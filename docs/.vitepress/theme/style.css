@@ -62,6 +62,9 @@ body {
   background-color: var(--vp-c-bg);
   position: relative;
   overflow: hidden;
+  min-height: 100vh;
+  padding-top: 120px;
+  transform: translateY(20%);
 }
 
 .VPHero::before,
@@ -108,6 +111,7 @@ body {
 .VPHero .name {
   font-family: 'PurrCatDoodle', 'Comic Sans MS', 'Chalkboard SE', cursive;
   font-weight: 700;
+  font-size: 3.5rem;
   position: relative;
   display: inline-block;
   
@@ -352,5 +356,167 @@ body {
   }
   .eco-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* 案例展示样式 */
+.cases-section {
+  margin-top: 100px;
+  padding-top: 60px;
+  border-top: 1px solid var(--vp-c-divider);
+  max-width: 80%;
+  margin-left: 10%;
+  margin-right: 10%;
+}
+
+.cases-title {
+  text-align: center;
+  font-family: var(--vp-font-family-base);
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: var(--vp-c-text-2);
+  margin-bottom: 60px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+}
+
+.case-item {
+  display: flex;
+  align-items: center;
+  gap: 60px;
+  margin-bottom: 80px;
+}
+
+.case-reverse {
+  flex-direction: row-reverse;
+}
+
+.case-img-wrapper {
+  flex: 1;
+  max-width: 40%;
+  padding: 20px;
+}
+
+.case-img {
+  width: 100%;
+  height: auto;
+  border-radius: 24px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.case-img:hover {
+  transform: scale(1.02);
+  box-shadow: 0 15px 50px rgba(0, 0, 0, 0.2);
+}
+
+.case-text {
+  flex: 1;
+  max-width: 60%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 20px;
+}
+
+.case-text h3 {
+  font-family: var(--vp-font-family-base);
+  font-size: 1.6rem;
+  font-weight: 600;
+  color: var(--vp-c-text-1);
+  margin: 0 0 16px 0;
+  opacity: 0;
+}
+
+.case-text p {
+  font-size: 1.1rem;
+  color: var(--vp-c-text-2);
+  line-height: 1.8;
+  margin: 0;
+  opacity: 0;
+}
+
+.case-text.animate h3 {
+  animation: slideInFromLeft 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+}
+
+.case-text.animate p {
+  animation: slideInFromLeft 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.2s;
+}
+
+.case-reverse .case-text.animate h3 {
+  animation-name: slideInFromRight;
+}
+
+.case-reverse .case-text.animate p {
+  animation-name: slideInFromRight;
+}
+
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideInFromRight {
+  0% {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@media (max-width: 768px) {
+  .cases-section {
+    margin-top: 80px;
+    padding-top: 40px;
+    max-width: 95%;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+  }
+  
+  .cases-title {
+    margin-bottom: 40px;
+    font-size: 1.2rem;
+  }
+  
+  .case-item {
+    flex-direction: column;
+    gap: 30px;
+    margin-bottom: 50px;
+  }
+  
+  .case-reverse {
+    flex-direction: column;
+  }
+  
+  .case-img-wrapper {
+    max-width: 90%;
+    padding: 10px;
+  }
+  
+  .case-text {
+    max-width: 100%;
+    text-align: center;
+    padding: 10px;
+  }
+  
+  .case-text h3 {
+    font-size: 1.4rem;
+  }
+  
+  .case-text p {
+    font-size: 1rem;
   }
 }

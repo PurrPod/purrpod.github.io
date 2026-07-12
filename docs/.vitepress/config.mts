@@ -3,6 +3,9 @@ import { defineConfig } from 'vitepress'
 export default defineConfig({
   title: "PurrCat",
   description: "PurrCat 官方文档",
+  head: [
+    ['link', { rel: 'icon', type: 'image/png', href: '/logo.png' }]
+  ],
   themeConfig: {
     nav: [
       { text: '首页', link: '/' },
