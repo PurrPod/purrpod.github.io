@@ -15,35 +15,18 @@ export default defineConfig({
         ]
       },
       { text: '指南', link: '/guide/deployment' },
-      { text: '配置', link: '/config/' },
-      { text: '开发', link: '/develop/architecture' },
       { text: '生态', link: '/community/' }
     ],
     sidebar: {
       '/guide/': [
         {
-          text: '基础指南',
+          text: '指南',
           items: [
             { text: '部署指南', link: '/guide/deployment' },
+            { text: '配置指南', link: '/guide/configuration' },
             { text: '使用指南', link: '/guide/usage' },
+            { text: '开发指南', link: '/guide/development' },
             { text: '常见问题', link: '/guide/faq' }
-          ]
-        }
-      ],
-      '/develop/': [
-        {
-          text: '深度开发',
-          items: [
-            { text: '架构介绍', link: '/develop/architecture' },
-            { text: '二次开发文档', link: '/develop/extension' }
-          ]
-        }
-      ],
-      '/config/': [
-        {
-          text: '配置说明',
-          items: [
-            { text: '配置指南', link: '/config/' }
           ]
         }
       ],
@@ -60,25 +43,10 @@ export default defineConfig({
           text: 'Basic Guide',
           items: [
             { text: 'Deployment Guide', link: '/en/guide/deployment' },
+            { text: 'Configuration Guide', link: '/en/guide/configuration' },
             { text: 'Usage Guide', link: '/en/guide/usage' },
+            { text: 'Development Guide', link: '/en/guide/development' },
             { text: 'FAQ', link: '/en/guide/faq' }
-          ]
-        }
-      ],
-      '/en/develop/': [
-        {
-          text: 'Development',
-          items: [
-            { text: 'Architecture', link: '/en/develop/architecture' },
-            { text: 'Extension Guide', link: '/en/develop/extension' }
-          ]
-        }
-      ],
-      '/en/config/': [
-        {
-          text: 'Configuration',
-          items: [
-            { text: 'Config Guide', link: '/en/config/' }
           ]
         }
       ],
@@ -95,7 +63,7 @@ export default defineConfig({
       { icon: 'github', link: 'https://github.com/PurrPod/purrcat' }
     ],
     footer: {
-      copyright: '© 2026 PurrCat. Licensed under GNU GPL-3.0.'
+      copyright: '© 2026 PurrCat. Licensed under MIT.'
     }
   },
   locales: {
@@ -118,8 +86,6 @@ export default defineConfig({
             ]
           },
           { text: 'Guide', link: '/en/guide/usage' },
-          { text: 'Config', link: '/en/config/' },
-          { text: 'Develop', link: '/en/develop/architecture' },
           { text: 'Community', link: '/en/community/' }
         ]
       }

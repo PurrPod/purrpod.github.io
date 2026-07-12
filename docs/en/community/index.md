@@ -17,4 +17,4 @@ The official ecosystem library is being prepared. In the future, you can one-cli
 
 ## 3. Contribution Guide
 
-As long as it complies with the GPL-3.0 license, we warmly welcome forks. Whether fixing core issues or submitting new Tool modules / DAG nodes / Sensors, the community will conduct timely Code Review and merge quality code.
+As long as it complies with the MIT license, we warmly welcome forks. Whether fixing core issues or submitting new Tool modules / DAG nodes / Sensors, the community will conduct timely Code Review and merge quality code.

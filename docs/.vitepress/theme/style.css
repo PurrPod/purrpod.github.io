@@ -3,12 +3,36 @@
 /* 2. 新增：本地字体声明（指向你刚才放入 public 目录的字体） */
 @font-face {
   font-family: 'PurrCatDoodle';
-  /* 注意这里的路径，Vitepress 会将 public 目录下的文件映射到根目录 */
   src: url('/fonts/doodle-font.woff2') format('woff2'),
        url('/fonts/doodle-font.ttf') format('truetype');
   font-weight: normal;
   font-style: normal;
   font-display: swap;
+}
+
+:root {
+  --vp-font-family-base: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+}
+
+body {
+  font-weight: 500 !important;
+}
+
+.VPNavBar *,
+.VPNavBar a,
+.VPNavBar li {
+  font-weight: 600 !important;
+}
+
+.VPSidebar *,
+.VPSidebar a,
+.VPSidebar li {
+  font-weight: 600 !important;
+}
+
+.outline-link,
+.outline-link a {
+  font-weight: 600 !important;
 }
 
 /* 原有基础样式保留... */
@@ -35,7 +59,7 @@
 }
 
 .VPHero {
-  background-color: #ffffff;
+  background-color: var(--vp-c-bg);
   position: relative;
   overflow: hidden;
 }
@@ -82,53 +106,58 @@
 
 /* 3. 修改：名字的样式和打字机效果 */
 .VPHero .name {
-  /* 本地字体和回退字体 */
   font-family: 'PurrCatDoodle', 'Comic Sans MS', 'Chalkboard SE', cursive;
   font-weight: 700;
   position: relative;
   display: inline-block;
   
-  /* 添加 transition 用于鼠标悬浮和移开时的平滑过渡 */
   transition: transform 0.3s cubic-bezier(0.25, 0.8, 0.25, 1), text-shadow 0.3s ease;
   
-  background: linear-gradient(120deg, #2a5298, #667eea);
+  background: linear-gradient(120deg, var(--vp-c-brand-1), var(--vp-c-brand-2));
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 
   overflow: hidden;
   white-space: nowrap;
-  /* 基础状态下光标（右边框）是透明的 */
   border-right: 4px solid transparent;
   vertical-align: bottom;
   
-  /* 
-    动画控制：
-    1. typing: 1.5秒打字效果。
-    2. blinkCursor: 0.5秒闪一次，仅执行 3 次（总计1.5秒）。
-       1.5秒后动画结束，自动恢复到上面的 transparent 透明状态，光标消失。
-  */
   animation: 
     typing 1.5s steps(7, end) forwards,
     blinkCursor 0.5s step-end 3;
 }
 
-/* 4. 新增打字机动画 */
 @keyframes typing {
   from { width: 0; }
-  /* 根据最终加载的字体宽度，这里可能需要微调。4.5em 约等于 7 个字符的宽度 */
   to { width: 4.5em; } 
 }
 
 @keyframes blinkCursor {
   0%, 100% { border-right-color: transparent; }
-  50% { border-right-color: #667eea; }
+  50% { border-right-color: var(--vp-c-brand-2); }
 }
 
-/* 4. 修改：鼠标悬浮时才提起来一点，移开自动恢复（依靠上面的 transition） */
+@keyframes slideInFromLeft {
+  0% {
+    opacity: 0;
+    transform: translateX(-100px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.VPHero .text {
+  animation: slideInFromLeft 0.6s cubic-bezier(0.25, 1, 0.5, 1) forwards;
+  animation-delay: 0.3s;
+  opacity: 0;
+}
+
 .VPHero .name:hover {
   transform: translateY(-8px);
-  text-shadow: 0 0 15px rgba(100, 150, 255, 0.4);
+  text-shadow: 0 0 15px var(--vp-c-brand-soft);
 }
 
 /* 5. features 图标和标题同行显示 */
@@ -151,4 +180,177 @@
 
 .VPFeatures .VPFeature .title {
   margin: 0;
+}
+
+.aside-container {
+  position: sticky !important;
+  top: calc(var(--vp-nav-height) + var(--vp-layout-top-height, 0px) + var(--vp-doc-top-height, 0px) + 48px) !important;
+  height: auto !important;
+  max-height: calc(100vh - var(--vp-nav-height) - var(--vp-layout-top-height, 0px) - var(--vp-doc-top-height, 0px) - 48px) !important;
+}
+
+.aside-curtain {
+  display: none !important;
+}
+
+/* 社区页面 - Anthropic 风格卡片样式 */
+.anthropic-eco-wrapper {
+  --at-bg: #FFFFFF;
+  --at-card-bg: #FFFFFF;
+  --at-text-main: #1A1A1A;
+  --at-text-muted: #666666;
+  --at-border: rgba(0, 0, 0, 0.08);
+  --at-border-hover: rgba(0, 0, 0, 0.25);
+  --at-font-serif: ui-serif, Georgia, Cambria, "Times New Roman", Times, serif;
+
+  background-color: var(--at-bg);
+  min-height: calc(100vh - 64px);
+  margin: -32px -24px;
+  padding: 200px 24px;
+  display: flex;
+  justify-content: center;
+  transition: background-color 0.3s;
+}
+
+.dark .anthropic-eco-wrapper {
+  --at-bg: #111111;
+  --at-card-bg: #1C1C1C;
+  --at-text-main: #EAEAEA;
+  --at-text-muted: #999999;
+  --at-border: rgba(255, 255, 255, 0.1);
+  --at-border-hover: rgba(255, 255, 255, 0.3);
+}
+
+.eco-container {
+  max-width: 1080px;
+  width: 100%;
+}
+
+.eco-header {
+  text-align: center;
+  margin-bottom: 70px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-icon {
+  color: var(--at-text-main);
+  margin-bottom: 24px;
+}
+
+.serif-title {
+  font-family: var(--at-font-serif);
+  font-size: 3.5rem;
+  font-weight: 400;
+  letter-spacing: -0.03em;
+  color: var(--at-text-main);
+  margin: 0 0 12px 0;
+  line-height: 1.1;
+}
+
+.serif-subtitle {
+  font-family: var(--at-font-serif);
+  font-size: 2rem;
+  font-weight: 400;
+  color: var(--at-text-muted);
+  margin: 0 0 40px 0;
+  line-height: 1.4;
+}
+
+.header-action {
+  padding: 4px;
+  border: 1px solid var(--at-border-hover);
+  border-radius: 40px;
+  display: inline-block;
+}
+
+.pill-btn {
+  display: inline-block;
+  background-color: var(--at-text-main);
+  color: var(--at-bg);
+  padding: 10px 24px;
+  border-radius: 30px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+}
+
+.eco-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.elegant-card {
+  background-color: var(--at-card-bg);
+  border: 1px solid var(--at-border);
+  border-radius: 20px;
+  padding: 36px 32px 32px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 260px;
+  text-decoration: none !important;
+  transition: all 0.2s ease;
+}
+
+.elegant-card:hover {
+  border-color: var(--at-border-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 10px 30px -10px rgba(0,0,0,0.03);
+}
+
+.serif-heading {
+  font-family: var(--at-font-serif);
+  font-size: 1.6rem;
+  font-weight: 400;
+  color: var(--at-text-main);
+  margin: 0 0 24px 0;
+  border: none;
+  padding: 0;
+  line-height: 1.3;
+}
+
+.wip-text {
+  font-size: 0.85rem;
+  color: var(--at-text-muted);
+  margin: 0 0 16px 0;
+  font-style: italic;
+}
+
+.card-desc {
+  font-size: 1rem;
+  color: var(--at-text-main);
+  line-height: 1.6;
+  margin: 0;
+  opacity: 0.85;
+}
+
+.card-footer {
+  margin-top: 32px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: var(--at-text-muted);
+  font-size: 0.85rem;
+  font-weight: 400;
+}
+
+@media (max-width: 1200px) {
+  .eco-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 768px) {
+  .serif-title {
+    font-size: 2.5rem;
+  }
+  .elegant-card {
+    min-height: auto;
+  }
+  .eco-grid {
+    grid-template-columns: 1fr;
+  }
 }

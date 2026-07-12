@@ -1,4 +1,4 @@
-# 二次开发文档
+# 开发指南
 
 欢迎参与 PurrCat 的二次开发。本框架的设计哲学是模块化与解耦，提供四层扩展机制。
 
@@ -167,6 +167,7 @@ src/sensor/
     ├── rss_watcher.py      # RSS 订阅
     ├── system_clock.py     # 系统时钟
     └── your_sensor.py      # 你的自定义传感器
+```
 
 ### BaseSensor 基类
 

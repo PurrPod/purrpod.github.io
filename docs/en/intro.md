@@ -60,6 +60,13 @@ Including but not limited to:
 
 Supports injecting human instructions at any specific node. The system can clear downstream node states together, achieving precise checkpoint resumption and state rollback, perfectly preventing "data dirty reads."
 
+### Why Harness?
+
+1. Traditional Skills have insufficient binding force on Agent activities. Through Harness, node-level forced injection and staged SOP guidance can achieve more stable constraint effects than Skills.
+2. Each node can configure its own environment variables and dedicated tools, conforming to Harness Engineering principles. As a general-purpose Agent framework, PurrCat must package tools and prompts for different scenarios into independent containers to avoid infinite toolbox expansion.
+3. Supports task suspension, safe injection, and checkpoint resumption with strong commercial availability and system robustness, providing finer-grained control than low-code platforms.
+4. Harness is PurrCat's primary form of Multi-Agent implementation, allowing chat Agents and work Agents to cooperate with each other to optimize task execution efficiency.
+
 ---
 
 ## 3. Comprehensive Safe Tool Chain

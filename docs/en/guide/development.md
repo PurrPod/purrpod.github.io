@@ -1,4 +1,4 @@
-# Extension Guide
+# Development Guide
 
 Welcome to PurrCat development. The framework's design philosophy is modular and decoupled, providing four layers of extension mechanisms.
 
@@ -38,19 +38,19 @@ skills/your_skill/
 
 ### SKILL.md Format
 
-```yaml
+```
+Two required fields at the beginning:
+
 ---
-name: your_skill
-description: "Trigger condition. When should this skill be used?"
+name: your_skill_name
+description: "Trigger condition description. When should this skill be used?"
 ---
 
 # Skill Title
 
 ## Usage
 
-```bash
-command_to_run
-```
+xxx
 ```
 
 ### Skill Limitations
@@ -71,12 +71,26 @@ The WebUI supports drag-and-drop node wiring for dynamic workflow orchestration.
 
 ### Key Concepts
 
-- **`process.py`**: Main scheduler using `asyncio.gather(return_exceptions=True)` for concurrent scheduling
+- **`process.py`**: Main scheduler using `asyncio.gather(return_exceptions=True)` for concurrent scheduling, supporting checkpoint recovery and state rollback
 - **`BaseNode`**: Base node class — inherit and implement `async execute(inputs, force_push_msgs, context)`
-- **`graph/*.json`**: DAG definition files describing topology and dependencies
-- **Node states**: `READY → WAITING → RUNNING → COMPLETED | ERROR`, with checkpoint recovery
-- **`yield_to_human`**: Built-in tool allowing Agent to surrender control when stuck
-- **Error isolation**: Failed nodes don't affect independent branches; human fixes only retry the errored node
+- **`graph/*.json`**: DAG definition files describing topology and dependencies, supporting dynamic hot-plugging
+- **Node states**: `READY → WAITING → RUNNING → COMPLETED | ERROR`, with checkpoint recovery and cascading downstream cleanup
+- **Node type matrix** (built-in nodes located in `node/extensions/`):
+  - `agent_loop` — LLM loop thinking conversation
+  - `appender` — message appending
+  - `env_loader` — environment variable loading
+  - `file_writer` / `text_file_reader` — file read/write
+  - `html_viewer` — HTML preview rendering
+  - `human_intervention` — human intervention, suspends to `WAITING` and surrenders control
+  - `if_else_router` / `switch_router` — conditional routing and multi-branch splitting
+  - `image_generator` — image generation (text-to-image / image-to-image editing)
+  - `json_builder` / `json_extractor` — JSON construction and extraction
+  - `message_card_builder` — message card construction
+  - `task_input` / `task_output` — task entry and exit
+  - `template_renderer` — template rendering
+- **`yield_to_human`**: Built-in tool allowing Agent to proactively surrender control when unable to complete a task
+- **Safe rollback**: Supports injecting human instructions at specific nodes, cascading downstream cleanup of old state to prevent data dirty reads
+- **Error isolation**: Failed nodes don't affect other independent branches; human fixes only retry the errored node
 
 ### Creating a New Node
 
@@ -88,7 +102,7 @@ from src.harness.node.base import BaseNode
 
 class Node(BaseNode):
     async def execute(self, inputs, force_push_msgs, context):
-        # Implement your logic
+        # Implement your node logic
         result = await self._process(inputs)
         return {"output": result}
 ```
@@ -106,21 +120,6 @@ class Node(BaseNode):
 ```
 
 Nodes are auto-discovered via `importlib.import_module` — no registry needed.
-
-### Node I/O Specification
-
-Each node declares its input/output Schema in `your_node.json`. The engine auto-validates type matching during scheduling.
-
-| Basic Type | Description |
-|------|------|
-| `MessageCard` | OpenAI format message dict |
-| `MessageList` | OpenAI format message list |
-| `ToolSchema` | OpenAI Function Calling Schema |
-| `ToolList` | List of ToolSchema |
-| `ToolMessage` | Tool return message |
-| `Str` | String |
-
-Nodes receive inputs via `async execute(inputs, force_push_msgs, context)` and return `Dict[str, Any]`. A node executes automatically once all its inputs are ready.
 
 ---
 
@@ -148,9 +147,25 @@ See [MCP Documentation](https://modelcontextprotocol.io).
 
 ---
 
-## 5. Sensor Development
+## 5. Sensor Development (Environmental Perception)
 
-Sensors connect the Agent to the physical world. The framework uses a **BaseSensor + SensorGateway** architecture.
+Sensors are the Agent's antennae connecting to the physical world and external applications. The latest refactored Sensor architecture is based on **independent subprocess + manager.py management + BaseSensor base class + SensorGateway gateway**, completely abandoning the traditional tightly coupled plugin pattern.
+
+### Directory Structure
+
+Sensors are placed in `src/sensor/extension/`:
+
+```
+src/sensor/
+├── base.py                 # BaseSensor base class
+├── gateway.py              # Message gateway
+├── manager.py              # Subprocess manager
+└── extension/              # ← Sensor implementations go here
+    ├── feishu_bot.py       # Feishu bot
+    ├── rss_watcher.py      # RSS watcher
+    ├── system_clock.py     # System clock
+    └── your_sensor.py      # Your custom sensor
+```
 
 ### BaseSensor
 
@@ -170,25 +185,54 @@ class YourSensor(BaseSensor):
     def _observe(self, *args, **kwargs):
         """Continuously receive external data (requires enabled)"""
         while self.is_enabled:
-            data = ...
+            data = ...  # Get data from external source
             if data:
                 from src.sensor.gateway import get_gateway
                 get_gateway().push(self, data)
 
     def _express(self, message, **kwargs) -> bool:
         """Send message externally (requires enabled)"""
-        ...
+        ...  # Send message to external
         return True
 ```
 
 ### SensorGateway
 
-The system auto-scans and registers enabled sensors at startup:
+The gateway maintains a **message queue** and **active channel set**:
 
-- **`push(sensor, content)`** — Push message to queue, auto-wake Agent
-  - `/unbind` command → Remove from active list
-  - type=message → Auto-mark as active channel
-- **`send(message)`** — After Agent replies, iterate active channels
+- **`push(sensor, content)`** — Sensor pushes messages to queue, auto-wakes Agent
+  - Receives `/unbind` command → removes from active_channels
+  - type=message → auto-marks as active channel
+- **`send(message)`** — Called after Agent replies, iterates active_channels
+
+### Auto-Discovery & Registration
+
+The system auto-scans all `BaseSensor` subclasses under `src/sensor/extension/` at startup:
+
+1. Check `config_key` attribute
+2. Read `enabled` status from corresponding key in `activate_sensor.json`
+3. If enabled, launch independent subprocess via `manager.py` (uv + PEP 723)
+
+Developers only need to create sensor files in `src/sensor/extension/` with proper `config_key`.
+
+### Independent Subprocess Architecture (MCP-like)
+
+After the latest refactoring, all Sensors run as independent subprocesses managed by `manager.py`:
+
+- **uv + PEP 723 instant environment**: Integrated with Astral uv tool, leveraging single-file inline dependency specification. When launching a Sensor, it automatically creates a virtual environment and installs dependencies.
+- **Physical crash protection**: A single Sensor crash does not affect the main Agent process.
+- **Stdio JSON-RPC communication**: Uses standard input/output pipes with zero network overhead.
+- **Anti-pollution shield**: Intercepts `sys.stdout` in subprocess and redirects to `stderr`. Only valid JSON protocol data enters the main program parser.
+- **Configuration-as-installation**: Configure a few lines of JSON in `activate_sensor.json`, and the system automatically downloads scripts from the cloud and runs them.
+
+### Built-in Sensor Reference
+
+| Sensor | config_key | Type | Description |
+|--------|-----------|------|-------------|
+| Feishu | feishu | message | Feishu bot bidirectional communication (Markdown cards) |
+| RSS | rss | subscribe | RSS subscription timed fetching |
+| Clock | heartbeat | system | Timed heartbeat / alarm triggering |
+| Audio | audio | system | Ambient voice monitoring (Whisper + pyttsx3) |
 
 ---
 
