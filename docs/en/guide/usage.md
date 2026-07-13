@@ -1,6 +1,35 @@
 # Usage Guide
 
-**One-line guide**: To maximize Agent effectiveness, the core principle is: know what you want. Don't rely on vague instructions — command with clear task objectives and professional knowledge. Never use it just for the sake of using it; instead, explore answers with well-reasoned ideas.
+## Start with a Scam
+
+> **One prompt to build the website you envisioned? That's a narrative scam.**
+
+There's a brilliant answer on Zhihu ([source](https://www.zhihu.com/question/1999136031413384196/answer/2013204899521914097)) that cuts through the current AI hype with just five words: **"Information entropy + irreversibility."**
+
+**Information entropy irreversibility** — this is the first-principles understanding of AI's capability boundary. In information theory, pixelation is an irreversible process. Lost information doesn't magically return just because the model is bigger or has more parameters.
+
+Imagine handing AI a heavily pixelated image and asking it to restore the original高清 version. AI can certainly produce something — a complete picture with plausible-looking details. But here's the problem: the information lost in those pixels is **irreversible**. Those details AI filled in — are they really what you wanted?
+
+Code works exactly the same way. You tell AI "build me a expense tracker," and five minutes later you have a working website. Impressive. But when you start using it, you realize there's no category filtering, no data export, and the UI doesn't match your taste. So you start "expanding the sentence" — adding qualifiers, filling in details, tweaking the prompt over and over. But as the prompt grows longer, you hit a wall that every large language model shares: **limited attention**. The more you add upfront, the more it forgets downstream. Output quality doesn't just plateau — it collapses.
+
+The root cause: **the full picture in your head cannot be precisely extracted into a single prompt.** The more complex the requirement, the greater the information entropy, and the more uncontrollable the AI's deviation becomes. The idea that "one prompt can generate exactly what you want" is a consumer-grade包装 of something that's information-theoretically impossible — impressive in demos, broken in production.
+
+This isn't an AI capability problem. It's a physical limit of information theory.
+
+### So what's the right approach?
+
+PurrCat's design philosophy acknowledges this from day one: **Don't try to solve complex problems with a single prompt. Instead, break big tasks into small steps, injecting human judgment at every checkpoint.**
+
+Specifically:
+
+- **Know what you want**: Don't rely on vague "build me an X." Come with clear goals and constraints.
+- **Iterate step by step**: Generate a skeleton first, then refine details. Focus on one sub-problem at a time.
+- **Orchestrate with DAG workflows**: Break complex tasks into a directed acyclic graph. Each node handles one responsibility, and context flows through state transitions between nodes.
+- **Intervene at key nodes**: Don't追求 full automation. Stop at value-judgment points, let humans decide, and let the Agent execute.
+
+Bottom line: **AI is an efficient executor, not a magical需求 translator.** What PurrCat does is make the execution process controllable, incremental, and correctable.
+
+---
 
 ## Application Examples
 
