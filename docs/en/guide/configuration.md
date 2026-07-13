@@ -9,27 +9,29 @@ All configuration files are in **JSON format** — edit and save to apply (some 
 ```
 .purrcat/
 ├── model.json               # Model API Keys & rate limits
-├── activate_sensor.json     # Sensor toggles (Feishu/RSS/Clock/Audio)
-├── file.json                # File system whitelist & sandbox mounts
+├── activate_sensor.json     # Sensor config (Feishu/RSS/Clock/Audio)
+├── file.json                # File system permission management (allow/block lists)
 ├── memory.json              # PurrMemo memory system config
 ├── mcp_config.json          # MCP server extensions config
-├── note.json                # Note tool preferences
+├── app_config.json          # App shortcut config (ComputerUse launch_app)
 └── core/
-    ├── MEMORY.md            # Core general memory (user profile/experience)
+    ├── MEMORY.md            # Core general memory (user profile / work experience)
+    ├── SOUL.md              # Agent personality definition (soul injection)
     ├── SOLO.md              # Autonomous patrol rules (idle behavior)
-    ├── SOUL.md              # Agent personality definition
-    └── cron.json            # Scheduled task list
+    ├── cron.json            # Scheduled task list
+    ├── loop.json            # Periodic polling tasks (e.g., heartbeat check)
+    ├── TODO.md              # To-do list
+    └── info.json            # Installed skills & workshops index
 ```
 
 ---
 
 ## 1. Model Configuration (`model.json`)
 
-Configure API Keys, Base URL, rate limits. **Note: Legacy `.model.yaml` is deprecated — use JSON format.**
+Configure API Keys, Base URL, rate limits, etc.
 
 ```json
 {
-  "$schema": "https://json-schema.org/draft/2020-12/schema",
   "embedding": "embedding",
   "main": {
     "openai:deepseek-v4-flash": {
@@ -47,16 +49,22 @@ Configure API Keys, Base URL, rate limits. **Note: Legacy `.model.yaml` is depre
 }
 ```
 
+### Field Reference
+
 | Field | Description |
 |-------|-------------|
 | `embedding` | Embedding model path or HuggingFace name, defaults to local `embedding/` folder |
 | `main` | Main model for global Agent. Key format is `{adapter}:{model_name}` |
-| `task` | Model for background subtasks, **must use different API Keys** from `main` |
-| `vision` | Multimodal vision model (optional) |
+| `task` | Model for background subtasks (optional, empty falls back to `main`) |
+| `vision` | Multimodal vision model (optional, empty means disabled) |
 | `api_keys` | List of API Keys; system auto-selects the least busy one |
 | `rpm` / `tpm` | Requests / Tokens per minute limit |
 | `concurrency` | Max concurrent requests |
 | `max_token` | Memory window token limit |
+
+### Multi-Key Load Balancing
+
+The `api_keys` list supports multiple keys. The system's `APIKeyManager` automatically selects the **least busy** key. Using separate keys for `main` and `task` prevents background tasks from competing with the main model.
 
 ---
 
@@ -76,9 +84,8 @@ All sensors are disabled by default — set `enabled` to `true` to activate.
     "capabilities": { "observe": true, "express": true }
   },
   "system_clock": {
-    "enabled": true,
+    "enabled": false,
     "env": {
-      "INTERVAL": "1800",
       "CRON_FILE": ".purrcat/core/cron.json"
     },
     "capabilities": { "observe": true, "express": false }
@@ -87,7 +94,7 @@ All sensors are disabled by default — set `enabled` to `true` to activate.
     "enabled": false,
     "env": {
       "INTERVAL": "1800",
-      "SUBSCRIPTIONS": "[{\"name\":\"Blog\",\"rss_url\":\"https://example.com/feed.xml\"}]"
+      "RSS_SUBSCRIPTIONS_JSON": "[{\"name\":\"Blog\",\"rss_url\":\"https://example.com/feed.xml\"}]"
     },
     "capabilities": { "observe": true, "express": false }
   },
@@ -104,6 +111,8 @@ All sensors are disabled by default — set `enabled` to `true` to activate.
 }
 ```
 
+### Sensor Table
+
 | Config Key | Sensor | Type | Description |
 |------------|--------|------|-------------|
 | `feishu_bot` | Feishu Bot | message | Bidirectional Markdown card communication |
@@ -111,34 +120,91 @@ All sensors are disabled by default — set `enabled` to `true` to activate.
 | `rss_watcher` | RSS Watcher | subscribe | Blog article push monitoring |
 | `audio_assistant` | Audio Assistant | system | Ambient voice capture (Whisper + TTS) |
 
-Each sensor runs as an independent sub-process managed by `manager.py` — crashes are isolated.
+Each sensor runs as an independent sub-process managed by `manager.py` — crashes are isolated and don't affect the main process.
+
+> **Note**: The RSS env var is `RSS_SUBSCRIPTIONS_JSON` (not `SUBSCRIPTIONS`). Pass a JSON-encoded array of `{name, rss_url}` objects.
 
 ---
 
 ## 3. File System Configuration (`file.json`)
 
-Defines Agent file operation permissions on the host.
+Defines Agent file operation permissions on the host using a three-tier permission model:
 
 ```json
 {
-  "dont_read_dirs": [
-    ".git", "src", "node_modules", "miniconda3",
-    ".baoyu-skills", ".env", ".purrcat"
-  ],
-  "allowed_export_dirs": ["D:/test", "./agent_vm", "./exports"],
-  "docker_mount": ["sandbox/"],
-  "sandbox_dirs": ["sandbox/", "agent_vm/"],
-  "skill_dir": ["skills"]
+  "default_permission": "readonly",
+  "permissions": {
+    "blocked": [
+      ".git",
+      "src",
+      "node_modules",
+      "miniconda3",
+      ".env",
+      ".purrcat"
+    ],
+    "readonly": [
+      "D:/cat-in-cup/.purrcat"
+    ],
+    "writable": [
+      "./agent_vm",
+      "./exports",
+      "skills",
+      "D:/test"
+    ]
+  }
 }
 ```
 
+### Permission Model
+
 | Field | Description |
 |-------|-------------|
-| `dont_read_dirs` | Privacy blacklist — directories Agent cannot read/import |
-| `allowed_export_dirs` | Export whitelist — where sandbox files can be exported |
-| `docker_mount` | Mount channel — host directories mounted into Docker sandbox |
-| `sandbox_dirs` | Operation domain — Agent's writable space on the host |
-| `skill_dir` | Skill package directory (default: `skills/`) |
+| `default_permission` | Default permission for unlisted paths: `readonly` or `blocked` |
+| `blocked` | **Privacy blacklist** — directories Agent cannot read, write, or import |
+| `readonly` | **Read-only whitelist** — Agent can read but not modify |
+| `writable` | **Read-write whitelist** — Agent can freely create, modify, and delete |
+
+The system matches whitelist entries first; unlisted paths fall back to `default_permission`. This three-tier model is more flexible than the previous flat structure — for instance, `.purrcat` itself can be set to `readonly` to prevent accidental edits, rather than being completely blocked.
+
+## 4. File System Configuration (`file.json`)
+
+Defines the Agent's file operation permission boundary on the host using a **three-tier permission model**.
+
+```json
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$comment": "PurrCat File System Configuration File",
+  "default_permission": "readonly",
+  "permissions": {
+    "blocked": [
+      ".git",
+      "src",
+      "node_modules",
+      "miniconda3",
+      ".env",
+      ".purrcat"
+    ],
+    "readonly": [],
+    "writable": [
+      "./agent_vm",
+      "./exports",
+      "skills",
+      "D:/test"
+    ]
+  }
+}
+```
+
+### Fields
+
+| Field | Description |
+|-------|-------------|
+| `default_permission` | Default access level: `"readonly"` or `"blocked"` |
+| `permissions.blocked` | **Privacy blacklist** — directories the Agent cannot read, import, or write to. Protects sensitive system files |
+| `permissions.readonly` | **Read-only whitelist** — directories the Agent can read but not modify |
+| `permissions.writable` | **Write whitelist** — directories where the Agent can create, edit, and delete files |
+
+The system enforces these rules at the physical filesystem level. Any attempted access outside the defined permissions is intercepted and requires human approval via `Request` tool.
 
 ---
 
@@ -174,21 +240,17 @@ Defines Agent file operation permissions on the host.
 }
 ```
 
-**Note**: The `openai` section is dedicated to the PurrMemo memory engine's background digestion — it does not affect the main Agent conversation.
+**Note**: The `openai` section is dedicated to the PurrMemo memory engine's background asynchronous digestion and graph construction — it does not affect the main Agent conversation.
 
 ---
 
 ## 5. MCP Extension Configuration (`mcp_config.json`)
 
+Configure Model Context Protocol (MCP) server extensions:
+
 ```json
 {
   "mcpServers": {
-    "playwright": {
-      "command": "npx",
-      "args": ["@playwright/mcp@latest",
-        "--user-data-dir=agent_vm/.buffer/playwright",
-        "--output-dir=agent_vm/.buffer/screenshots"]
-    },
     "github": {
       "command": "npx",
       "args": ["-y", "@modelcontextprotocol/server-github"],
@@ -197,6 +259,10 @@ Defines Agent file operation permissions on the host.
     "chrome-devtools": {
       "command": "npx",
       "args": ["-y", "chrome-devtools-mcp@latest"]
+    },
+    "tradingview": {
+      "command": "uvx",
+      "args": ["--from", "tradingview-mcp-server", "tradingview-mcp"]
     }
   }
 }
@@ -204,18 +270,34 @@ Defines Agent file operation permissions on the host.
 
 The system auto-fetches all MCP Server tool Schemas on startup and caches them.
 
+Supported MCP launch methods:
+
+| Method | Example | Use Case |
+|--------|---------|----------|
+| `npx` | `npx -y @modelcontextprotocol/server-github` | npm-published MCP packages |
+| `uvx` | `uvx --from tradingview-mcp-server tradingview-mcp` | Python-published MCP packages |
+| `uv run` | `uv run --directory ./mcps/my-server server.py` | Locally-developed MCP servers |
+
 ---
 
-## 6. Note Configuration (`note.json`)
+## 6. App Shortcut Configuration (`app_config.json`)
+
+Provides a whitelist mapping for the Agent's ComputerUse `launch_app` action, enabling one-click app launching:
 
 ```json
 {
-  "skill": ["docx", "pptx", "xlsx"],
-  "expectation": [
-    "when ask you for analyse the note, please read all the content before starting analysis"
-  ]
+  "WeChat": "D:\\\\Path\\\\to\\\\WeChat.exe",
+  "GitHub": "https://github.com"
 }
 ```
+
+When the Agent calls ComputerUse's `launch_app` action, it queries this mapping. Each value supports three formats:
+
+| Format | Description | Example |
+|--------|-------------|---------|
+| **URL** | Opens in default browser | `"https://github.com"` |
+| **Executable path** | Launches local program directly | `"D:\\\\Program Files\\\\App\\\\app.exe"` |
+| **Protocol URL** | Opens app via system protocol | `"obsidian://open?vault=notes"` |
 
 ---
 
@@ -223,10 +305,13 @@ The system auto-fetches all MCP Server tool Schemas on startup and caches them.
 
 | File | Purpose | Description |
 |------|---------|-------------|
-| `MEMORY.md` | System memory archive | User profile & work experience, injected as System Prompt |
-| `SOUL.md` | Agent personality | Defines tone, values, behavior baseline |
-| `SOLO.md` | Autonomous patrol rules | Idle activity checklist & security boundaries |
+| `MEMORY.md` | System memory archive | User profile & work experience, injected as System Prompt on session start |
+| `SOUL.md` | Agent personality | Defines tone, values, and behavior baseline |
+| `SOLO.md` | Autonomous patrol rules | Idle activity checklist & security boundaries (sandbox cleanup, self-tracking, project patrol) |
 | `cron.json` | Scheduled tasks | Polled by system clock sensor for timed wake-ups |
+| `loop.json` | Periodic polling tasks | Recurring tasks (e.g., heartbeat check) with interval and task hook |
+| `TODO.md` | To-do list | Current to-do items, maintained by the Agent |
+| `info.json` | Installation index | Tracks installed Skills and Workshops |
 
 ---
 
@@ -234,9 +319,9 @@ The system auto-fetches all MCP Server tool Schemas on startup and caches them.
 
 | Command | Purpose | Example |
 |---------|---------|---------|
-| `purrcat setup` | One-click deploy (sandbox + Python deps + model) | `purrcat setup` |
+| `purrcat setup` | One-click deploy (sandbox + Python deps + embedding model) | `purrcat setup` |
 | `purrcat init` | Generate `.purrcat/` config interactively | `purrcat init --force` |
-| `purrcat install` | Install extensions (skill/node/graph) | `purrcat install skill <url>` |
+| `purrcat install` | Install extensions (skill / graph / mcp / sensor) | `purrcat install mcp tradingview` |
 | `purrcat update` | Update framework from GitHub Releases | `purrcat update --version="2026.05.15"` |
 | `purrcat start` | Launch PurrCat | `purrcat start --webui` |
 | `purrcat help` | Show help (with ASCII cat logo) | `purrcat help` |
@@ -247,8 +332,13 @@ The system auto-fetches all MCP Server tool Schemas on startup and caches them.
 # Install community Skill from any GitHub repo subdirectory
 purrcat install skill https://github.com/user/repo/tree/main/path/to/skill
 
-# Install official node/graph from PurrPod repos
-purrcat install node web_search
+# Install MCP server from official registry
+purrcat install mcp tradingview
+
+# Install a sensor
+purrcat install sensor feishu_bot
+
+# Install Graph from PurrPod/graphs (auto-resolves MCP/Skill dependencies)
 purrcat install graph daily_summary
 ```
 

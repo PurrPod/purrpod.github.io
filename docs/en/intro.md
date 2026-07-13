@@ -2,7 +2,7 @@
 
 PurrCat is a safe, stable, cost-effective, and deeply customizable local Agent framework. Unlike conventional "Q&A" chatbot tools, PurrCat is designed to give Agents true "autonomous work" capabilities — equipped with memory, proactive perception, complex workflow orchestration, and industrial-grade concurrent scheduling.
 
-This document introduces PurrCat's eight core technology modules.
+This document introduces PurrCat's nine core technology modules.
 
 ---
 
@@ -112,6 +112,22 @@ Enables the Agent to set timed tasks, ensuring it wakes up at specified times to
 ### 8. Task: Background Subtask Scheduling
 
 Dispatches subtasks to background Agents with support for kill, reload, and real-time instruction injection, scheduling the DAG engine without blocking the main session.
+
+### 9. Request: Privilege Escalation Approval
+
+When the Agent encounters insufficient permissions or missing capabilities (e.g., reading/writing host files, installing MCP/Skill plugins), it submits an approval request to the human. Supports file read/write, plugin installation, skill code merge, and other approval types — the final manual checkpoint in the security防线.
+
+### 10. BrainStorm: Brainstorming & Plan Orchestration
+
+Orchestrates complex project plans with DAG thought chains (Main-Plan + Sub-Branches). Can dispatch multiple background branches for concurrent execution, enabling the Agent to "multitask" efficiently.
+
+### 11. ComputerUse: Physical Computer Control
+
+A cross-platform computer control tool that lets the Agent see the screen, move the mouse, click buttons, and type text — just like a human. Supports screenshot-based UI element ID recognition, targeted clicks, drag-and-drop, scrolling, and keyboard shortcuts, bridging the gap between Agent and desktop applications.
+
+### 12. KernelUpgrade: Self-Evolution Engine
+
+The Agent's self-improvement tool. Create and upgrade Skill / MCP Server in an isolated sandbox, write test cases, trigger automated blind testing (Evals), and merge code to the main library after validation. This lets the Agent proactively grow its capabilities instead of passively waiting for framework updates.
 
 ---
 
@@ -239,6 +255,38 @@ Reuse or distribute complex Harness workflows by importing a single JSON graph c
 ### Plug-and-Play Proactive Sensors
 
 Configure a few lines of environment settings in `activate_sensor.json`. The system automatically pulls single-file scripts from the cloud when sensors are missing locally. The frontend UI provides one-click ON/OFF toggle and hot-reload.
+
+---
+
+## 9. Self-Evolution: Agent's Growth Engine
+
+PurrCat equips Agents with the ability to write their own capabilities. Through the KernelUpgrade tool and `src/evolve` evaluation pipeline, the Agent can autonomously create, upgrade, and test skill modules in an isolated sandbox — no need to wait for framework version updates.
+
+### Skill Factory
+
+When the Agent discovers a missing reusable SOP workflow or finds bugs in existing Skills, it can directly use KernelUpgrade to develop in an isolated sandbox:
+
+- **`create_skill`**: Build a brand new skill skeleton from scratch, including SOP workflow, Prompt templates, and evals test cases.
+- **`upgrade_skill`**: Copy underperforming existing skills to the sandbox, fix code logic, or optimize workflow.
+- **`test_skill`**: After writing code and test cases, trigger automated blind testing (Evals). The system simulates real-world scenarios and scores the skill's performance.
+
+### MCP Factory
+
+Similarly, the Agent can autonomously create MCP server extensions:
+
+- **`create_mcp`**: Scaffold a new MCP Server based on FastMCP, auto-generating server.py, config, and evals.
+- **`test_mcp`**: After development in the sandbox, trigger full-chain evaluation including Schema validation, tool invocation, and edge case testing.
+
+### Eval-Driven Development
+
+All skill creation and upgrades must pass a rigorous evaluation pipeline:
+
+1. **Write Evals**: Define inputs, expected outputs, and scoring rules.
+2. **Trigger Blind Test**: The system runs tests in an isolated environment, generating detailed trace logs.
+3. **Review Report**: Read test logs, identify failure causes, and fix issues.
+4. **Merge to Main**: After passing all tests, submit a `Request` for `skill_merge` to merge code into the main library.
+
+This mechanism gives PurrCat the ability to continuously self-evolve — every experience gained during tasks can be solidified into reusable skills, and the Agent's capabilities grow with use.
 
 ---
 
