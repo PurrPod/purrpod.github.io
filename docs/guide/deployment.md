@@ -122,13 +122,11 @@ docker pull ghcr.io/purrpod/purrcat-sandbox:full
 docker tag ghcr.io/purrpod/purrcat-sandbox:full my_agent_env:latest
 ```
 
-> 预构建镜像由 CI 自动维护，省去本地构建时间，网络通畅时秒级完成。
-
 **方式二：本地构建（备选）**
 
 ```bash
 # 可选：配置 APT 镜像源（优先选官方源，阿里云镜像备选）
-# 阿里云镜像
+# 使用阿里云镜像
 docker build -t my_agent_env:latest --build-arg APT_MIRROR="mirrors.aliyun.com" .
 
 # 或使用官方源
@@ -157,7 +155,7 @@ docker build -t my_agent_env:latest --build-arg APT_MIRROR="deb.debian.org" .
 uv sync
 ```
 
-> `uv sync` 会根据 `pyproject.toml` 自动创建虚拟环境（`.venv`）并安装所有依赖。一键完成，无需手动 activate。
+> `uv sync` 会根据 `pyproject.toml` 自动创建虚拟环境（`.venv`）并安装所有依赖。一键完成。
 
 **环境包含的核心依赖**：
 - Python 3.10 + OpenAI SDK + MCP 协议
@@ -166,13 +164,13 @@ uv sync
 - Docker SDK + Playwright（沙盒与自动化）
 - Lark SDK（飞书通讯）+ Feedparser（RSS 订阅）
 - FastAPI + Uvicorn（Web 后端）
+- 其它
 
 **常见失败原因**：
 | 问题 | 解决方案 |
 |------|---------|
 | uv 命令找不到 | Linux/Mac: `curl -LsSf https://astral.sh/uv/install.sh | sh`；Windows: `powershell ... irm https://astral.sh/uv/install.ps1 | iex` |
 | 包下载超时 | 配置 uv 镜像源：`uv config set index-url https://mirrors.aliyun.com/pypi/simple/` |
-| Python 版本不满足 | 确保 Python >= 3.10，或使用 `uv python install 3.10` 自动安装 |
 | PyTorch 下载慢 | uv 已自动配置 CPU-only PyTorch 镜像，若仍慢可手动设置 `UV_INDEX_PYTORCH_CPU` |
 
 ### 4.3 嵌入模型下载
@@ -244,30 +242,23 @@ purrcat init --force
 **注意事项**：
 - 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
 - `main` 段配置全局 Agent 使用的模型
-- `task` 段配置后台子任务使用的模型（多 Agent 协作时必填，且不能用与 main 相同的 API Key）
-- `vision` 段配置多模态视觉模型（可选，给不支持多模态的大模型配专属视觉顾问）
+- `task` 段配置后台子任务使用的模型（多 Agent 协作时必填，且不能用与 main 相同的 API Key），字段与 `main` 一致，可直接复制过去，换掉 API Key 即可
+- `vision` 段配置多模态视觉模型（可选，给不支持多模态的大模型配专属视觉顾问），字段也与 `main` 一致
 - 支持为同一模型配置多个 API Key，系统会自动负载均衡
-
-### 5.3 查看环境变量参考
-
-```bash
-purrcat env
-```
-
-> 注意：当前版本不支持环境变量覆盖配置，请直接编辑 `.purrcat/` 目录下的文件。
 
 ## 6. 启动服务
 
-### 6.1 标准启动（TUI 界面）
+### 6.1 标准启动（WebUI 界面）
 
 ```bash
 purrcat start
+# 等待启动完成后在浏览器访问对应地址即可，默认为 localhost:3000
 ```
 
-### 6.2 启动 WebUI
+### 6.2 启动 TUI（不推荐，因为 TUI 很久没有维护了）
 
 ```bash
-purrcat start --webui
+purrcat start --tui
 ```
 
 启动后系统会自动完成：
