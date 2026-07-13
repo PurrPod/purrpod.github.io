@@ -18,6 +18,13 @@ Usually a network issue. If it persists, configure domestic mirror sources in ad
 **5. `purrcat` command not found?**
 Ensure you're executing from the project root directory.
 
+**6. Virtualization conflicts during deployment?** Docker relies on host virtualization support. Common issues:
+
+- **Windows (WSL2 / Hyper-V)**: Docker Desktop requires hardware virtualization (VT-x / AMD-V) enabled in BIOS. Many laptops ship with it disabled, causing Docker to fail on startup.
+- **VMware / VirtualBox conflicts**: Running other VM software alongside Hyper-V / WSL2 may cause blue screens or startup failures.
+- **Nested Virtualization**: If PurrCat itself runs inside a VM (e.g., cloud server, Parallels), nested virtualization must be enabled, otherwise Docker containers won't start.
+- **Linux**: Best native Docker support with minimal conflicts. However, non-default container runtimes (e.g., containerd) may be incompatible with the sandbox initialization script.
+
 ## 2. Operation and Usage
 
 **1. Can tasks resume after interruption?** Yes. The framework has built-in checkpoint persistence. State is saved to disk after every round. After unexpected exits, simply restart and ask the Agent to resume — it will automatically load the checkpoint and continue.
@@ -29,6 +36,8 @@ Ensure you're executing from the project root directory.
 **4. Agent says Docker sandbox environment is restricted?** Most likely Docker Desktop is not running, or the sandbox image hasn't been built with `purrcat setup` after initial installation.
 
 **5. Is the sandbox mechanism secure enough?** All Shell execution is forcibly blocked within Docker containers. Host access uses a **strict whitelist** defined in `.purrcat/file.json` — unauthorized directories are completely invisible. Export operations automatically trigger Git snapshots to prevent overwrite disasters. **Follow the principle of least privilege, at your own risk.**
+
+**6. Agent times out when accessing foreign websites in the sandbox, even with VPN on?** Regular VPN/proxy tools operate at the host's network layer, but **Docker containers use their own isolated network namespace and don't automatically inherit host proxy settings**. Network requests inside the container go through Docker's virtual bridge, not through the host's VPN tunnel. The solution is to enable **TUN mode** (virtual NIC) in your proxy software, which captures container traffic as well. See your proxy software's documentation for configuration details.
 
 ## 3. Security and Compliance
 
