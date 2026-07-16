@@ -171,15 +171,9 @@
 
 ```json
 {
-  "openai": {
-    "api_key": "",
-    "base_url": "https://api.deepseek.com",
-    "model_name": "deepseek-v4-flash"
-  },
   "chromadb": {
     "persist_directory": "data/memory/chromadb",
-    "collection_name": "experiences",
-    "embedding_model": "sentence-transformers/paraphrase-multilingual-MiniLM-L12-v2"
+    "collection_name": "experiences"
   },
   "eventdb": { "db_path": "data/memory/events.db", "table_name": "events" },
   "graphdb": { "graph_path": "data/memory/graph.pkl", "min_confidence": 0.3 },
@@ -199,7 +193,7 @@
 }
 ```
 
-**注意**：`openai` 段的模型专用于 PurrMemo 记忆引擎的后台异步消化与图谱构建，不会影响主 Agent 的对话。
+这部分可以不管，保持默认配置即可。
 
 ---
 
