@@ -167,37 +167,7 @@
 
 ---
 
-## 4. 记忆系统配置 (`memory.json`)
-
-```json
-{
-  "chromadb": {
-    "persist_directory": "data/memory/chromadb",
-    "collection_name": "experiences"
-  },
-  "eventdb": { "db_path": "data/memory/events.db", "table_name": "events" },
-  "graphdb": { "graph_path": "data/memory/graph.pkl", "min_confidence": 0.3 },
-  "buffer": {
-    "buffer_dir": "data/memory/buffer",
-    "pending_dir": "data/memory/buffer/pending",
-    "archived_dir": "data/memory/buffer/archived",
-    "error_dir": "data/memory/buffer/error"
-  },
-  "memory_agent": { "polling_interval": 5 },
-  "rag": {
-    "top_k_events": 5,
-    "top_k_experiences": 5,
-    "top_k_graph_nodes": 3,
-    "max_graph_depth": 2
-  }
-}
-```
-
-这部分可以不管，保持默认配置即可。
-
----
-
-## 5. MCP 扩展配置 (`mcp_config.json`)
+## 4. MCP 扩展配置 (`mcp_config.json`)
 
 配置 Model Context Protocol (MCP) 服务器扩展：
 
@@ -225,7 +195,7 @@
 
 ---
 
-## 6. 应用快捷配置 (`app_config.json`)
+## 5. 应用快捷配置 (`app_config.json`)
 
 为 Agent 的 ComputerUse 工具提供「一键启动」应用的白名单映射，格式为键值对：
 
@@ -246,7 +216,7 @@
 
 ---
 
-## 7. 核心文件 (`.purrcat/core/`)
+## 6. 核心文件 (`.purrcat/core/`)
 
 | 文件 | 用途 | 说明 |
 |------|------|------|
@@ -260,7 +230,7 @@
 
 ---
 
-## 8. CLI 命令参考
+## 7. CLI 命令参考
 
 | 命令 | 用途 | 示例 |
 |------|------|------|
