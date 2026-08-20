@@ -1,13 +1,13 @@
 # 配置说明
 
-系统的所有配置文件均由 CLI 统一管理，存放在项目根目录的 `.purrcat/` 文件夹下。使用 `purrcat init` 交互式生成，亦可以直接在前端编辑后保存。
+系统的所有配置文件统一存放在用户主目录的 `~/.purrcat/` 文件夹下。首次启动时系统会自动生成默认模板，无需手动初始化；也可以在前端界面编辑后保存。
 
 所有配置文件均为 **JSON 格式**，编辑后保存即可生效（部分配置需重启）。
 
 ## 目录结构
 
 ```
-.purrcat/
+~/.purrcat/
 ├── model.json               # 模型 API Key 与速率限制
 ├── activate_sensor.json     # 传感器配置（飞书/RSS/时钟/语音）
 ├── file.json                # 文件系统权限模型
@@ -235,11 +235,10 @@
 | 命令 | 用途 | 示例 |
 |------|------|------|
 | `purrcat setup` | 一键部署（沙盒构建 + Python 依赖安装 + 嵌入模型） | `purrcat setup` |
-| `purrcat init` | 交互式生成 `.purrcat/` 配置 | `purrcat init --force` |
 | `purrcat install` | 安装扩展（skill / graph / mcp / sensor） | `purrcat install mcp tradingview` |
-| `purrcat update` | 从 GitHub Releases 更新框架 | `purrcat update --version="2026.05.15"` |
-| `purrcat start` | 启动 PurrCat | `purrcat start --webui` |
 | `purrcat help` | 显示帮助菜单（含 ASCII 猫猫 Logo） | `purrcat help` |
+
+> 启动 PurrCat 请使用：**Electron 桌面端** `npm run dev`；**Web UI** `uv run python main.py --api --headless`。配置文件由系统首次启动时自动生成，无需 CLI 初始化。
 
 ### 扩展安装详解
 
@@ -260,14 +259,14 @@ purrcat install graph daily_summary
 ### 版本更新
 
 ```bash
-# 更新到最新稳定版
-purrcat update
+# 拉取最新代码并同步依赖
+git pull
+uv sync
 
-# 更新到指定版本
-purrcat update --version="2026.05.15"
+# 如需安装指定版本
+git checkout <tag>
+uv sync
 ```
-
-更新流程：拉取 tag → checkout → 同步 Python 依赖（uv sync）→ 执行 post-update 迁移脚本。
 
 ---
 
@@ -275,12 +274,24 @@ purrcat update --version="2026.05.15"
 
 ### 容器引擎
 
-`purrcat setup` 会自动检测 Docker 和 Podman，并将选择结果保存到 `~/.purrcat/settings.json`。
+`purrcat setup` 会自动检测 **Docker** 引擎（当前版本仅支持 Docker，不再兼容 Podman），引擎偏好保存至 `~/.purrcat/settings.json`。
 
-### WebUI
+### 前端界面（Electron 桌面端 / Web UI）
 
-`purrcat setup` 可选安装 WebUI 前端依赖。启动时加 `--webui` 参数即可同时启动后端 API 与前端开发服务器：
+`purrcat setup` 可选安装前端依赖（npm install），用于构建 Electron 桌面端或 Web UI 界面。
+
+**Electron 桌面端（推荐）**：
 
 ```bash
-purrcat start --webui
+npm install                 # 根目录依赖（Electron 等）
+npm install --prefix ui     # 前端依赖
+npm run dev                 # 一键拉起 后端 + 前端 + Electron 桌面窗口
+```
+
+**Web UI（轻量，无桌面端）**：
+
+```bash
+npm install --prefix ui
+npm run build:ui                            # 构建前端静态文件
+uv run python main.py --api --headless      # 浏览器打开 http://localhost:8000
 ```

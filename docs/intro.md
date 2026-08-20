@@ -147,6 +147,17 @@ Agent 的自我进化工具。在隔离沙盒中自由创建和升级 Skill / MC
 
 通过定义 `SOUL.md`，从根本上定义 Agent 的人格、价值观和底层工作逻辑。
 
+### PARADIGM：声明式执行范式
+
+PurrCat 的 Agent 主循环不是写死的黑盒，而是由 `PARADIGM.yaml` 以**近乎自然语言的规则**声明式定义。你可以在不触碰任何核心代码的前提下，像"改配置"一样重塑 Agent 的执行行为：
+
+- **触发器（triggers）**：定义 cron 定时触发与注入内容，让 Agent 到点自动被唤醒（如每天早上 8 点主动汇报）。
+- **生命周期钩子（hooks）**：在构建系统提示词、循环开始、每轮迭代、循环结束等关键节点挂载文件读取、记忆注入、提示注入等动作。
+- **工具使用检查（tool_use_check）**：例如循环结束前强制校验是否调用过 Memo 归档记忆，未通过则注入提醒，让行为规范真正落地。
+- **循环退出条件（loop exit conditions）**：通过 `loop_end_max_retry` 等参数控制主循环何时终止，防止死循环。
+
+默认模板内置在 `src/agent/system_rules/PARADIGM.yaml`；用户配置位于 `~/.purrcat/core/PARADIGM.yaml`（存在即优先生效），并支持 `@符号` 引用系统文件（如 `@RULES`、`@SOUL`、`@MEMORY`），实现"改配置即可重写 Agent 循环"的极简定制体验。
+
 ### Heartbeat + SOLO + TODO 自主巡查机制
 
 结合 System Clock（系统时钟）传感器，Agent 拥有自己的心跳节拍。空闲时根据定时唤醒机制，主动调取 `SOLO.md`（工作规范/期待活动）和 `TODO.md`（待办事项），进行系统级自主巡查、数据维护、垃圾清理甚至主动汇报进度。

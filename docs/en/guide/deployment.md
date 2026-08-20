@@ -4,11 +4,32 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 ## 1. Prerequisites
 
-PurrCat requires the following dependencies: **uv** (Python package manager), **Node.js** (provides `npx`), and **Docker** (or Podman for the sandbox environment). You can install them using the commands below — they will automatically configure the necessary system environment variables.
+Deploying PurrCat requires only one **core dependency**: **Docker** (used to build and run the local sandbox environment).
 
-### uv (Python Package Manager)
+**uv**, **Git**, and **Node.js** are **not required for deployment** — the core Agent runs fine without them. However, they are the dependencies you need to **fully experience the extension ecosystem** (installing Skills, connecting MCP servers, building the desktop/Web frontend). Skipping them won't block deployment, but will heavily limit the extension gameplay, so installing them is recommended.
 
-Used to install all of PurrCat's Python dependencies.
+| Tool | Purpose | When you need it |
+|------|---------|------------------|
+| [Docker](https://docs.docker.com/get-docker/) | Sandbox container engine | **Core requirement** (sandboxed Bash, file isolation) |
+| [uv](https://docs.astral.sh/uv/) | Python package manager | `purrcat setup` one-click deploy, Python dependency management |
+| Node.js 18+ | Provides `npm`/`npx` | Building the frontend (Electron desktop / Web UI), some MCP extensions |
+| Git | Version control | `git clone` source code, pulling community skills/sensors (or download the ZIP) |
+
+### Docker (Core Requirement)
+
+Used to build and run PurrCat's exclusive local sandbox environment, ensuring safe file operations.
+
+- **Windows:** `winget install Docker.DockerDesktop`
+- **macOS:** `brew install --cask docker`
+- **Linux:** `curl -fsSL https://get.docker.com | sh`
+
+> **Note:**
+> 1. After installing, **restart your terminal** to ensure the environment variables take effect.
+> 2. Before running PurrCat, make sure the Docker service is running in the background.
+
+### uv (Optional, Recommended for Extensions)
+
+Used to install all of PurrCat's Python dependencies; `purrcat setup` relies on it for one-click deployment.
 
 - **Linux / macOS:**
   ```bash
@@ -19,9 +40,9 @@ Used to install all of PurrCat's Python dependencies.
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-### Node.js
+### Node.js (Optional, Required for Extensions)
 
-Provides the `npx` command, required for running MCP extensions and the WebUI frontend.
+Provides `npm`/`npx` to build the frontend (Electron desktop / Web UI) and run some MCP extension tools. The core Agent works without it, but the desktop and web interfaces won't be available.
 
 - **Windows:**
   ```powershell
@@ -37,36 +58,35 @@ Provides the `npx` command, required for running MCP extensions and the WebUI fr
   sudo apt-get install -y nodejs
   ```
 
-### Docker or Podman
+### Git (Optional, Recommended)
 
-Used to build and run PurrCat's exclusive local sandbox environment, ensuring safe file operations. The system auto-detects Docker first, then falls back to Podman.
+Used for `git clone` to fetch the source code and pull community skills/sensors. Alternatively, download the ZIP archive without installing Git.
 
-- **Windows:** `winget install Docker.DockerDesktop`
-- **macOS:** `brew install --cask docker`
-- **Linux:** `curl -fsSL https://get.docker.com | sh`
-
-> **Note:**
-> 1. After installing the tools above, **restart your terminal** to ensure the environment variables take effect.
-> 2. Before running PurrCat, make sure Docker Desktop or Podman service is running in the background.
+- **Windows:** `winget install Git.Git`
+- **macOS:** `brew install git`
+- **Linux (Ubuntu/Debian):** `sudo apt-get install -y git`
 
 ### Verify Installation
 
-After restarting your terminal, run the following commands to confirm everything is installed correctly:
+After restarting your terminal, run the following commands to confirm the installed tools work:
 
 ```bash
-# Check uv
+# Verify Docker (required)
+docker --version
+docker info
+
+# Verify uv (optional)
 uv --version
 
-# Check Node.js and npx
+# Verify Node.js and npx (optional)
 node --version
 npx --version
 
-# Check Docker
-docker --version
-docker info
+# Verify Git (optional)
+git --version
 ```
 
-If all commands output a version number without errors, the installation is successful.
+It's fine if the `(optional)` commands are not installed; `docker --version` and `docker info` must output successfully.
 
 ## 2. Obtaining Source Code
 
@@ -91,14 +111,14 @@ purrcat setup
 > ⚠️ `purrcat setup` is interactive. It will prompt you with the following questions during execution:
 
 The script will guide you through the following steps (see Section 4 for detailed breakdown):
-1. Auto-detect container engine (supports **Docker / Podman**)
+1. Detect the Docker engine (required; prompts you to install Docker Desktop if missing)
 2. Select sandbox image variant (lightweight or full)
 3. Choose image source (**pull from ghcr.io recommended**, or build locally)
 4. If building locally, select APT mirror
 5. Obtain sandbox image (pull or build)
 6. Resolve and install Python dependencies (`uv sync`)
 7. Download Embedding model
-8. Optionally install **WebUI** frontend dependencies (npm install)
+8. Optionally install frontend dependencies (npm install, needed for the Electron desktop / Web UI)
 
 > The entire process depends on network conditions. The first image pull may take 5~15 minutes. Engine preference is saved to `~/.purrcat/settings.json`.
 
@@ -197,15 +217,9 @@ After deployment, configure the model API keys and core parameters.
 
 ### 5.1 Generate Config Files
 
-```bash
-# Interactive config generation (confirm one by one)
-purrcat init
+PurrCat **auto-detects the `~/.purrcat/` config directory on first launch** and generates default templates if missing — no manual initialization required. To reset to defaults, delete the directory and restart.
 
-# Force overwrite existing configs
-purrcat init --force
-```
-
-This creates a `.purrcat/` directory in the project root with the following files:
+The `~/.purrcat/` directory contains the following files:
 
 | File | Purpose |
 |------|---------|
@@ -250,32 +264,49 @@ Edit `.purrcat/model.json` and replace the API key placeholders:
 - `vision` section: multimodal vision model (optional, provides a dedicated Vision consultant for non-vision LLMs)
 - Multiple API keys can be configured — the system will auto-balance load
 
-### 5.3 View Environment Reference
+### 5.3 Frontend Launch
+
+After configuring the model keys, launch the frontend (see Section 6). For the Electron desktop:
 
 ```bash
-purrcat env
+npm install && npm install --prefix ui && npm run dev
 ```
 
-> Note: The current version does not support environment variable overrides. Edit `.purrcat/` files directly.
+> Note: All settings live in `~/.purrcat/` files; there are no environment variable overrides in the current version.
 
 ## 6. Starting the Service
 
-### 6.1 Standard Mode (TUI)
+### 6.1 Electron Desktop (Recommended)
+
+After completing the deployment above, install the frontend and desktop dependencies, then start everything with one command:
 
 ```bash
-purrcat start
+npm install                 # Root dependencies (Electron, etc.)
+npm install --prefix ui     # Frontend dependencies
+npm run dev                 # Launches backend + frontend + Electron desktop window
 ```
 
-### 6.2 WebUI Mode
+### 6.2 Web UI (Lightweight, No Desktop)
+
+If you only want to use it in a browser, skip Electron by building the frontend static assets and starting the API-only mode:
 
 ```bash
-purrcat start --webui
+npm install --prefix ui
+npm run build:ui                            # Build frontend assets
+uv run python main.py --api --headless      # Open http://localhost:8000 in a browser
+```
+
+> Note: several features (local file access, terminal, etc.) depend on the Electron runtime and may misbehave in a plain browser. The desktop client is recommended for full functionality.
+
+### 6.3 Package a Desktop Installer (Optional)
+
+```bash
+npm run dist    # Build the frontend and invoke electron-builder to produce an installer (output to release/)
 ```
 
 On startup, the system will:
 1. Initialize MCP connections and fetch tool schemas
 2. Start the Agent main loop
 3. Auto-discover and start configured Sensors (Feishu, RSS, etc.)
-4. Launch the TUI interface (skipped in --webui mode, only API + frontend are started)
 
-**Shutdown**: Press `Ctrl+C` in the terminal to safely terminate all processes.
+**Shutdown**: Close the Electron window, or press `Ctrl+C` in the terminal for Web UI mode to safely terminate all processes.

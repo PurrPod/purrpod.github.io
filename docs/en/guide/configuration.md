@@ -1,13 +1,13 @@
 # Configuration Guide
 
-All configuration files are managed by the CLI and stored in the `.purrcat/` directory at the project root. Use `purrcat init` to interactively generate them.
+All configuration files are stored in the `~/.purrcat/` directory under your home folder. They are auto-generated on first launch — no manual initialization needed. You can also edit and save them from the frontend.
 
 All configuration files are in **JSON format** — edit and save to apply (some require restart).
 
 ## Directory Structure
 
 ```
-.purrcat/
+~/.purrcat/
 ├── model.json               # Model API Keys & rate limits
 ├── activate_sensor.json     # Sensor config (Feishu/RSS/Clock/Audio)
 ├── file.json                # File system permission management (allow/block lists)
@@ -320,11 +320,10 @@ When the Agent calls ComputerUse's `launch_app` action, it queries this mapping.
 | Command | Purpose | Example |
 |---------|---------|---------|
 | `purrcat setup` | One-click deploy (sandbox + Python deps + embedding model) | `purrcat setup` |
-| `purrcat init` | Generate `.purrcat/` config interactively | `purrcat init --force` |
 | `purrcat install` | Install extensions (skill / graph / mcp / sensor) | `purrcat install mcp tradingview` |
-| `purrcat update` | Update framework from GitHub Releases | `purrcat update --version="2026.05.15"` |
-| `purrcat start` | Launch PurrCat | `purrcat start --webui` |
 | `purrcat help` | Show help (with ASCII cat logo) | `purrcat help` |
+
+> To launch PurrCat: **Electron desktop** `npm run dev`; **Web UI** `uv run python main.py --api --headless`. Config files are auto-generated on first launch — no CLI init needed.
 
 ### Extension Installation
 
@@ -345,14 +344,14 @@ purrcat install graph daily_summary
 ### Version Update
 
 ```bash
-# Update to latest stable release
-purrcat update
+# Pull the latest code and sync dependencies
+git pull
+uv sync
 
-# Update to a specific version
-purrcat update --version="2026.05.15"
+# Or check out a specific version
+git checkout <tag>
+uv sync
 ```
-
-Update process: pull tag → checkout → sync Python dependencies (`uv sync`) → execute post-update migration scripts.
 
 ---
 
@@ -360,12 +359,24 @@ Update process: pull tag → checkout → sync Python dependencies (`uv sync`) �
 
 ### Container Engine
 
-`purrcat setup` auto-detects Docker and Podman, saving the preference to `~/.purrcat/settings.json`.
+`purrcat setup` auto-detects the **Docker** engine (the current version only supports Docker; Podman is no longer supported), saving the preference to `~/.purrcat/settings.json`.
 
-### WebUI
+### Frontend (Electron Desktop / Web UI)
 
-Optionally install WebUI dependencies during `purrcat setup`. Launch with `--webui` to start both the backend API and frontend dev server:
+`purrcat setup` can optionally install frontend dependencies (npm install) for the Electron desktop or Web UI.
+
+**Electron desktop (recommended)**:
 
 ```bash
-purrcat start --webui
+npm install                 # Root dependencies (Electron, etc.)
+npm install --prefix ui     # Frontend dependencies
+npm run dev                 # Launches backend + frontend + Electron desktop window
+```
+
+**Web UI (lightweight, no desktop)**:
+
+```bash
+npm install --prefix ui
+npm run build:ui                            # Build frontend assets
+uv run python main.py --api --headless      # Open http://localhost:8000 in a browser
 ```

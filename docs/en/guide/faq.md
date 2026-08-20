@@ -2,7 +2,7 @@
 
 ## 1. Environment Deployment
 
-**1. What are the prerequisites for running?** Core dependencies are: **uv** (Python package manager, install with one command), **Node.js** (provides `npx`), **Docker** (sandbox isolation).
+**1. What are the prerequisites for running?** The core requirement is: **Docker** (sandbox isolation — core functionality cannot run without it). **uv** (Python package manager), **Node.js** (provides `npm`/`npx`), and **Git** are not required for deployment, but they are the dependencies you need to fully experience the extension ecosystem (installing Skills, connecting MCP servers, building the frontend) — installing them is recommended.
 
 **2. Installation slow, timeout, or failure?**
 
@@ -13,7 +13,7 @@ Usually a network issue. If it persists, configure domestic mirror sources in ad
 **Must be installed**. The framework's local sandbox, Shell execution, and system-level read/write isolation all depend on Docker containers. Core functionality cannot run without Docker.
 
 **4. Do I need Node.js?**
-**Must be installed**. Node.js provides the `npx` command, which PurrCat's MCP extensions and WebUI frontend depend on.
+**Not required** — it doesn't affect core Agent deployment or runtime. However, Node.js provides `npm`/`npx`, which PurrCat's frontend (Electron desktop / Web UI) and some MCP extension tools depend on. Install it when you want the full UI and extension experience.
 
 **5. `purrcat` command not found?**
 Ensure you're executing from the project root directory.

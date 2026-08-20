@@ -4,11 +4,32 @@
 
 ## 1. 准备工作
 
-PurrCat 的运行需要以下依赖：**uv**（Python 包管理器）、**Node.js**（提供 `npx`）和 **Docker**（或 Podman，沙盒环境）。您可以尝试使用我们提供的命令行进行安装，以下命令均会自动配置系统环境变量。
+部署 PurrCat 只需一个**核心必需**依赖：**Docker**（用于构建和运行本地沙盒环境）。
 
-### uv（Python 包管理器）
+另外，**uv**、**Git**、**Node.js** 等工具**不是部署必需的**——缺少它们不会影响 PurrCat 核心功能运行；但它们是你**体验完整拓展功能**（安装 Skill 技能、接入 MCP 扩展、编译桌面端/Web 界面）时的必备依赖，不安装会严重影响拓展功能的玩法，因此建议一并装好。
 
-用于安装 PurrCat 的所有 Python 依赖。
+| 工具 | 作用 | 什么时候需要 |
+|------|------|-------------|
+| [Docker](https://docs.docker.com/get-docker/) | 沙盒容器引擎 | **部署核心必需**（沙盒 Bash、文件隔离） |
+| [uv](https://docs.astral.sh/uv/) | Python 包管理器 | `purrcat setup` 一键部署、Python 依赖管理 |
+| Node.js 18+ | 提供 `npm`/`npx` | 构建前端（Electron 桌面端 / Web UI）、部分 MCP 扩展 |
+| Git | 版本控制 | `git clone` 获取源码、云端拉取技能/传感器（也可下载压缩包） |
+
+### Docker（核心必需）
+
+用于构建和运行 PurrCat 专属的本地沙盒环境，保障 Agent 文件操作的安全性。
+
+- **Windows：** `winget install Docker.DockerDesktop`
+- **macOS：** `brew install --cask docker`
+- **Linux：** `curl -fsSL https://get.docker.com | sh`
+
+> **注意：**
+> 1. 安装完成后，请**务必重启您的命令行终端**，以确保自动配置的环境变量生效。
+> 2. 运行 PurrCat 前，请确认 Docker 后台服务已处于运行状态。
+
+### uv（可选，拓展功能推荐）
+
+用于安装 PurrCat 的所有 Python 依赖，`purrcat setup` 一键部署依赖它。
 
 - **Linux / macOS：**
   ```bash
@@ -19,9 +40,9 @@ PurrCat 的运行需要以下依赖：**uv**（Python 包管理器）、**Node.j
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-### Node.js
+### Node.js（可选，拓展功能必备）
 
-提供 `npx` 命令，用于运行 MCP 扩展工具和 WebUI 前端。
+提供 `npm`/`npx`，用于构建前端界面（Electron 桌面端 / Web UI），以及运行部分 MCP 扩展工具。未安装时不影响核心 Agent 功能，但无法使用桌面端与网页界面。
 
 - **Windows：**
   ```powershell
@@ -37,36 +58,35 @@ PurrCat 的运行需要以下依赖：**uv**（Python 包管理器）、**Node.j
   sudo apt-get install -y nodejs
   ```
 
-### Docker 或 Podman
+### Git（可选，推荐）
 
-用于构建和运行 PurrCat 专属的本地沙盒环境，保障 Agent 文件操作的安全性。系统会自动检测并优先使用 Docker。
+用于 `git clone` 获取源码，以及从社区拉取技能、传感器等扩展。不安装也可通过下载压缩包的方式获取源码。
 
-- **Windows：** `winget install Docker.DockerDesktop`
-- **macOS：** `brew install --cask docker`
-- **Linux：** `curl -fsSL https://get.docker.com | sh`
-
-> **注意：**
-> 1. 以上工具安装完成后，请**务必重启您的命令行终端**，以确保自动配置的环境变量生效。
-> 2. 运行 PurrCat 前，请确认 Docker 或 Podman 的后台服务已处于运行状态。
+- **Windows：** `winget install Git.Git`
+- **macOS：** `brew install git`
+- **Linux（Ubuntu/Debian 为例）：** `sudo apt-get install -y git`
 
 ### 验证安装
 
-重启终端后，执行以下命令确认各工具安装成功：
+重启终端后，执行以下命令确认已安装工具正常：
 
 ```bash
-# 验证 uv
+# 验证 Docker（必需）
+docker --version
+docker info
+
+# 验证 uv（可选）
 uv --version
 
-# 验证 Node.js 和 npx
+# 验证 Node.js 和 npx（可选）
 node --version
 npx --version
 
-# 验证 Docker
-docker --version
-docker info
+# 验证 Git（可选）
+git --version
 ```
 
-所有命令均正常输出版本号即表示安装成功。
+带 `（可选）` 的命令未安装时不报错即可，`docker --version` 与 `docker info` 必须能正常输出。
 
 ## 2. 获取源代码
 
@@ -91,14 +111,14 @@ purrcat setup
 > ⚠️ `purrcat setup` 是交互式的，运行过程中会依次提问以下选项，请根据提示做出选择：
 
 执行过程中会依次提问（详见第 4 节拆解说明）：
-1. 自动检测容器引擎（支持 **Docker / Podman**）
+1. 检测 Docker 引擎（必需，未安装会提示先安装 Docker Desktop）
 2. 选择沙盒镜像版本（完整版或轻量版）
 3. 选择镜像来源（**推荐从 ghcr.io 拉取**，也可本地构建）
 4. 如选择本地构建，再选 APT 镜像源
 5. 获取沙盒镜像（拉取或构建）
 6. 自动解析并安装 Python 依赖（`uv sync`）
 7. 下载 Embedding 向量化模型
-8. 可选安装 **WebUI** 前端依赖（npm install）
+8. 可选安装前端依赖（npm install，Electron 桌面端 / Web UI 需要）
 
 > 整个流程取决于网络状况，首次拉取基础镜像可能需要 5~15 分钟，请耐心等待。引擎偏好保存至 `~/.purrcat/settings.json`。
 
@@ -193,15 +213,9 @@ uv run python scripts/setup_emb.py
 
 ### 5.1 生成配置文件
 
-```bash
-# 交互式生成 .purrcat/ 配置目录（逐个确认）
-purrcat init
+PurrCat **首次启动时会自动检测 `~/.purrcat/` 配置目录**，若不存在则自动生成默认模板，无需手动初始化。如需重置为默认配置，删除该目录后重启即可。
 
-# 如需覆盖已有配置
-purrcat init --force
-```
-
-该命令会在项目根目录生成 `.purrcat/` 文件夹，包含以下文件：
+`~/.purrcat/` 目录包含以下文件：
 
 | 文件 | 用途 |
 |------|------|
@@ -248,23 +262,37 @@ purrcat init --force
 
 ## 6. 启动服务
 
-### 6.1 标准启动（WebUI 界面）
+### 6.1 Electron 桌面端（推荐）
+
+完成上述部署后，安装前端与桌面端依赖并一键启动：
 
 ```bash
-purrcat start
-# 等待启动完成后在浏览器访问对应地址即可，默认为 localhost:3000
+npm install                 # 根目录依赖（Electron 等）
+npm install --prefix ui     # 前端依赖
+npm run dev                 # 一键拉起 后端 + 前端 + Electron 桌面窗口
 ```
 
-### 6.2 启动 TUI（不推荐，因为 TUI 很久没有维护了）
+### 6.2 Web UI（轻量，无桌面端）
+
+如果只想在浏览器中使用，可跳过 Electron，构建前端静态文件后启动纯 API 模式：
 
 ```bash
-purrcat start --tui
+npm install --prefix ui
+npm run build:ui                            # 构建前端静态文件
+uv run python main.py --api --headless      # 浏览器打开 http://localhost:8000
+```
+
+> 注：本地文件操作、终端等功能依赖 Electron 运行时，纯浏览器模式下可能出现异常。建议使用桌面端获得完整体验。
+
+### 6.3 打包桌面安装包（可选）
+
+```bash
+npm run dist    # 构建前端并调用 electron-builder 生成安装包（输出到 release/ 目录）
 ```
 
 启动后系统会自动完成：
 1. 初始化 MCP 连接并拉取工具 Schema
 2. 启动 Agent 主循环
 3. 自动发现并启动已配置的 Sensor（飞书、RSS 等）
-4. 加载 TUI 界面（--webui 模式跳过，仅启动 API + 前端）
 
-**关闭服务**：在终端按下 `Ctrl+C` 即可安全终止所有进程。
+**关闭服务**：Electron 桌面端直接关闭窗口即可；Web UI 模式在终端按下 `Ctrl+C` 即可安全终止所有进程。

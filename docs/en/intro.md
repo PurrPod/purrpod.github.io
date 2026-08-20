@@ -147,6 +147,17 @@ If the LLM initiates multiple tool calls but only partial results return due to 
 
 Define the Agent's personality, values, and underlying work logic through `SOUL.md`.
 
+### PARADIGM: Declarative Execution Paradigm
+
+The Agent main loop is not a black box — it is declared in `PARADIGM.yaml` using **near-natural-language rules**. You can reshape the Agent's execution behavior like editing config, without touching any core code:
+
+- **Triggers**: Define cron-based scheduled triggers and injections to wake the Agent automatically (e.g., an 8:00 AM daily briefing).
+- **Lifecycle hooks**: Mount file reads, memory injections, and prompt injections at key moments such as system-prompt building, loop start, per-epoch iteration, and loop end.
+- **Tool-use checks**: e.g., verify the Memo tool was called to archive memory before the loop ends; inject a reminder if not, making behavioral rules actually take effect.
+- **Loop exit conditions**: Control when the main loop terminates via parameters like `loop_end_max_retry` to prevent infinite loops.
+
+The default template ships at `src/agent/system_rules/PARADIGM.yaml`; user overrides live at `~/.purrcat/core/PARADIGM.yaml` (takes precedence if present), and `@symbol` references to system files (e.g., `@RULES`, `@SOUL`, `@MEMORY`) are supported — "rewrite the Agent loop by editing config."
+
 ### Heartbeat + SOLO + TODO Autonomous Patrol
 
 Combined with the System Clock sensor, the Agent has its own heartbeat. During idle time, it proactively loads `SOLO.md` (work standards/expected activities) and `TODO.md` (to-do items) for autonomous system patrol, data maintenance, garbage cleanup, and progress reporting.

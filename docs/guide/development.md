@@ -68,7 +68,7 @@ Skill 的脚本通过 `Bash` 工具运行在 **Docker 沙盒**中，只能访问
 Harness 是 PurrCat 的 DAG 工作流引擎，通过 **配置驱动 + 原子节点** 的方式编排 AI 流程。每个节点是一个独立的 Python 模块，继承 `BaseNode` 实现 `execute` 方法。
 
 ::: tip 可视化 DAG 编排
-WebUI 支持拖拽节点和连线来动态编排工作流，编排完成后点击部署即可自动编译为 JSON 图定义并热加载。
+UI（Electron 桌面端 / Web UI）支持拖拽节点和连线来动态编排工作流，编排完成后点击部署即可自动编译为 JSON 图定义并热加载。
 :::
 
 ### 关键概念
@@ -242,7 +242,7 @@ class YourSensor(BaseSensor):
 
 Graph 是 Harness 工作流的**图定义文件**（JSON 格式），描述节点间的拓扑关系和依赖顺序。你可以通过两种方式创建 Graph：
 
-- **可视化拖拽**：在 WebUI 的编辑器页面中，直接拖拽节点、连线编排，保存后自动生成 JSON 图谱文件
+- **可视化拖拽**：在 UI（Electron 桌面端 / Web UI）的编辑器页面中，直接拖拽节点、连线编排，保存后自动生成 JSON 图谱文件
 - **手写 JSON**：直接编辑 `harness/graph/*.json`，定义节点类型、输入输出和连接关系
 
 一个 Graph 文件中包含节点列表（nodes）和边列表（edges），每个节点引用 `node/extensions/` 下的扩展实现。系统通过 `importlib.import_module` 自动发现节点，无需手动维护注册表。

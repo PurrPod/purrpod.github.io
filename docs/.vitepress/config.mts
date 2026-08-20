@@ -88,7 +88,7 @@ export default defineConfig({
               { text: 'Download ZIP', link: 'https://github.com/PurrPod/purrcat/archive/refs/heads/main.zip' }
             ]
           },
-          { text: 'Guide', link: '/en/guide/usage' },
+          { text: 'Guide', link: '/en/guide/deployment' },
           { text: 'Community', link: '/en/community/' }
         ]
       }

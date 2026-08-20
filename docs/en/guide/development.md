@@ -66,7 +66,7 @@ To operate host files, use the FileSystem tool (controlled by `.purrcat/file.jso
 Harness is PurrCat's DAG workflow engine that orchestrates AI pipelines through **configuration-driven + atomic nodes**. Each node is an independent Python module inheriting `BaseNode` implementing the `execute` method.
 
 ::: tip Visual DAG Editing
-The WebUI supports drag-and-drop node wiring for dynamic workflow orchestration. Click deploy after editing to auto-compile into JSON graph definitions and hot-load.
+The UI (Electron desktop / Web UI) supports drag-and-drop node wiring for dynamic workflow orchestration. Click deploy after editing to auto-compile into JSON graph definitions and hot-load.
 :::
 
 ### Key Concepts
@@ -240,7 +240,7 @@ After the latest refactoring, all Sensors run as independent subprocesses manage
 
 A Graph is the **workflow definition file** (JSON format) for the Harness engine, describing the topological relationships and dependency order between nodes. You can create a Graph in two ways:
 
-- **Visual drag-and-drop**: In the WebUI editor page, drag and connect nodes visually, then save to auto-generate the JSON graph file
+- **Visual drag-and-drop**: In the UI (Electron desktop / Web UI) editor page, drag and connect nodes visually, then save to auto-generate the JSON graph file
 - **Write JSON manually**: Edit `harness/graph/*.json` directly to define node types, inputs/outputs, and connections
 
 A Graph file contains a list of nodes and edges. Each node references an extension implementation under `node/extensions/`. The system auto-discovers nodes via `importlib.import_module` — no manual registry maintenance needed.
