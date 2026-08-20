@@ -9,7 +9,7 @@ Welcome to PurrCat development. The framework's design philosophy is modular and
                          ↑
          Node / Sensor / MCP Tool      ← Highest
           Skill / Graph                 ← Medium
-          SOUL.md / SOLO.md             ← Low
+          SOUL.md / GOAL.md             ← Low
 ```
 
 ---
@@ -249,20 +249,8 @@ Graphs support hot-plugging: import a JSON config file to dynamically load and h
 
 ---
 
-## 7. Configure Autonomous Patrol Rules (SOLO.md)
 
-SOLO.md is the **behavior specification file** for when the Agent is idle, located at `.purrcat/core/SOLO.md`. When the system clock triggers a heartbeat and there is no user interaction, the Agent automatically reads SOLO.md and follows the rules to execute tasks.
-
-SOLO.md consists of two parts:
-
-- **Absolute Rules**: Non-negotiable safety and behavior boundaries, such as "Host system read-only principle" and "Information security code"
-- **Expected Activities**: A list of tasks the Agent can autonomously perform during idle time, such as cleaning temporary files, auditing project code, checking for version updates, organizing memories, etc.
-
-You are free to edit SOLO.md and add new expected activities to customize the Agent's autonomous behavior.
-
----
-
-## 8. Development Principles
+## 7. Development Principles
 
 1. **One PR, one problem** — avoid giant mixed commits
 2. **Backward compatibility** — don't break existing features

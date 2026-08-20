@@ -116,30 +116,17 @@ Bottom line: **The best Skill isn't written — it's run into existence.**
 
 ## Unattended Mode: Let the Agent Work While You're Away
 
-PurrCat supports **unattended mode** — when you're not at the computer, the Agent can be repeatedly woken up according to your rules to execute tasks autonomously. The core mechanism: **Heartbeat + SOLO.md behavior rules + TODO.md task list**.
+PurrCat supports **unattended mode** — when you're not at the computer, the Agent can be repeatedly woken up according to your rules to execute tasks autonomously. The core mechanism: **Heartbeat + GOAL.md goals / to-dos**.
 
 ### Setup Steps
 
-#### 1. Write SOLO.md — The Behavioral Constitution
+#### 1. Write GOAL.md — The Goals / To-Dos List
 
-SOLO.md defines the Agent's **absolute底线** and **expected activities** during unsupervised periods. It includes:
+GOAL.md records the **goals and to-dos** you want the Agent to autonomously advance while idle, located at `~/.purrcat/core/GOAL.md`. The Agent reads it every time it wakes up and tries to make progress; when the file is empty it injects the fallback message "No pending tasks".
 
-- **Inviolable Rules** (red lines):
-  - Host filesystem is **read-only**: Never modify or delete any host files when the user is away
-  - Information security: Never leak API keys, passwords, or sensitive data
-  - Record ideas only — don't execute actions with potential side effects without approval
+Example goals: clean sandbox temp files, organize recent memories, audit project code, track updates in a domain, etc.
 
-- **Expected Activities** (what the Agent should do in idle time):
-  - **Sandbox cleanup**: Check and clean up temp files, test artifacts, expired caches
-  - **Memory organization**: Review recent interactions, archive new knowledge into memory and knowledge graph
-  - **Self-tracking**: Check the PurrCat repository for latest updates and Releases
-  - **Project patrol**: Review active project code, log potential bugs or improvements
-
-#### 2. Write TODO.md — The Task List
-
-If you have **specific tasks** for the Agent to work on during idle time, write them in TODO.md. The Agent reads this file every time it wakes up and tries to make progress.
-
-#### 3. Enable Heartbeat
+#### 2. Enable Heartbeat
 
 Set `system_clock`'s `enabled` to `true` in `activate_sensor.json`. The Heartbeat will **repeatedly wake** the Agent at the configured interval.
 
@@ -161,11 +148,10 @@ Set `system_clock`'s `enabled` to `true` in `activate_sensor.json`. The Heartbea
 
 1. Agent enters idle state
 2. Heartbeat triggers → Agent wakes up
-3. Agent reads **SOLO.md** to understand behavioral boundaries and expected activities
-4. Agent checks **TODO.md** for pending tasks
-5. Tasks exist → Execute tasks and update TODO.md progress
-6. No tasks → Pick an activity from SOLO.md's expected activities (cleanup/reflect/patrol)
-7. After execution, wait for the next Heartbeat
+3. Agent reads **GOAL.md** for pending goals / to-dos
+4. Goals exist → Execute and update GOAL.md progress
+5. No goals → Inject fallback "No pending tasks", Agent stays on standby
+6. After execution, wait for the next Heartbeat
 
 ### When to Use?
 
@@ -176,7 +162,7 @@ Set `system_clock`'s `enabled` to `true` in `activate_sensor.json`. The Heartbea
 - ❌ Tasks requiring real-time decisions or frequent confirmations aren't suitable
 - ❌ Tasks involving host filesystem modifications (unless authorized in file.json whitelist)
 
-Bottom line: **Write a good SOLO.md, turn on Heartbeat, and the Agent will work for you while you sleep.**
+Bottom line: **Write a good GOAL.md, turn on Heartbeat, and the Agent will work for you while you sleep.**
 
 ---
 
@@ -202,7 +188,7 @@ Integrate community financial Harness Engineering extension workflows to give yo
 
 ### 5. Scheduled Project Maintenance and Health Monitoring
 
-PurrCat's built-in Heartbeat + SOLO autonomous patrol mechanism allows you to set intervals for automatic wake-ups. It will retrieve the to-do list and SOLO rules to automatically monitor project health, clean up garbage, fix TODO/FIXME items, and achieve unattended autonomous iteration.
+PurrCat's built-in Heartbeat mechanism allows you to set intervals for automatic wake-ups. It retrieves the `GOAL.md` goals / to-dos to automatically monitor project health, clean up garbage, fix TODO/FIXME items, and achieve unattended autonomous iteration.
 
 
 ## Engineer Your Instructions

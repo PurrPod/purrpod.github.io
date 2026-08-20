@@ -2,6 +2,8 @@
 
 欢迎使用 PurrCat！本篇文档将引导您从零开始，通过源代码在本地部署并配置 PurrCat 私人 Agent 框架。
 
+> 💡 不想从源码部署？也可以前往 [GitHub Releases](https://github.com/PurrPod/purrcat/releases) 下载对应的桌面安装包（**Windows 已验证**；macOS 打包无法确保可用性，建议优先使用源码部署）。
+
 ## 1. 准备工作
 
 部署 PurrCat 只需一个**核心必需**依赖：**Docker**（用于构建和运行本地沙盒环境）。
@@ -220,15 +222,16 @@ PurrCat **首次启动时会自动检测 `~/.purrcat/` 配置目录**，若不�
 | 文件 | 用途 |
 |------|------|
 | `.purrcat/model.json` | 模型 API Key、Base URL、速率限制配置 |
-| `.purrcat/activate_sensor.json` | 传感器（飞书/RSS/时钟/语音）配置 |
+| `.purrcat/activate_sensor.json` | 传感器激活配置（默认空，市场安装后自动写入） |
 | `.purrcat/file.json` | 文件系统白名单与沙盒挂载配置 |
 | `.purrcat/mcp_config.json` | MCP 服务器扩展配置 |
-| `.purrcat/memory.json` | 记忆系统配置 |
-| `.purrcat/note.json` | 笔记工具偏好配置 |
+| `.purrcat/app_config.json` | 应用快捷配置（ComputerUse launch_app） |
 | `.purrcat/core/cron.json` | 定时任务列表 |
+| `.purrcat/core/heartbeat.json` | 心跳配置（间隔/开关） |
 | `.purrcat/core/MEMORY.md` | 系统级记忆档案 |
 | `.purrcat/core/SOUL.md` | Agent 人格定义 |
-| `.purrcat/core/SOLO.md` | 自主巡查规约 |
+| `.purrcat/core/GOAL.md` | 待办目标（心跳注入） |
+| `.purrcat/core/PARADIGM.yaml` | Agent 执行范式（触发器/钩子/检查） |
 
 ### 5.2 配置模型密钥
 

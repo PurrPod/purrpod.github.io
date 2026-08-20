@@ -99,7 +99,7 @@ Harness 模块采用"特定任务绑定特定工具"的图结构，支持在特�
 
 ### 5. Fetch 工具：深度信息获取
 
-用于获取详情：爬取网页并转为 Markdown、加载 Skill 技能文件、获取 MCP 工具参数 Schema、读取系统 SOLO.md 和 TODO.md。
+用于获取详情：爬取网页并转为 Markdown、加载 Skill 技能文件、获取 MCP 工具参数 Schema、读取系统 GOAL.md（待办目标）。
 
 ### 6. Memo 工具：记忆交互
 
@@ -158,9 +158,9 @@ PurrCat 的 Agent 主循环不是写死的黑盒，而是由 `PARADIGM.yaml` 以
 
 默认模板内置在 `src/agent/system_rules/PARADIGM.yaml`；用户配置位于 `~/.purrcat/core/PARADIGM.yaml`（存在即优先生效），并支持 `@符号` 引用系统文件（如 `@RULES`、`@SOUL`、`@MEMORY`），实现"改配置即可重写 Agent 循环"的极简定制体验。
 
-### Heartbeat + SOLO + TODO 自主巡查机制
+### Heartbeat + GOAL 自主巡查机制
 
-结合 System Clock（系统时钟）传感器，Agent 拥有自己的心跳节拍。空闲时根据定时唤醒机制，主动调取 `SOLO.md`（工作规范/期待活动）和 `TODO.md`（待办事项），进行系统级自主巡查、数据维护、垃圾清理甚至主动汇报进度。
+结合 System Clock（系统时钟）传感器，Agent 拥有自己的心跳节拍。空闲时根据定时唤醒机制，主动调取 `GOAL.md`（待办目标），进行系统级自主巡查、数据维护、垃圾清理甚至主动汇报进度；`GOAL.md` 为空时注入兜底提示「当前没有待办事项」。
 
 ### 智能上下文截断
 
@@ -300,13 +300,6 @@ PurrCat 配备了让 Agent 自己编写自己能力的进化机制。通过 Kern
 这种机制让 PurrCat 具备了持续自我进化的能力——每一次任务中沉淀的经验都可以固化为可复用的技能，Agent 的能力会随着使用不断增长。
 
 ---
-
-## 演进路线图
-
-- 多模态模型深度融合
-- 模型厂商 API 映射层
-- 标准化的 Skill / Harness 开源生态市场
-- 更多丰富的传感器与外部集成
 
 期待你的参与！让我们一起构建更好的 PurrCat。
 

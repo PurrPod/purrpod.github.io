@@ -9,18 +9,18 @@ All configuration files are in **JSON format** — edit and save to apply (some 
 ```
 ~/.purrcat/
 ├── model.json               # Model API Keys & rate limits
-├── activate_sensor.json     # Sensor config (Feishu/RSS/Clock/Audio)
-├── file.json                # File system permission management (allow/block lists)
-├── memory.json              # PurrMemo memory system config
+├── activate_sensor.json     # Sensor activation config (empty by default, filled by market installs)
+├── file.json                # File system permission model
 ├── mcp_config.json          # MCP server extensions config
 ├── app_config.json          # App shortcut config (ComputerUse launch_app)
+├── settings.json            # Global settings (data_root, etc.)
 └── core/
     ├── MEMORY.md            # Core general memory (user profile / work experience)
     ├── SOUL.md              # Agent personality definition (soul injection)
-    ├── SOLO.md              # Autonomous patrol rules (idle behavior)
+    ├── GOAL.md              # Goals / to-dos (heartbeat injection)
+    ├── PARADIGM.yaml        # Agent execution paradigm (triggers / hooks / tool checks)
     ├── cron.json            # Scheduled task list
-    ├── loop.json            # Periodic polling tasks (e.g., heartbeat check)
-    ├── TODO.md              # To-do list
+    ├── heartbeat.json       # Heartbeat config (interval / active)
     └── info.json            # Installed skills & workshops index
 ```
 
@@ -70,7 +70,7 @@ The `api_keys` list supports multiple keys. The system's `APIKeyManager` automat
 
 ## 2. Sensor Configuration (`activate_sensor.json`)
 
-All sensors are disabled by default — set `enabled` to `true` to activate.
+PurrCat adopts a **configuration-as-installation** model: sensor scripts are not pre-installed — install them from the UI market's "Sensors" page and they are written into this file automatically. You can also add entries manually; if the local script is missing at startup, the system pulls it from the cloud (GitHub) automatically. All sensors are disabled by default — set `enabled` to `true` to activate.
 
 ```json
 {
@@ -116,7 +116,7 @@ All sensors are disabled by default — set `enabled` to `true` to activate.
 | Config Key | Sensor | Type | Description |
 |------------|--------|------|-------------|
 | `feishu_bot` | Feishu Bot | message | Bidirectional Markdown card communication |
-| `system_clock` | System Clock | system | Heartbeat + cron alarm polling |
+| `system_clock` | System Clock | system | cron alarm polling (heartbeat lives in `core/heartbeat.json`) |
 | `rss_watcher` | RSS Watcher | subscribe | Blog article push monitoring |
 | `audio_assistant` | Audio Assistant | system | Ambient voice capture (Whisper + TTS) |
 
@@ -305,13 +305,51 @@ When the Agent calls ComputerUse's `launch_app` action, it queries this mapping.
 
 | File | Purpose | Description |
 |------|---------|-------------|
-| `MEMORY.md` | System memory archive | User profile & work experience, injected as System Prompt on session start |
-| `SOUL.md` | Agent personality | Defines tone, values, and behavior baseline |
-| `SOLO.md` | Autonomous patrol rules | Idle activity checklist & security boundaries (sandbox cleanup, self-tracking, project patrol) |
-| `cron.json` | Scheduled tasks | Polled by system clock sensor for timed wake-ups |
-| `loop.json` | Periodic polling tasks | Recurring tasks (e.g., heartbeat check) with interval and task hook |
-| `TODO.md` | To-do list | Current to-do items, maintained by the Agent |
-| `info.json` | Installation index | Tracks installed Skills and Workshops |
+| `MEMORY.md` | System memory archive | Fixes user profile & work experience, injected into System Prompt at startup |
+| `SOUL.md` | Agent personality | Defines character, tone, values — the behavioral baseline |
+| `GOAL.md` | Goals / to-dos | Current goals injected periodically by the heartbeat; empty file triggers a fallback prompt |
+| `PARADIGM.yaml` | Execution paradigm | Declaratively defines triggers, lifecycle hooks, tool-use checks, and loop exit conditions |
+| `cron.json` | Scheduled tasks | Polled by the system clock sensor to trigger timed wake-ups |
+| `heartbeat.json` | Heartbeat config | Wakes the Agent at intervals while idle (interval / active) |
+| `info.json` | Install index | Tracks installed Skills and Workshops |
+
+### PARADIGM.yaml: Declarative Execution Paradigm
+
+`~/.purrcat/core/PARADIGM.yaml` declaratively defines the Agent main loop's execution behavior with **near-natural-language rules**. Changes take effect after a restart — no core code changes needed:
+
+```yaml
+name: "default"
+description: "default system loop"
+loop_end_max_retry: 3          # Max retries for the main loop (prevents infinite loops)
+trigger:                       # Scheduled triggers: wake the Agent and inject content
+  - cron:
+      time: "08:08"
+      injection: "【Demo】闹钟响了"
+hooks:                         # Lifecycle hooks: mount actions at key moments
+  on_build_system_prompt:      # When building the system prompt
+    - file_operation:
+        path: "@RULES"
+        action: "read"
+  on_loop_end:                 # Before the loop exits
+    - tool_use_check:          # Tool-use check: inject a reminder if not satisfied
+        name: "Memo"
+        parameter_check:
+          - action: "add"
+        failed_prompt: "You did not call Memo to summarize memory this round"
+```
+
+Key fields:
+
+| Field | Description |
+|-------|-------------|
+| `trigger` | cron-based scheduled triggers and injections |
+| `hooks.on_build_system_prompt` | File reads / memory injections when building the prompt |
+| `hooks.on_loop_start` / `on_loop_epoch` | Prompt injections at loop start / per epoch |
+| `hooks.on_loop_end` | Pre-exit checks (e.g., force memory archiving) |
+| `hooks.on_tool_calling` | Checks and hints during tool calls |
+| `loop_end_max_retry` | Loop exit condition (max retry count) |
+
+`@symbol` references to system files (e.g., `@RULES`, `@SOUL`, `@MEMORY`) are supported; the default template ships at `src/agent/system_rules/PARADIGM.yaml`.
 
 ---
 

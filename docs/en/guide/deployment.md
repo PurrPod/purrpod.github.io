@@ -2,6 +2,8 @@
 
 Welcome to PurrCat! This document will guide you through deploying and configuring the PurrCat private Agent framework locally from source code.
 
+> 💡 Don't want to deploy from source? You can also grab the packaged desktop installer from [GitHub Releases](https://github.com/PurrPod/purrcat/releases) (**verified on Windows**; the macOS build cannot be guaranteed to work, so source deployment is preferred).
+
 ## 1. Prerequisites
 
 Deploying PurrCat requires only one **core dependency**: **Docker** (used to build and run the local sandbox environment).
@@ -224,15 +226,16 @@ The `~/.purrcat/` directory contains the following files:
 | File | Purpose |
 |------|---------|
 | `.purrcat/model.json` | Model API keys, Base URL, rate limits |
-| `.purrcat/activate_sensor.json` | Sensor config (Feishu/RSS/Clock/Audio) |
+| `.purrcat/activate_sensor.json` | Sensor activation config (empty by default, filled by market installs) |
 | `.purrcat/file.json` | File system whitelist & sandbox mounts |
 | `.purrcat/mcp_config.json` | MCP server extensions |
-| `.purrcat/memory.json` | Memory system config |
-| `.purrcat/note.json` | Note tool preferences |
+| `.purrcat/app_config.json` | App shortcut config (ComputerUse launch_app) |
 | `.purrcat/core/cron.json` | Scheduled tasks |
+| `.purrcat/core/heartbeat.json` | Heartbeat config (interval / active) |
 | `.purrcat/core/MEMORY.md` | System memory archive |
 | `.purrcat/core/SOUL.md` | Agent personality |
-| `.purrcat/core/SOLO.md` | Autonomous patrol rules |
+| `.purrcat/core/GOAL.md` | Goals / to-dos (heartbeat injection) |
+| `.purrcat/core/PARADIGM.yaml` | Agent execution paradigm (triggers / hooks / checks) |
 
 ### 5.2 Configure Model Keys
 

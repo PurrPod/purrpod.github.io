@@ -99,7 +99,7 @@ Semantic + keyword hybrid retrieval. Supports `web` (URL + summaries) and `local
 
 ### 5. Fetch: Deep Information Retrieval
 
-Fetches details: crawls web pages to Markdown, loads Skill files, retrieves MCP tool parameter Schemas, reads system SOLO.md and TODO.md.
+Fetches details: crawls web pages to Markdown, loads Skill files, retrieves MCP tool parameter Schemas, reads the system GOAL.md (goals / to-dos).
 
 ### 6. Memo: Memory Interaction
 
@@ -158,9 +158,9 @@ The Agent main loop is not a black box — it is declared in `PARADIGM.yaml` usi
 
 The default template ships at `src/agent/system_rules/PARADIGM.yaml`; user overrides live at `~/.purrcat/core/PARADIGM.yaml` (takes precedence if present), and `@symbol` references to system files (e.g., `@RULES`, `@SOUL`, `@MEMORY`) are supported — "rewrite the Agent loop by editing config."
 
-### Heartbeat + SOLO + TODO Autonomous Patrol
+### Heartbeat + GOAL Autonomous Patrol
 
-Combined with the System Clock sensor, the Agent has its own heartbeat. During idle time, it proactively loads `SOLO.md` (work standards/expected activities) and `TODO.md` (to-do items) for autonomous system patrol, data maintenance, garbage cleanup, and progress reporting.
+Combined with the System Clock sensor, the Agent has its own heartbeat. During idle time, it proactively loads `GOAL.md` (goals / to-dos) for autonomous system patrol, data maintenance, garbage cleanup, and progress reporting; when `GOAL.md` is empty it injects a fallback message "No pending tasks".
 
 ### Smart Context Truncation
 
@@ -301,11 +301,4 @@ This mechanism gives PurrCat the ability to continuously self-evolve — every e
 
 ---
 
-## Roadmap
-
-- Deep multimodal model integration
-- Model vendor API mapping layer
-- Standardized Skill / Harness open-source ecosystem marketplace
-- More sensors and external integrations
-
-Looking forward to your participation! Let's build a better PurrCat together.
+Your participation is welcome! Let's build a better PurrCat together.

@@ -9,18 +9,18 @@
 ```
 ~/.purrcat/
 ├── model.json               # 模型 API Key 与速率限制
-├── activate_sensor.json     # 传感器配置（飞书/RSS/时钟/语音）
+├── activate_sensor.json     # 传感器激活配置（默认空，市场安装后自动写入）
 ├── file.json                # 文件系统权限模型
-├── memory.json              # PurrMemo 记忆系统配置
 ├── mcp_config.json          # MCP 服务器扩展配置
 ├── app_config.json          # 应用快捷配置
+├── settings.json            # 全局设置（data_root 等）
 └── core/
     ├── MEMORY.md            # 核心通用记忆（用户画像/工作经验）
-    ├── SOLO.md              # 自主巡查规约（挂机行为规范）
     ├── SOUL.md              # Agent 人格定义（灵魂注入）
-    ├── TODO.md              # 待办事项清单
+    ├── GOAL.md              # 待办目标（心跳注入驱动）
+    ├── PARADIGM.yaml        # Agent 执行范式（触发器/钩子/工具检查）
     ├── cron.json            # 定时任务列表
-    ├── loop.json            # 循环轮询任务
+    ├── heartbeat.json       # 心跳配置（间隔/开关）
     └── info.json            # 已安装技能/工作坊索引
 ```
 
@@ -70,7 +70,7 @@
 
 ## 2. 传感器激活配置 (`activate_sensor.json`)
 
-定义哪些传感器被激活及其运行参数。所有传感器默认关闭，需将 `enabled` 设为 `true` 才能激活。
+定义哪些传感器被激活及其运行参数。PurrCat 采用**配置即安装**的拓展模式：传感器脚本默认不预装，通过 UI 市场的「传感器」页一键安装后自动写入此文件；也可手动添加配置，系统启动时若发现本地缺失对应脚本，会自动从云端（GitHub）拉取并运行。所有传感器默认关闭，需将 `enabled` 设为 `true` 才能激活。
 
 ```json
 {
@@ -117,7 +117,7 @@
 | 配置键名 | 传感器 | 类型 | 功能 |
 |----------|--------|------|------|
 | `feishu_bot` | 飞书机器人 | message | 双向 Markdown 卡片通讯 |
-| `system_clock` | 系统时钟 | system | 定时心跳 + cron 闹钟轮询 |
+| `system_clock` | 系统时钟 | system | cron 定时闹钟轮询（心跳见 `core/heartbeat.json`） |
 | `rss_watcher` | RSS 订阅 | subscribe | 定时抓取博客文章更新，订阅源通过 `RSS_SUBSCRIPTIONS_JSON` 传入 |
 | `audio_assistant` | 语音助手 | system | 环境语音监听（Whisper + TTS） |
 
@@ -222,11 +222,49 @@
 |------|------|------|
 | `MEMORY.md` | 系统级记忆档案 | 固化用户画像与工作经验，会话启动时注入 System Prompt |
 | `SOUL.md` | Agent 人格定义 | 定义性格、语气、价值观，从根本上决定 Agent 行为基调 |
-| `SOLO.md` | 自主巡查规约 | 定义挂机时的活动清单与安全底线（沙盒清理/本体追踪/项目巡查） |
-| `TODO.md` | 待办事项 | Agent 自主记录的待办清单 |
+| `GOAL.md` | 待办目标 | 记录 Agent 的当前目标与待办，由心跳机制周期性注入；为空时注入兜底提示 |
+| `PARADIGM.yaml` | 执行范式 | 声明式定义触发器、生命周期钩子、工具使用检查与循环退出条件 |
 | `cron.json` | 定时任务 | 由系统时钟传感器轮询，触发定时唤醒 |
-| `loop.json` | 循环轮询 | 定时循环执行的任务配置（如系统心跳） |
+| `heartbeat.json` | 心跳配置 | 空闲时按间隔自动唤醒 Agent（interval / active） |
 | `info.json` | 安装索引 | 记录已安装的技能包与工作坊清单 |
+
+### PARADIGM.yaml：声明式执行范式
+
+`~/.purrcat/core/PARADIGM.yaml` 以**近乎自然语言的规则**声明式定义 Agent 主循环的执行行为，修改后重启即可生效，无需改动任何核心代码：
+
+```yaml
+name: "default"
+description: "default system loop"
+loop_end_max_retry: 3          # 主循环最大重试次数（防死循环）
+trigger:                       # 定时触发器：到点自动唤醒并注入内容
+  - cron:
+      time: "08:08"
+      injection: "【Demo】闹钟响了"
+hooks:                         # 生命周期钩子：在关键节点挂载动作
+  on_build_system_prompt:      # 构建 System Prompt 时
+    - file_operation:
+        path: "@RULES"
+        action: "read"
+  on_loop_end:                 # 循环结束前
+    - tool_use_check:          # 工具使用检查：未达标则注入提醒
+        name: "Memo"
+        parameter_check:
+          - action: "add"
+        failed_prompt: "检查到本轮对话你未调用 Memo 工具进行记忆总结"
+```
+
+关键字段：
+
+| 字段 | 说明 |
+|------|------|
+| `trigger` | cron 定时触发与注入内容，让 Agent 到点自动被唤醒 |
+| `hooks.on_build_system_prompt` | 构建提示词时挂载文件读取、记忆注入等 |
+| `hooks.on_loop_start` / `on_loop_epoch` | 循环开始/每轮迭代时的提示注入 |
+| `hooks.on_loop_end` | 循环退出前的检查（如强制归档记忆） |
+| `hooks.on_tool_calling` | 工具调用时的检查与提示 |
+| `loop_end_max_retry` | 主循环退出条件（最大重试次数） |
+
+`@符号` 可引用系统文件（如 `@RULES`、`@SOUL`、`@MEMORY`），默认模板位于源码 `src/agent/system_rules/PARADIGM.yaml`。
 
 ---
 
