@@ -2,7 +2,7 @@
 
 欢迎使用 PurrCat！本篇文档将引导您从零开始，通过源代码在本地部署并配置 PurrCat 私人 Agent 框架。
 
-> 💡 不想从源码部署？也可以前往 [GitHub Releases](https://github.com/PurrPod/purrcat/releases) 下载对应的桌面安装包（**Windows 已验证**；macOS 打包无法确保可用性，建议优先使用源码部署）。
+> 💡 **Windows 用户**可直接前往 [GitHub Releases](https://github.com/PurrPod/purrcat/releases/latest) 的 **latest** 版本下载桌面安装包，开箱即用；**macOS / Linux 版本**因人力原因暂时未经测试，目前只能从源码部署。不过本项目仍处于快速迭代期，从源码部署始终是最好的选择——可以第一时间体验到最新功能与修复。
 
 ## 1. 准备工作
 

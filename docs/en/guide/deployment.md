@@ -2,7 +2,7 @@
 
 Welcome to PurrCat! This document will guide you through deploying and configuring the PurrCat private Agent framework locally from source code.
 
-> 💡 Don't want to deploy from source? You can also grab the packaged desktop installer from [GitHub Releases](https://github.com/PurrPod/purrcat/releases) (**verified on Windows**; the macOS build cannot be guaranteed to work, so source deployment is preferred).
+> 💡 **Windows users** can download the desktop installer directly from the **latest** [GitHub Releases](https://github.com/PurrPod/purrcat/releases/latest) and run it out of the box. **macOS / Linux builds** are not yet tested due to limited manpower, so source deployment is currently the only option on those platforms. That said, the project is still evolving rapidly — deploying from source is always the best choice to get the latest features and fixes as soon as they land.
 
 ## 1. Prerequisites
 
