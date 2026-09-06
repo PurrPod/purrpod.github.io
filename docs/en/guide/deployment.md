@@ -238,17 +238,6 @@ uv run python main.py --api --headless      # Open http://localhost:8000 in a br
 
 > Note: several features (local file access, terminal, etc.) depend on the Electron runtime and may misbehave in a plain browser. The desktop client is recommended for full functionality.
 
-### 5.3 Package a Desktop Installer (Optional)
-
-```bash
-npm run dist    # Build the frontend and invoke electron-builder to produce an installer (output to release/)
-```
-
-On startup, the system will:
-1. Initialize MCP connections and fetch tool schemas
-2. Start the Agent main loop
-3. Auto-discover and start configured Sensors (Feishu, RSS, etc.)
-
 **Shutdown**: Close the Electron window, or press `Ctrl+C` in the terminal for Web UI mode to safely terminate all processes.
 
 ## 6. Configure Models & Start Using

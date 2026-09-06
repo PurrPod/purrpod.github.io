@@ -234,17 +234,6 @@ uv run python main.py --api --headless      # 浏览器打开 http://localhost:8
 
 > 注：本地文件操作、终端等功能依赖 Electron 运行时，纯浏览器模式下可能出现异常。建议使用桌面端获得完整体验。
 
-### 5.3 打包桌面安装包（可选）
-
-```bash
-npm run dist    # 构建前端并调用 electron-builder 生成安装包（输出到 release/ 目录）
-```
-
-启动后系统会自动完成：
-1. 初始化 MCP 连接并拉取工具 Schema
-2. 启动 Agent 主循环
-3. 自动发现并启动已配置的 Sensor（飞书、RSS 等）
-
 **关闭服务**：Electron 桌面端直接关闭窗口即可；Web UI 模式在终端按下 `Ctrl+C` 即可安全终止所有进程。
 
 ## 6. 配置模型并开始使用
