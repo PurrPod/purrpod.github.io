@@ -6,16 +6,17 @@
 
 ## 1. 准备工作
 
-部署 PurrCat 只需一个**核心必需**依赖：**Docker**（用于构建和运行本地沙盒环境）。
+需要的依赖取决于您的部署方式：
 
-另外，**uv**、**Git**、**Node.js** 等工具**不是部署必需的**——缺少它们不会影响 PurrCat 核心功能运行；但它们是你**体验完整拓展功能**（安装 Skill 技能、接入 MCP 扩展、编译桌面端/Web 界面）时的必备依赖，不安装会严重影响拓展功能的玩法，因此建议一并装好。
+- **安装包方式（Windows）**：可直接从 [latest Release](https://github.com/PurrPod/purrcat/releases/latest) 下载桌面安装包。该方式**只需安装 Docker 一个核心依赖**即可运行，无需额外工具；
+- **从源码部署**：除 **Docker** 外，还需要 **uv** 与 **Node.js**（uv 负责 `purrcat setup` 一键部署与 Python 依赖管理，Node.js 用于构建 Electron 桌面端 / Web UI），并推荐安装 **Git** 以获取源码。
 
 | 工具 | 作用 | 什么时候需要 |
 |------|------|-------------|
-| [Docker](https://docs.docker.com/get-docker/) | 沙盒容器引擎 | **部署核心必需**（沙盒 Bash、文件隔离） |
-| [uv](https://docs.astral.sh/uv/) | Python 包管理器 | `purrcat setup` 一键部署、Python 依赖管理 |
-| Node.js 18+ | 提供 `npm`/`npx` | 构建前端（Electron 桌面端 / Web UI）、部分 MCP 扩展 |
-| Git | 版本控制 | `git clone` 获取源码、云端拉取技能/传感器（也可下载压缩包） |
+| [Docker](https://docs.docker.com/get-docker/) | 沙盒容器引擎 | **两种方式都必需**（沙盒 Bash、文件隔离） |
+| [uv](https://docs.astral.sh/uv/) | Python 包管理器 | **源码部署必需**（`purrcat setup` 一键部署、Python 依赖管理） |
+| Node.js 18+ | 提供 `npm`/`npx` | **源码部署必需**（构建 Electron 桌面端 / Web UI 前端） |
+| Git | 版本控制 | **源码部署推荐**（`git clone` 获取源码、云端拉取技能/传感器，也可下载压缩包） |
 
 ### Docker（核心必需）
 
@@ -29,9 +30,9 @@
 > 1. 安装完成后，请**务必重启您的命令行终端**，以确保自动配置的环境变量生效。
 > 2. 运行 PurrCat 前，请确认 Docker 后台服务已处于运行状态。
 
-### uv（可选，拓展功能推荐）
+### uv（源码部署必需）
 
-用于安装 PurrCat 的所有 Python 依赖，`purrcat setup` 一键部署依赖它。
+源码部署时必需，用于安装 PurrCat 的所有 Python 依赖，`purrcat setup` 一键部署依赖它。
 
 - **Linux / macOS：**
   ```bash
@@ -42,9 +43,9 @@
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-### Node.js（可选，拓展功能必备）
+### Node.js（源码部署必需）
 
-提供 `npm`/`npx`，用于构建前端界面（Electron 桌面端 / Web UI），以及运行部分 MCP 扩展工具。未安装时不影响核心 Agent 功能，但无法使用桌面端与网页界面。
+源码部署时必需，提供 `npm`/`npx`，用于从源码构建前端界面（Electron 桌面端 / Web UI），以及运行部分 MCP 扩展工具。安装包方式已内置编译好的前端，无需再安装。
 
 - **Windows：**
   ```powershell
@@ -60,9 +61,9 @@
   sudo apt-get install -y nodejs
   ```
 
-### Git（可选，推荐）
+### Git（源码部署推荐）
 
-用于 `git clone` 获取源码，以及从社区拉取技能、传感器等扩展。不安装也可通过下载压缩包的方式获取源码。
+源码部署时推荐，用于 `git clone` 获取源码，以及从社区拉取技能、传感器等扩展。不安装也可通过下载压缩包的方式获取源码。
 
 - **Windows：** `winget install Git.Git`
 - **macOS：** `brew install git`
@@ -73,22 +74,22 @@
 重启终端后，执行以下命令确认已安装工具正常：
 
 ```bash
-# 验证 Docker（必需）
+# 验证 Docker（两种方式都必需）
 docker --version
 docker info
 
-# 验证 uv（可选）
+# 验证 uv（源码部署需要）
 uv --version
 
-# 验证 Node.js 和 npx（可选）
+# 验证 Node.js 和 npx（源码部署需要）
 node --version
 npx --version
 
-# 验证 Git（可选）
+# 验证 Git（源码部署需要）
 git --version
 ```
 
-带 `（可选）` 的命令未安装时不报错即可，`docker --version` 与 `docker info` 必须能正常输出。
+安装包方式只需确保 Docker 验证通过；从源码部署则需上述工具全部就绪。
 
 ## 2. 获取源代码
 

@@ -6,16 +6,17 @@ Welcome to PurrCat! This document will guide you through deploying and configuri
 
 ## 1. Prerequisites
 
-Deploying PurrCat requires only one **core dependency**: **Docker** (used to build and run the local sandbox environment).
+What you need depends on how you deploy:
 
-**uv**, **Git**, and **Node.js** are **not required for deployment** — the core Agent runs fine without them. However, they are the dependencies you need to **fully experience the extension ecosystem** (installing Skills, connecting MCP servers, building the desktop/Web frontend). Skipping them won't block deployment, but will heavily limit the extension gameplay, so installing them is recommended.
+- **Installer (Windows)**: grab the desktop installer directly from the [latest Release](https://github.com/PurrPod/purrcat/releases/latest). This path **only requires Docker** as a core dependency — no extra tools needed;
+- **From source**: besides **Docker**, you also need **uv** and **Node.js** (uv powers `purrcat setup` one-click deployment and Python dependency management; Node.js builds the Electron desktop / Web UI frontend), plus **Git** to fetch the source code.
 
 | Tool | Purpose | When you need it |
 |------|---------|------------------|
-| [Docker](https://docs.docker.com/get-docker/) | Sandbox container engine | **Core requirement** (sandboxed Bash, file isolation) |
-| [uv](https://docs.astral.sh/uv/) | Python package manager | `purrcat setup` one-click deploy, Python dependency management |
-| Node.js 18+ | Provides `npm`/`npx` | Building the frontend (Electron desktop / Web UI), some MCP extensions |
-| Git | Version control | `git clone` source code, pulling community skills/sensors (or download the ZIP) |
+| [Docker](https://docs.docker.com/get-docker/) | Sandbox container engine | **Required for both paths** (sandboxed Bash, file isolation) |
+| [uv](https://docs.astral.sh/uv/) | Python package manager | **Source deployment only** (`purrcat setup` one-click deploy, Python deps) |
+| Node.js 18+ | Provides `npm`/`npx` | **Source deployment only** (builds the Electron desktop / Web UI frontend) |
+| Git | Version control | **Source deployment recommended** (`git clone`, community skills/sensors; or download the ZIP) |
 
 ### Docker (Core Requirement)
 
@@ -29,9 +30,9 @@ Used to build and run PurrCat's exclusive local sandbox environment, ensuring sa
 > 1. After installing, **restart your terminal** to ensure the environment variables take effect.
 > 2. Before running PurrCat, make sure the Docker service is running in the background.
 
-### uv (Optional, Recommended for Extensions)
+### uv (Required for Source Deployment)
 
-Used to install all of PurrCat's Python dependencies; `purrcat setup` relies on it for one-click deployment.
+Required when deploying from source: installs all Python dependencies, and `purrcat setup` relies on it for one-click deployment.
 
 - **Linux / macOS:**
   ```bash
@@ -42,9 +43,9 @@ Used to install all of PurrCat's Python dependencies; `purrcat setup` relies on 
   powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
   ```
 
-### Node.js (Optional, Required for Extensions)
+### Node.js (Required for Source Deployment)
 
-Provides `npm`/`npx` to build the frontend (Electron desktop / Web UI) and run some MCP extension tools. The core Agent works without it, but the desktop and web interfaces won't be available.
+Required when deploying from source: provides `npm`/`npx` to build the frontend (Electron desktop / Web UI) from source and run some MCP extension tools. The installer already bundles the compiled frontend, so none of this is needed on that path.
 
 - **Windows:**
   ```powershell
@@ -60,9 +61,9 @@ Provides `npm`/`npx` to build the frontend (Electron desktop / Web UI) and run s
   sudo apt-get install -y nodejs
   ```
 
-### Git (Optional, Recommended)
+### Git (Recommended for Source Deployment)
 
-Used for `git clone` to fetch the source code and pull community skills/sensors. Alternatively, download the ZIP archive without installing Git.
+Recommended when deploying from source: `git clone` the source code and pull community skills/sensors. Alternatively, download the ZIP archive without installing Git.
 
 - **Windows:** `winget install Git.Git`
 - **macOS:** `brew install git`
@@ -73,22 +74,22 @@ Used for `git clone` to fetch the source code and pull community skills/sensors.
 After restarting your terminal, run the following commands to confirm the installed tools work:
 
 ```bash
-# Verify Docker (required)
+# Verify Docker (required for both paths)
 docker --version
 docker info
 
-# Verify uv (optional)
+# Verify uv (source deployment only)
 uv --version
 
-# Verify Node.js and npx (optional)
+# Verify Node.js and npx (source deployment only)
 node --version
 npx --version
 
-# Verify Git (optional)
+# Verify Git (source deployment only)
 git --version
 ```
 
-It's fine if the `(optional)` commands are not installed; `docker --version` and `docker info` must output successfully.
+For the installer path, only Docker needs to pass. For source deployment, all of the above should be ready.
 
 ## 2. Obtaining Source Code
 
