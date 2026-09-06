@@ -210,63 +210,9 @@ uv run python scripts/setup_emb.py
 | HuggingFace 连接超时 | 配置 HuggingFace 镜像源：`export HF_ENDPOINT=https://hf-mirror.com` |
 | 磁盘空间不足 | 模型约 100MB，确保有足够空间 |
 
-## 5. 必要配置
+## 5. 启动服务
 
-一键部署完成后，需要配置模型 API 密钥等核心参数。
-
-### 5.1 生成配置文件
-
-PurrCat **首次启动时会自动检测 `~/.purrcat/` 配置目录**，若不存在则自动生成默认模板，无需手动初始化。如需重置为默认配置，删除该目录后重启即可。
-
-`~/.purrcat/` 目录包含以下文件：
-
-| 文件 | 用途 |
-|------|------|
-| `.purrcat/model.json` | 模型 API Key、Base URL、速率限制配置 |
-| `.purrcat/activate_sensor.json` | 传感器激活配置（默认空，市场安装后自动写入） |
-| `.purrcat/file.json` | 文件系统白名单与沙盒挂载配置 |
-| `.purrcat/mcp_config.json` | MCP 服务器扩展配置 |
-| `.purrcat/app_config.json` | 应用快捷配置（ComputerUse launch_app） |
-| `.purrcat/core/cron.json` | 定时任务列表 |
-| `.purrcat/core/heartbeat.json` | 心跳配置（间隔/开关） |
-| `.purrcat/core/MEMORY.md` | 系统级记忆档案 |
-| `.purrcat/core/SOUL.md` | Agent 人格定义 |
-| `.purrcat/core/GOAL.md` | 待办目标（心跳注入） |
-| `.purrcat/core/PARADIGM.yaml` | Agent 执行范式（触发器/钩子/检查） |
-
-### 5.2 配置模型密钥
-
-编辑 `.purrcat/model.json`，替换 API Key 占位符：
-
-```json
-{
-  "embedding": "embedding",
-  "main": {
-    "openai:deepseek-v4-flash": {
-      "api_keys": ["sk-your-first-api-key-here"],
-      "base_url": "https://api.deepseek.com",
-      "description": "LLM worker",
-      "rpm": 60,
-      "tpm": 1000000,
-      "concurrency": 3,
-      "max_token": 500000
-    }
-  },
-  "task": {},
-  "vision": {}
-}
-```
-
-**注意事项**：
-- 目前 PurrCat 仅支持可通过 OpenAI SDK 调用的模型
-- `main` 段配置全局 Agent 使用的模型
-- `task` 段配置后台子任务使用的模型（多 Agent 协作时必填，且不能用与 main 相同的 API Key），字段与 `main` 一致，可直接复制过去，换掉 API Key 即可
-- `vision` 段配置多模态视觉模型（可选，给不支持多模态的大模型配专属视觉顾问），字段也与 `main` 一致
-- 支持为同一模型配置多个 API Key，系统会自动负载均衡
-
-## 6. 启动服务
-
-### 6.1 Electron 桌面端（推荐）
+### 5.1 Electron 桌面端（推荐）
 
 完成上述部署后，安装前端与桌面端依赖并一键启动：
 
@@ -276,7 +222,7 @@ npm install --prefix ui     # 前端依赖
 npm run dev                 # 一键拉起 后端 + 前端 + Electron 桌面窗口
 ```
 
-### 6.2 Web UI（轻量，无桌面端）
+### 5.2 Web UI（轻量，无桌面端）
 
 如果只想在浏览器中使用，可跳过 Electron，构建前端静态文件后启动纯 API 模式：
 
@@ -288,7 +234,7 @@ uv run python main.py --api --headless      # 浏览器打开 http://localhost:8
 
 > 注：本地文件操作、终端等功能依赖 Electron 运行时，纯浏览器模式下可能出现异常。建议使用桌面端获得完整体验。
 
-### 6.3 打包桌面安装包（可选）
+### 5.3 打包桌面安装包（可选）
 
 ```bash
 npm run dist    # 构建前端并调用 electron-builder 生成安装包（输出到 release/ 目录）
@@ -300,3 +246,15 @@ npm run dist    # 构建前端并调用 electron-builder 生成安装包（输�
 3. 自动发现并启动已配置的 Sensor（飞书、RSS 等）
 
 **关闭服务**：Electron 桌面端直接关闭窗口即可；Web UI 模式在终端按下 `Ctrl+C` 即可安全终止所有进程。
+
+## 6. 配置模型并开始使用
+
+启动服务后，在 UI 中即可完成全部模型配置，无需手动编辑文件：
+
+1. 打开 PurrCat 界面，点击右上角的**设置**入口
+2. 在模型配置中填写 API Key（兼容 OpenAI SDK 的模型均可，如 DeepSeek），必要时修改 Base URL
+3. 保存后即可开始使用
+
+> 配置文件（`~/.purrcat/`）会在首次启动时自动生成默认模板，UI 中的修改会自动写回对应文件。如需重置为默认配置，删除该目录后重启即可。
+
+如需了解 `main` / `task` / `vision` 等模型字段的详细含义、多 API Key 负载均衡等高级配置，请参见 [配置指南](./configuration)。

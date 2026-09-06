@@ -214,73 +214,9 @@ Downloads the Embedding model (default: `sentence-transformers/paraphrase-multil
 | HuggingFace connection timeout | Set mirror: `export HF_ENDPOINT=https://hf-mirror.com` |
 | Disk space | Model is ~100MB, ensure sufficient space |
 
-## 5. Configuration
+## 5. Starting the Service
 
-After deployment, configure the model API keys and core parameters.
-
-### 5.1 Generate Config Files
-
-PurrCat **auto-detects the `~/.purrcat/` config directory on first launch** and generates default templates if missing — no manual initialization required. To reset to defaults, delete the directory and restart.
-
-The `~/.purrcat/` directory contains the following files:
-
-| File | Purpose |
-|------|---------|
-| `.purrcat/model.json` | Model API keys, Base URL, rate limits |
-| `.purrcat/activate_sensor.json` | Sensor activation config (empty by default, filled by market installs) |
-| `.purrcat/file.json` | File system whitelist & sandbox mounts |
-| `.purrcat/mcp_config.json` | MCP server extensions |
-| `.purrcat/app_config.json` | App shortcut config (ComputerUse launch_app) |
-| `.purrcat/core/cron.json` | Scheduled tasks |
-| `.purrcat/core/heartbeat.json` | Heartbeat config (interval / active) |
-| `.purrcat/core/MEMORY.md` | System memory archive |
-| `.purrcat/core/SOUL.md` | Agent personality |
-| `.purrcat/core/GOAL.md` | Goals / to-dos (heartbeat injection) |
-| `.purrcat/core/PARADIGM.yaml` | Agent execution paradigm (triggers / hooks / checks) |
-
-### 5.2 Configure Model Keys
-
-Edit `.purrcat/model.json` and replace the API key placeholders:
-
-```json
-{
-  "embedding": "embedding",
-  "main": {
-    "openai:deepseek-v4-flash": {
-      "api_keys": ["sk-your-first-api-key-here"],
-      "base_url": "https://api.deepseek.com",
-      "description": "LLM worker",
-      "rpm": 60,
-      "tpm": 1000000,
-      "concurrency": 3,
-      "max_token": 500000
-    }
-  },
-  "task": {},
-  "vision": {}
-}
-```
-
-**Notes**:
-- PurrCat currently supports only OpenAI SDK-compatible models
-- `main` section: model used by the global Agent
-- `task` section: model used by background subtasks (must use a different API key from `main`)
-- `vision` section: multimodal vision model (optional, provides a dedicated Vision consultant for non-vision LLMs)
-- Multiple API keys can be configured — the system will auto-balance load
-
-### 5.3 Frontend Launch
-
-After configuring the model keys, launch the frontend (see Section 6). For the Electron desktop:
-
-```bash
-npm install && npm install --prefix ui && npm run dev
-```
-
-> Note: All settings live in `~/.purrcat/` files; there are no environment variable overrides in the current version.
-
-## 6. Starting the Service
-
-### 6.1 Electron Desktop (Recommended)
+### 5.1 Electron Desktop (Recommended)
 
 After completing the deployment above, install the frontend and desktop dependencies, then start everything with one command:
 
@@ -290,7 +226,7 @@ npm install --prefix ui     # Frontend dependencies
 npm run dev                 # Launches backend + frontend + Electron desktop window
 ```
 
-### 6.2 Web UI (Lightweight, No Desktop)
+### 5.2 Web UI (Lightweight, No Desktop)
 
 If you only want to use it in a browser, skip Electron by building the frontend static assets and starting the API-only mode:
 
@@ -302,7 +238,7 @@ uv run python main.py --api --headless      # Open http://localhost:8000 in a br
 
 > Note: several features (local file access, terminal, etc.) depend on the Electron runtime and may misbehave in a plain browser. The desktop client is recommended for full functionality.
 
-### 6.3 Package a Desktop Installer (Optional)
+### 5.3 Package a Desktop Installer (Optional)
 
 ```bash
 npm run dist    # Build the frontend and invoke electron-builder to produce an installer (output to release/)
@@ -314,3 +250,15 @@ On startup, the system will:
 3. Auto-discover and start configured Sensors (Feishu, RSS, etc.)
 
 **Shutdown**: Close the Electron window, or press `Ctrl+C` in the terminal for Web UI mode to safely terminate all processes.
+
+## 6. Configure Models & Start Using
+
+Once the service is running, finish all model configuration right in the UI — no manual file editing required:
+
+1. Open the PurrCat interface and click the **Settings** entry in the top-right corner
+2. Enter your API Key in the model settings (any OpenAI SDK-compatible model works, e.g. DeepSeek); adjust the Base URL if needed
+3. Save, and you are ready to go
+
+> Config files (`~/.purrcat/`) are auto-generated with default templates on first launch, and UI changes are written back to them automatically. To reset to defaults, delete the directory and restart.
+
+For the meaning of the `main` / `task` / `vision` model fields, multi-key load balancing, and other advanced settings, see the [Configuration Guide](./configuration).
