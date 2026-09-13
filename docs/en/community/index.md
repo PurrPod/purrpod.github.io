@@ -4,4 +4,4 @@ title: PurrCat Ecosystem
 sidebar: false
 ---
 
-<EcoPageEn />
+<EcoPage />

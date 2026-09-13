@@ -3,17 +3,13 @@ import './style.css'
 import confetti from 'canvas-confetti'
 import { watch } from 'vue'
 import EcoPage from './components/EcoPage.vue'
-import EcoPageEn from './components/EcoPageEn.vue'
 import MarqueeCards from './components/MarqueeCards.vue'
-import MarqueeCardsEn from './components/MarqueeCardsEn.vue'
 
 export default {
   extends: DefaultTheme,
   enhanceApp({ app, router }) {
     app.component('EcoPage', EcoPage)
-    app.component('EcoPageEn', EcoPageEn)
     app.component('MarqueeCards', MarqueeCards)
-    app.component('MarqueeCardsEn', MarqueeCardsEn)
     if (typeof window !== 'undefined') {
       let observer = null
 

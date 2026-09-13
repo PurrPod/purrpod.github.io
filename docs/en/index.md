@@ -20,7 +20,7 @@ hero:
 
 ---
 
-<MarqueeCardsEn />
+<MarqueeCards />
 
 <div class="cases-section">
   <h2 class="cases-title">Showcase</h2>
