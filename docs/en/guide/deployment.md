@@ -2,7 +2,7 @@
 
 Welcome to PurrCat! A single command installs everything — after launch, simply complete the missing parts inside the frontend UI.
 
-> 💡 **Windows users** can also grab the desktop installer from the latest [GitHub Releases](https://github.com/PurrPod/purrcat/releases/latest) for a quick start. **macOS / Linux** installers are not yet tested due to limited manpower, so please use the one-line install below. The project is evolving rapidly — installing from source gets you the latest features and fixes as soon as they land.
+> ⚠️ **macOS / Linux** are not yet tested.
 
 ## 1. One-Line Install
 

@@ -2,7 +2,7 @@
 
 欢迎使用 PurrCat！只需一条命令即可完成安装，启动后到前端界面内部署缺失的部分即可使用。
 
-> 💡 **Windows 用户**也可以直接从 [GitHub Releases](https://github.com/PurrPod/purrcat/releases/latest) 下载桌面安装包快速上手；**macOS / Linux** 安装包因人力原因暂未测试，请使用下方的一键安装方式。本项目仍处于快速迭代期，从源码安装可以第一时间体验到最新功能与修复。
+> ⚠️ **macOS / Linux** 环境暂未经过测试。
 
 ## 1. 一键安装
 
