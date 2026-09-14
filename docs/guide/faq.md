@@ -10,7 +10,10 @@
 **Git** 
 运行以下命令不报错即安装成功：
 ```
---version
+docker --version
+uv --version
+node --version
+git --version
 ```
 
 **2. 安装很慢、超时或失败？** 
