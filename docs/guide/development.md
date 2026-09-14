@@ -1,30 +1,14 @@
 # 开发指南
 
-欢迎参与 PurrCat 的二次开发。本框架的设计哲学是模块化与解耦，提供四层扩展机制。
-
-## 开发路线图
-
-```
-                       难度
-                        ↑
-         Node / Sensor / MCP 工具       ← 最高
-          Skill / Graph (工作流图)       ← 中等
-          SOUL.md / GOAL.md             ← 低
-```
-
----
+欢迎参与 PurrCat 开发。框架按扩展深度提供五层机制：人格（SOUL.md）、Skill、Graph、自定义工具（MCP）、Sensor 与 AgentLoop（PARADIGM）。
 
 ## 1. 修改 Agent 人格（SOUL.md）
 
-编辑 `.purrcat/core/SOUL.md`，修改 Agent 的性格、语气和价值观。
+编辑 `.purrcat/core/SOUL.md`，修改 Agent 的性格、语气和价值观，或直接在前端界面修改。
 
-**注意**：只改 `SOUL.md`，不要动 `src/agent/system_rules/` 目录下的系统指令文件。系统指令包含工具指南和行为规范，改了可能导致工具调用异常。
+## 2. Skill 开发
 
----
-
-## 2. Skill 开发（无代码/低代码扩展）
-
-遵循 [Anthropic Skill 官方规范](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)。一个 Skill 就是 `skills/` 下的一个目录，核心是 `SKILL.md` 文件。
+遵循 [Anthropic Skill 官方规范](https://support.claude.com/en/articles/12512198-how-to-create-custom-skills)。一个 Skill 就是 `skills/` 下的一个目录，核心是 `SKILL.md` 文件。可以在前端界面使用 Trace2Skill 功能从一次经历中汲取相关经验生成技能，也可以对已有技能进行升级。
 
 ### 目录结构
 
@@ -38,92 +22,234 @@ skills/your_skill/
 
 ### SKILL.md 格式
 
+文件开头是两个必填的 frontmatter 字段：
 
-```
-开头必须有的两个字段：
-
+```markdown
 ---
 name: your_skill_name
 description: "触发条件描述。何时应该使用此技能？"
 ---
-
 
 # 技能标题
 
 ## Usage
 
 xxx
-
 ```
-### Skill 的限制
 
-Skill 的脚本通过 `Bash` 工具运行在 **Docker 沙盒**中，只能访问 `/agent_vm/` 目录下的文件，**不能直接读写宿主机文件**。
+使用 Trace2Skill 完成 Skill 开发后，可以进行 Trigger 测试验证 description 的语义竞争力，以提高日常使用时 Skill 可被正常召回的概率。
 
-如需操作宿主机文件，请使用 FileSystem 工具（受 `.purrcat/file.json` 白名单约束）。
+## 3. Graph 开发
 
----
+在前端 Editor 通过拖拽搭建思维链和工作流。
 
-## 3. Harness / 节点开发（DAG 工作流）
-
-Harness 是 PurrCat 的 DAG 工作流引擎，通过 **配置驱动 + 原子节点** 的方式编排 AI 流程。每个节点是一个独立的 Python 模块，继承 `BaseNode` 实现 `execute` 方法。
-
-::: tip 可视化 DAG 编排
-UI（Electron 桌面端 / Web UI）支持拖拽节点和连线来动态编排工作流，编排完成后点击部署即可自动编译为 JSON 图定义并热加载。
+::: tip KVCache 接线原则
+Agent 节点之间应传递 `messages` 输出（完整消息历史）：下游 Agent 以「前序对话 + 新增指令」续写，请求前缀稳定，KV Cache 命中率高。仅在汇聚多个独立分支时才使用 `summary` 输出（各分支无共享前缀，汇总摘要更省 token）。
 :::
 
-### 关键概念
+### 节点类型矩阵
 
-- **`process.py`**：主调度引擎，使用 `asyncio.gather(return_exceptions=True)` 实现并发调度，支持断点重连与状态回滚
-- **`BaseNode`**：节点基类，所有节点继承它并实现 `async execute(inputs, force_push_msgs, context)`
-- **`graph/*.json`**：DAG 图定义（JSON），描述节点间的拓扑关系和依赖，支持动态热插拔
-- **节点状态**：`READY → WAITING → RUNNING → COMPLETED | ERROR`，支持断点恢复与连带下游清除
-- **节点类型矩阵**（内置丰富节点，位于 `node/extensions/`）：
-  - `agent_loop` — LLM 循环思考对话
-  - `appender` — 消息追加
-  - `env_loader` — 环境变量加载
-  - `file_writer` / `text_file_reader` — 文件读写
-  - `html_viewer` — HTML 预览渲染
-  - `human_intervention` — 人工干预，挂起至 `WAITING` 交出控制权
-  - `if_else_router` / `switch_router` — 条件路由与多路分支分流
-  - `image_generator` — 图片生成（文生图/图生图编辑）
-  - `json_builder` / `json_extractor` — JSON 构建与提取
-  - `message_card_builder` — 消息卡片构建
-  - `task_input` / `task_output` — 任务入口与出口
-  - `template_renderer` — 模板渲染
-- **`yield_to_human`**：内置工具，允许 Agent 在无法完成任务时主动交还控制权
-- **安全回滚**：支持在特定节点注入人工指令，连带下游清除旧状态，防止数据脏读
-- **错误隔离**：失败的节点不影响其他独立分支，人类修复后仅重跑报错节点
+内置节点位于 `node/extensions/`：
 
-### 创建新的节点
+- `agent_loop` — LLM 循环思考对话
+- `appender` — 消息追加
+- `env_loader` — 环境变量加载
+- `file_writer` / `text_file_reader` — 文件读写
+- `html_viewer` — HTML 预览渲染
+- `human_intervention` — 人工干预，挂起至 `WAITING` 交出控制权
+- `if_else_router` / `switch_router` — 条件路由与多路分支分流
+- `image_generator` — 图片生成（文生图/图生图编辑）
+- `json_builder` / `json_extractor` — JSON 构建与提取
+- `mcp_info` — MCP 知识包，向下游注入推荐 MCP 工具的提示词
+- `message_card_builder` — 消息卡片构建
+- `task_input` / `task_output` — 任务入口与出口
+- `template_renderer` — 模板渲染（Jinja2 语法）
 
-扩展节点统一放置在 `src/harness/node/extensions/` 下，新建文件夹 `src/harness/node/extensions/your_node/`，包含两个文件：
+### 格式参考
 
-**`node.py`**：
-```python
-from src.harness.node.base import BaseNode
+下面是一个精简的多分析师股票决策图谱（`position` / `configSchema` 等编辑器元数据已省略，前端 Editor 会自动补全；资金面、情绪面分支与技术面同构，此处仅保留一条示范）：
 
-class Node(BaseNode):
-    async def execute(self, inputs, force_push_msgs, context):
-        # 实现你的节点逻辑
-        result = await self._process(inputs)
-        return {"output": result}
-```
-
-**`your_node.json`**（描述输入输出 Schema）：
 ```json
 {
-    "inputs": {
-        "input1": {"type": "str", "description": "输入描述"}
+  "version": "2.0",
+  "name": "trading",
+  "description": "股票操作分析",
+  "global_schema": {
+    "ticker": { "type": "any", "required": true, "description": "股票代码" }
+  },
+  "nodes": [
+    {
+      "id": "task_input",
+      "type": "task_input",
+      "name": "全局输入",
+      "config": {
+        "global_vars": [
+          { "name": "ticker", "required": true, "description": "股票代码" }
+        ]
+      }
     },
-    "outputs": {
-        "output": {"type": "str", "description": "输出描述"}
+    {
+      "id": "mcp_kit",
+      "type": "mcp_info",
+      "name": "MCP 知识包",
+      "config": { "mcp_servers": [{ "name": "tdx" }] }
+    },
+    {
+      "id": "collect_tpl",
+      "type": "template_renderer",
+      "name": "采集模板",
+      "config": {
+        "template": "请为股票 【{{ticker}}】 收集所有必要的原始数据（基础信息、量价数据、近期新闻）。收集完毕后，使用 task_done 工具输出包含所有数据的结构化 summary。\n\n可用的参考工具：{{mcp}}"
+      }
+    },
+    {
+      "id": "sys_collector",
+      "type": "message_card_builder",
+      "name": "Sys-数据采集员",
+      "config": {
+        "role": "system",
+        "content": "你是一位高效的【数据采集工程师】。你的任务是使用工具客观地收集市场数据，不做任何主观分析。"
+      }
+    },
+    {
+      "id": "user_collect",
+      "type": "message_card_builder",
+      "name": "User-采集",
+      "config": { "role": "user" }
+    },
+    {
+      "id": "appender_collect",
+      "type": "appender",
+      "name": "组装-采集"
+    },
+    {
+      "id": "agent_collect",
+      "type": "agent_loop",
+      "name": "Agent-数据采集",
+      "config": {
+        "task_done_info": {
+          "company_info": "公司基础行情与宏观状态",
+          "price_data": "最新报价数据",
+          "news_headlines": "近期重要新闻列表"
+        }
+      }
+    },
+    {
+      "id": "user_tech",
+      "type": "message_card_builder",
+      "name": "User-分配技术面",
+      "config": {
+        "role": "user",
+        "content": "你现在是【技术面分析师】。请阅读上述已采集的数据，分析对应股票的技术面，预测短期趋势，并输出 summary。"
+      }
+    },
+    {
+      "id": "appender_tech",
+      "type": "appender",
+      "name": "追加上下文-技术面"
+    },
+    {
+      "id": "agent_tech",
+      "type": "agent_loop",
+      "name": "Agent-技术面",
+      "config": {
+        "task_done_info": {
+          "trend": "上涨/下跌/震荡",
+          "key_levels": "关键技术支撑/阻力",
+          "analysis": "技术指标正文分析"
+        }
+      }
+    },
+    {
+      "id": "pm_tpl",
+      "type": "template_renderer",
+      "name": "PM决策板",
+      "config": {
+        "template": "以下是分析师对该股票的独立分析报告：\n\n【技术面】\n{{tech}}\n\n请结合以上维度进行最终投资决策。"
+      }
+    },
+    {
+      "id": "sys_pm",
+      "type": "message_card_builder",
+      "name": "Sys-投资经理",
+      "config": {
+        "role": "system",
+        "content": "你是首席【投资组合经理 (PM)】。请综合下属提交的报告进行多空逻辑辩论，评估潜在风险并给出操作评级。最后输出包含 'action' 的最终决策。"
+      }
+    },
+    {
+      "id": "user_pm",
+      "type": "message_card_builder",
+      "name": "User-PM提问",
+      "config": { "role": "user" }
+    },
+    {
+      "id": "appender_pm",
+      "type": "appender",
+      "name": "组装-PM"
+    },
+    {
+      "id": "agent_pm",
+      "type": "agent_loop",
+      "name": "Agent-PM决策",
+      "config": {
+        "task_done_info": {
+          "action": "Buy/Sell/Hold",
+          "confidence": "0-100",
+          "final_reason": "核心决策逻辑"
+        }
+      }
+    },
+    {
+      "id": "human_review",
+      "type": "human_intervention",
+      "name": "人工风控审核",
+      "config": {
+        "prompt_message": "🚨 投资方案已生成，请检查。输入 'ok' 批准交易，或输入理由打回重审："
+      }
+    },
+    {
+      "id": "task_output",
+      "type": "task_output",
+      "name": "全局输出",
+      "config": {
+        "target_vars": [
+          { "name": "final_decision", "type": "any" },
+          { "name": "human_instruction", "type": "string" }
+        ]
+      }
     }
+  ],
+  "edges": [
+    { "source": "task_input", "target": "collect_tpl", "sourceHandle": "ticker", "targetHandle": "ticker" },
+    { "source": "mcp_kit", "target": "collect_tpl", "sourceHandle": "mcp_kit_string", "targetHandle": "mcp" },
+    { "source": "collect_tpl", "target": "user_collect", "sourceHandle": "rendered_text", "targetHandle": "content" },
+    { "source": "sys_collector", "target": "appender_collect", "sourceHandle": "message_list", "targetHandle": "base_list" },
+    { "source": "user_collect", "target": "appender_collect", "sourceHandle": "message_list", "targetHandle": "append_list" },
+    { "source": "appender_collect", "target": "agent_collect", "sourceHandle": "merged_list", "targetHandle": "messages" },
+    { "source": "agent_collect", "target": "appender_tech", "sourceHandle": "messages", "targetHandle": "base_list" },
+    { "source": "user_tech", "target": "appender_tech", "sourceHandle": "message_list", "targetHandle": "append_list" },
+    { "source": "appender_tech", "target": "agent_tech", "sourceHandle": "merged_list", "targetHandle": "messages" },
+    { "source": "agent_tech", "target": "pm_tpl", "sourceHandle": "summary", "targetHandle": "tech" },
+    { "source": "pm_tpl", "target": "user_pm", "sourceHandle": "rendered_text", "targetHandle": "content" },
+    { "source": "sys_pm", "target": "appender_pm", "sourceHandle": "message_list", "targetHandle": "base_list" },
+    { "source": "user_pm", "target": "appender_pm", "sourceHandle": "message_list", "targetHandle": "append_list" },
+    { "source": "appender_pm", "target": "agent_pm", "sourceHandle": "merged_list", "targetHandle": "messages" },
+    { "source": "agent_pm", "target": "human_review", "sourceHandle": "summary", "targetHandle": "context_data" },
+    { "source": "human_review", "target": "task_output", "sourceHandle": "context_data", "targetHandle": "final_decision" },
+    { "source": "human_review", "target": "task_output", "sourceHandle": "human_reply", "targetHandle": "human_instruction" }
+  ],
+  "dependencies": {
+    "skills": [],
+    "mcps": ["tdx"]
+  }
 }
 ```
 
-然后在 DAG 图定义（`graph/*.json`）中引用该节点即可。系统通过 `importlib.import_module` 自动发现 `node/extensions/` 下的节点，无需维护注册表。
+### 注册方式
 
----
+- **前端 Editor 拖拽生成**：编辑完成后直接点击部署按钮即可完成注册；
+- **手写 JSON 文件**：将文件放入 `~/.purrcat/graph/` 目录即可完成注册。
 
 ## 4. 自定义工具（通过 MCP 协议）
 
@@ -147,115 +273,208 @@ PurrCat 的八大原生工具（Bash / FileSystem / Fetch / Search / Cron / Memo
 
 详见 [MCP 官方文档](https://modelcontextprotocol.io)。
 
----
+## 5. Sensor 开发（ACP 方言）
 
-## 5. Sensor 开发（环境感知）
+最新架构采用 ACP 方言 + PurrCat 自定义方言的词汇表，通过 stdio JSON-RPC 与宿主通信：
 
-Sensor 是 Agent 连接物理世界和外部应用的触角。最新重构后的 Sensor 体系基于 **独立子进程 + manager.py 管理 + BaseSensor 基类 + SensorGateway 网关** 架构，全面摒弃传统强耦合插件模式。
+- **独立子进程**：每个 Sensor 由 Manager 以 `uv run` 拉起，PEP 723 内联依赖即装即用，单个 Sensor 崩溃不影响主进程，watchdog 每 10 秒巡检并自动重启；
+- **零网络端口**：全部通信走 stdin/stdout 管道，**stdout 只能输出 JSON-RPC 行**（日志请打到 stderr，否则会被宿主忽略）；
+- **跟随活跃会话**：stdio Sensor 的 `session/new` 会自动绑定当前活跃会话，Sensor 端零决策零配置。
 
-### 目录结构
+### 可用接口
 
-传感器统一放置在 `src/sensor/extension/` 下：
+**入向（Sensor → 宿主，JSON-RPC 请求）：**
 
-```
-src/sensor/
-├── base.py                 # BaseSensor 基类
-├── gateway.py              # 消息网关
-├── manager.py              # 子进程管理器
-└── extension/              # ← 传感器实现放在这里
-    ├── feishu_bot.py       # 飞书机器人
-    ├── rss_watcher.py      # RSS 订阅
-    ├── system_clock.py     # 系统时钟
-    └── your_sensor.py      # 你的自定义传感器
-```
+| 方法 | 说明 |
+|------|------|
+| `initialize` | 握手，返回协议版本与宿主能力 |
+| `session/new` | 新建会话（自动跟随当前活跃会话） |
+| `session/prompt` | 向活跃会话注入消息。异步语义：立即返回 `promptId`，最终 `stopReason` 由 `_purrcat/turn_end` 通知回填 |
+| `session/load` | 绑定既有会话并回放历史 |
+| `session/list` / `session/delete` | 会话列举 / 删除 |
+| `session/cancel` | 通知：取消当前轮次 |
+| `_purrcat/upload_file` | 上传文件（base64，上限 20MB，按 Sensor 名落盘） |
+| `_purrcat/launch_task` | 后台拉起 Harness 图谱任务（`graph_name` / `inputs` / `title`） |
 
-### BaseSensor 基类
+**出向（宿主 → Sensor，通知）：**
+
+| 通知 | 说明 |
+|------|------|
+| `session/update` | 会话更新流。默认只含 `agent_message` 正文；配置 `tool_detail: true` 后额外含思考与工具调用细节 |
+| `_purrcat/turn_end` | 轮次结束（携带 `stopReason`），Sensor 据此收尾（如关闭流式卡片） |
+| `_purrcat/file` | Agent 消息中提及本地文件路径时推送文件内容（`name` / `mime` / `size` / `content_b64`） |
+
+### 最简实现
+
+开发时只需完成「配置 + 单文件代码」。一个最小可用的 Sensor 如下：
 
 ```python
-from src.sensor.base import BaseSensor
+# /// script
+# requires-python = ">=3.10"
+# dependencies = []   # PEP 723 内联依赖，uv 拉起时自动安装
+# ///
+import sys
+import json
+import threading
 
-class YourSensor(BaseSensor):
-    config_key = "your_sensor"  # 对应配置文件中的键名
+_REAL_STDOUT = sys.stdout
+sys.stdout = sys.stderr  # 防污染：stdout 只输出 JSON-RPC，日志全部转 stderr
 
-    def __init__(self, config_dict: dict):
-        super().__init__(
-            sensor_type="message",    # message / subscribe / system
-            sensor_name="your_sensor",
-            config_dict=config_dict
-        )
+SENSOR_NAME = "my_sensor"
+_SID = ""
+_SID_READY = threading.Event()
 
-    def _observe(self, *args, **kwargs):
-        """持续从外界接收信息（需 enable）"""
-        while self.is_enabled:
-            data = ...  # 从外部获取数据
-            if data:
-                from src.sensor.gateway import get_gateway
-                get_gateway().push(self, data)
 
-    def _express(self, message, **kwargs) -> bool:
-        """向该 Sensor 发送信息（需 enable）"""
-        ...  # 将 message 发送到外部
-        return True
+def _send(method: str, params: dict, rid: int = None):
+    _REAL_STDOUT.write(json.dumps(
+        {"jsonrpc": "2.0", "id": rid, "method": method, "params": params},
+        ensure_ascii=False,
+    ) + "\n")
+    _REAL_STDOUT.flush()
+
+
+def acp_connect():
+    """握手：initialize + session/new（网关自动绑定当前活跃会话）"""
+    _send("initialize", {"clientInfo": {"name": SENSOR_NAME}}, rid=1)
+    _send("session/new", {"clientInfo": {"name": SENSOR_NAME}}, rid=2)
+
+
+def prompt_agent(text: str):
+    """向当前活跃会话注入消息（fire-and-forget，stopReason 异步回填）"""
+    _SID_READY.wait(timeout=30)
+    if _SID:
+        _send("session/prompt", {
+            "sessionId": _SID,
+            "prompt": [{"type": "text", "text": text}],
+        })
+
+
+def _stdin_loop():
+    """消费宿主下发：记住 sessionId；需要消费 Agent 回复的传感器在此处理通知"""
+    global _SID
+    for line in sys.stdin:
+        try:
+            msg = json.loads(line)
+        except json.JSONDecodeError:
+            continue
+        if "method" in msg:
+            # 通知：session/update / _purrcat/turn_end / _purrcat/file
+            continue
+        if msg.get("id") == 2 and "result" in msg:
+            _SID = (msg.get("result") or {}).get("sessionId", "")
+            _SID_READY.set()
+
+
+acp_connect()
+# TODO: 在后台线程中监听外部事件，调用 prompt_agent() 注入给 Agent
+_stdin_loop()
 ```
 
-### SensorGateway 网关
+### 注册与安装
 
-网关维护一个**消息队列**和**活跃通道集合**：
+- **代码**：单文件放置到 `~/.purrcat/sensor/<name>.py`；
+- **配置**：在传感器配置（`~/.purrcat/activate_sensor.json`）中写一条：
 
-- **`push(sensor, content)`** — Sensor 调用此方法将消息推入队列，自动唤醒 Agent
-  - 收到 `/unbind` 命令 → 从 active_channels 移除
-  - type=message → 自动标记为活跃通道
-- **`send(message)`** — Agent 回复后调用，遍历 active_channels 逐一发送
+```json
+{
+  "my_sensor": {
+    "enabled": true,
+    "env": {},
+    "tool_detail": false
+  }
+}
+```
 
-### 自动发现与注册
+| 字段 | 说明 |
+|------|------|
+| `enabled` | 启动开关 |
+| `env` | 注入子进程的环境变量 |
+| `tool_detail` | 是否接收思考 / 工具调用细节（默认只接收正文） |
 
-系统启动时自动扫描 `src/sensor/extension/` 下所有 `BaseSensor` 子类：
+> **配置即安装**：本地缺失代码文件时，系统会自动从官方传感器仓库 [PurrPod/sensors](https://github.com/PurrPod/sensors) 下载对应单文件脚本并启动；前端 UI 提供可视化一键 ON/OFF 拨动开关。
 
-1. 检查 `config_key` 属性
-2. 读取 `activate_sensor.json` 中对应键的 `enabled` 状态
-3. 若 enable，通过 `manager.py` 拉起独立子进程（uv + PEP 723）
+## 6. AgentLoop 开发（PARADIGM）
 
-开发者只需在 `src/sensor/extension/` 下创建传感器文件，配置好 `config_key` 即可。
+AgentLoop 由 `PARADIGM.yaml` 声明式定义（存放于 `~/.purrcat/paradigms/`，其中 `PARADIGM.yaml` 是默认 Agent Loop），用近自然语言的规则描述触发器、生命周期 Hook、工具使用检查与循环退出条件——编辑配置即可重写 Agent 循环，无需改代码。
 
-### 独立子进程架构（类 MCP）
+### 五个 Hook
 
-最新重构后，所有 Sensor 作为独立子进程运行，通过 `manager.py` 统一管理：
+| Hook | 时机 |
+|------|------|
+| `on_build_system_prompt` | 构建系统提示词时 |
+| `on_loop_start` | 每次对话循环开始时 |
+| `on_loop_epoch` | 循环轮次节点：`delay` 在第 n 轮触发一次，`interval` 每隔 n 轮触发 |
+| `on_tool_calling` | 每次工具调用后 |
+| `on_loop_end` | 循环结束时的退出关卡 |
 
-- **uv + PEP 723 秒级环境**：集成 Astral uv 工具，利用单文件内联依赖规范，拉起 Sensor 时自动创建虚拟环境并安装依赖
-- **物理级防崩溃**：单个 Sensor 崩溃不影响主 Agent 进程存活
-- **Stdio JSON-RPC 通信**：采用标准输入输出管道，零网络开销
-- **防污染护盾**：子进程中拦截 `sys.stdout` 重定向到 `stderr`，仅合法 JSON 协议数据进入主程序解析器
-- **配置即安装**：在 `activate_sensor.json` 中配置几行 JSON，系统自动从云端下载脚本并运行
+### 动作类型
 
-### 内置 Sensor 参考
+Hook 内可编排以下动作：
 
-| Sensor | config_key | 类型 | 功能 |
-|--------|-----------|------|------|
-| Feishu | feishu | message | 飞书机器人双向通讯（Markdown 卡片） |
-| RSS | rss | subscribe | RSS 订阅定时抓取 |
-| Clock | heartbeat | system | 定时心跳 / 闹钟触发 |
-| Audio | audio | system | 环境语音监听（Whisper + pyttsx3） |
+| 动作 | 关键参数 | 说明 |
+|------|---------|------|
+| `injection` | `content`、`delay`、`interval` | 注入固定提示词 |
+| `file_operation` | `path`、`action`、`content`、`failed_prompt` | 文件操作：`read`（内容注入上下文）/ `exist_check` / `write_in` / `add_in` / `delete` |
+| `command_on` / `command_run` | `command`、`return_log`、`failed_prompt` | 宿主机命令执行；`return_log: true` 时把 stdout 注入上下文 |
+| `tool_use_check` | `name`、`parameter_check`、`successed_prompt`、`failed_prompt` | 检查本轮/本循环是否调用了指定工具（可匹配调用参数） |
+| `skill_info` | `skills` | 注入指定技能的 name + description（部分技能披露） |
+| `memo_injection` | `type`、`count` | 注入短期记忆：`full` 全量 / `light` 轻量 / 指定字段名，`count` 上限 30 |
 
----
+**路径符号**：`path` 支持别名 `@RULES`、`@SOUL`、`@MEMORY`、`@INFO` 与 `@SYS`（注入当前系统信息：OS / CPU / GPU / 沙盒目录），以及 `.purrcat/`、`agent_vm` 前缀。
 
-## 6. Graph 工作流图（可视化编排）
+**退出关卡**：`on_loop_end` 中所有检查项通过才允许退出循环；检查项可声明 `expect: fail` 表示「未满足才算通过」。`loop_end_max_retry`（默认 3）限制重试次数，超限强制放行，防止死循环。
 
-Graph 是 Harness 工作流的**图定义文件**（JSON 格式），描述节点间的拓扑关系和依赖顺序。你可以通过两种方式创建 Graph：
+### 默认 PARADIGM 示例
 
-- **可视化拖拽**：在 UI（Electron 桌面端 / Web UI）的编辑器页面中，直接拖拽节点、连线编排，保存后自动生成 JSON 图谱文件
-- **手写 JSON**：直接编辑 `harness/graph/*.json`，定义节点类型、输入输出和连接关系
+```yaml
+name: "default"
+description: "default system loop"
+loop_end_max_retry: 3
 
-一个 Graph 文件中包含节点列表（nodes）和边列表（edges），每个节点引用 `node/extensions/` 下的扩展实现。系统通过 `importlib.import_module` 自动发现节点，无需手动维护注册表。
+# 触发器：定时将消息注入 Agent
+trigger:
+  - cron:
+      time: "08:08"
+      injection: "【Demo】闹钟响了"
 
-Graph 支持热插拔——导入一个 JSON 配置文件即可完成动态装载与热更新，适合分发和复用复杂工作流。
-
----
-
+hooks:
+  on_build_system_prompt:
+    - file_operation:
+        path: "@RULES"
+        action: "read"
+    - file_operation:
+        path: "@SOUL"
+        action: "read"
+    - memo_injection:
+        type: "full"
+        count: 10
+    - file_operation:
+        action: "read"
+        path: "@SYS"          # 注入当前系统信息
+  on_loop_start:
+    - injection:
+        content: "如遇复杂任务，请先编排好主线路的执行计划，先规划TODO后执行"
+  on_loop_epoch:
+    - injection:
+        interval: 10
+        content: "[system regular hint]请随时按进度更新主路规划或与用户对齐需求，防止跑偏"
+  on_tool_calling:
+    - tool_use_check:
+        name: "ComputerUse"
+        successed_prompt: "组件找不到时使用 Vision 顾问进行询问。"
+  on_loop_end:
+    # 全部检查通过才允许退出循环
+    - tool_use_check:
+        name: "Memo"
+        parameter_check:
+          - action: "add"
+        failed_prompt: "检测到本轮对话你未调用 Memo 工具进行记忆总结，最好总结一下"
+```
 
 ## 7. 开发原则
 
-1. **一个 PR 只解决一个问题**，避免巨型混合提交
-2. **向后兼容**：修改核心代码时确保不影响已有功能
-3. **路径安全**：涉及宿主机文件操作时，必须校验路径在 project_root 内
+1. **一个 PR 只解决一个问题**：避免巨型混合提交
+2. 在涉及项目核心的更改时，应先通过 issue 进行讨论
+3. **路径安全**：涉及宿主机文件操作时，必须校验路径映射是否正确
 4. **提交信息用英文**
 5. **异常提示人性化**：每个已知异常场景都应有明确的引导提示

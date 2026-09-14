@@ -52,4 +52,4 @@ After launch, deploy the remaining missing parts (e.g. model configuration) righ
 purrcat desktop update    # Pull latest source & refresh dependencies
 ```
 
-For the meaning of the `main` / `task` / `vision` model fields, multi-key load balancing, and other advanced settings, see the [Configuration Guide](./configuration). For other issues, see the [FAQ](./faq).
+For other issues, see the [FAQ](./faq).

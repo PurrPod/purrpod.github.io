@@ -2,7 +2,7 @@
 
 欢迎使用 PurrCat！只需一条命令即可完成安装，启动后到前端界面内部署缺失的部分即可使用。
 
-> ⚠️ **macOS / Linux** 环境暂未经过测试。
+> ⚠️ **macOS / Linux** 环境因人力有限暂未经过测试。
 
 ## 1. 一键安装
 
@@ -20,7 +20,7 @@ curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | b
 irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex
 ```
 
-脚本会自动完成全部准备工作，无需手动安装任何依赖：
+脚本会自动完成全部准备工作：
 
 - 检测并自动安装缺失的前置依赖（Git、uv、Node.js 18+、Docker、Embedding 模型）
 - 克隆源码到 `~/purrcat` 并完成沙盒镜像与全部依赖的安装
@@ -52,4 +52,4 @@ purrcat desktop start    # 启动 Electron 桌面端
 purrcat desktop update    # 拉取最新源码并刷新依赖
 ```
 
-如需了解 `main` / `task` / `vision` 等模型字段的详细含义、多 API Key 负载均衡等高级配置，请参见[配置指南](./configuration)；遇到其他问题请参见[常见问题](./faq)。
+遇到问题请参见[常见问题](./faq)。
