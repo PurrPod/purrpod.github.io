@@ -333,12 +333,12 @@ mark.marker-green {
 @keyframes title-fill-cat { to { fill: #d47a5a; } }
 .hero-sub {
   font-size: clamp(1.15rem, 2.4vw, 1.45rem);
-  color: var(--ink-soft);
+  color: #2b2723;
   margin-bottom: 10px;
 }
 .hero-desc {
   font-size: 1.02rem;
-  color: var(--ink-soft);
+  color: #35312b;
   max-width: 34em;
   margin-bottom: 30px;
 }
