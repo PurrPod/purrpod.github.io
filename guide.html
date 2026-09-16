@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>指南 - PurrCat</title>
+  <meta name="description" content="PurrCat 指南：快速部署、开发指南与常见问题。">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html" aria-label="PurrCat 首页">
+        <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+        <span class="brand-name">PurrCat</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
+        <a class="nav-link" href="./index.html">首页</a>
+        <a class="nav-link" href="./updates.html">动态</a>
+        <a class="nav-link is-active" href="./guide.html">指南</a>
+        <a class="nav-link" href="./blog.html">Blog</a>
+        <a class="nav-link" href="./ecosystem.html">生态</a>
+      </nav>
+      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="gh-stars" data-gh-stars>★</span>
+      </a>
+      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================= 页面头 ======================= -->
+    <section class="page-hero">
+      <div class="container" style="position:relative;">
+        <svg class="doodle doodle-star-1 floaty" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 5l6.5 16 17 1.8-12.8 11.4L43.8 51 30 42.4 16.2 51l3.1-16.8L6.5 22.8l17-1.8z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round"/></svg>
+        <span class="page-hero-kicker">- the guide -</span>
+        <h1>PurrCat <mark class="marker">说明书</mark></h1>
+        <p>从安装部署，到开发扩展，再到疑难排查——都在这里了。</p>
+      </div>
+    </section>
+
+    <!-- ======================= 三本进阶指南 ======================= -->
+    <section class="section" style="padding-top:20px;">
+      <div class="container">
+        <div class="commit-wrap" data-reveal>
+          <div class="section-head" style="margin-bottom:8px;">
+            <h2 class="section-title">四本进阶秘籍</h2>
+            <span class="section-en">- pick one -</span>
+          </div>
+          <div class="card-grid">
+
+          <a class="card-link sticky-link" href="guide/deployment.html">
+            <div class="sticky-note sticky-yellow">
+              <div class="card-icon" style="background:#ffffff;">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3c5 2.5 8 7.5 8 13l-4 3.5h-8L8 16c0-5.5 3-10.5 8-13z" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><circle cx="16" cy="13" r="2.5" fill="#ffffff" stroke="#1a1a1a" stroke-width="2"/><path d="M12 22.5 L9 28 M20 22.5 L23 28 M16 24v5" stroke="#1a1a1a" stroke-width="2.4" stroke-linecap="round"/></svg>
+              </div>
+              <h3>部署指南</h3>
+              <p>一键安装、启动、在前端补全模型配置、更新。脚本会自动装好缺失的前置依赖（Git / uv / Node.js / Docker / 嵌入模型）。</p>
+              <div class="card-tags"><span class="card-tag">#安装</span><span class="card-tag">#启动</span><span class="card-tag">#更新</span></div>
+            </div>
+          </a>
+
+          <a class="card-link sticky-link" href="guide/development.html">
+            <div class="sticky-note sticky-blue">
+              <div class="card-icon" style="background:#ffffff;">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 26l2-6L22 6l4 4-14 14-6 2z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 8l4 4" stroke="#1a1a1a" stroke-width="2.5"/></svg>
+              </div>
+              <h3>开发指南</h3>
+              <p>五层扩展机制：人格（SOUL.md）、Skill、Graph、自定义工具（MCP）、Sensor 与 AgentLoop（PARADIGM）。改改配置就能重写 Agent。</p>
+              <div class="card-tags"><span class="card-tag">#Skill</span><span class="card-tag">#MCP</span><span class="card-tag">#PARADIGM</span></div>
+            </div>
+          </a>
+
+          <a class="card-link sticky-link" href="blog.html">
+            <div class="sticky-note sticky-pink">
+              <div class="card-icon" style="background:#ffffff;">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 7c3.3-1.8 6.7-1.8 10 0 3.3-1.8 6.7-1.8 10 0v18c-3.3-1.8-6.7-1.8-10 0-3.3-1.8-6.7-1.8-10 0z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 7v18" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round"/></svg>
+              </div>
+              <h3>使用指南</h3>
+              <p>另外三本讲「怎么装、怎么扩、怎么排错」，这本讲「怎么用好」——信息熵、DAG 工作流、Trace2Skill、无人值守，使用心得与方法论都在 Blog。</p>
+              <div class="card-tags"><span class="card-tag">#心得</span><span class="card-tag">#方法论</span></div>
+            </div>
+          </a>
+
+          <a class="card-link sticky-link" href="guide/faq.html">
+            <div class="sticky-note sticky-green">
+              <div class="card-icon" style="background:#ffffff;">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 11.5a5 5 0 1 1 7 4.5c-1.4.8-2 1.7-2 3.2" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="24.5" r="2" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2"/></svg>
+              </div>
+              <h3>常见问题</h3>
+              <p>前置依赖怎么检验？安装很慢、超时或失败？部署和虚拟化技术冲突？PurrCat 装不上的时候先来这里翻翻。</p>
+              <div class="card-tags"><span class="card-tag">#环境</span><span class="card-tag">#Docker</span><span class="card-tag">#排错</span></div>
+            </div>
+          </a>
+
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="./index.html">
+          <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+          <span class="brand-name">PurrCat</span>
+        </a>
+        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
+      </div>
+      <div class="footer-col">
+        <h4>文档</h4>
+        <a href="guide/deployment.html">部署指南</a>
+        <a href="guide/development.html">开发指南</a>
+        <a href="guide/faq.html">常见问题</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
+        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
+        <a href="ecosystem.html">生态一览</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
+        <span>PurrCat · 个人 AI Agent 框架</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

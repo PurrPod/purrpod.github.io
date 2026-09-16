@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>部署指南 - PurrCat</title>
+  <meta name="description" content="PurrCat 快速部署：一条命令完成安装，启动后到前端界面内部署缺失的部分即可使用。">
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html" aria-label="PurrCat 首页">
+        <img class="brand-logo" src="../assets/img/logo.png" alt="PurrCat logo">
+        <span class="brand-name">PurrCat</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
+        <a class="nav-link" href="../index.html">首页</a>
+        <a class="nav-link" href="../updates.html">动态</a>
+        <a class="nav-link is-active" href="../guide.html">指南</a>
+        <a class="nav-link" href="../blog.html">Blog</a>
+        <a class="nav-link" href="../ecosystem.html">生态</a>
+      </nav>
+      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="gh-stars" data-gh-stars>★</span>
+      </a>
+      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-kicker">- guide · deployment -</span>
+        <h1>快速部署</h1>
+        <p>只需一条命令即可完成安装，启动后到前端界面内部署缺失的部分即可使用。</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <article class="article" data-reveal>
+        <div class="warn-box">
+          <p><b>macOS / Linux</b> 环境因人力有限暂未经过测试。Windows 用户也可直接从最新的 <a href="https://github.com/PurrPod/purrcat/releases" target="_blank" rel="noopener">Release</a> 下载安装包快速上手。但项目正处于快速迭代阶段，强烈建议按照以下教程，从源码部署。</p>
+        </div>
+
+        <nav class="doc-toc">
+          <p class="toc-title">这一页讲了什么</p>
+          <ol>
+            <li><a href="#install">一键安装</a></li>
+            <li><a href="#start">启动</a></li>
+            <li><a href="#config">在前端补全配置</a></li>
+            <li><a href="#update">更新</a></li>
+          </ol>
+        </nav>
+
+        <h2 id="install">1. 一键安装</h2>
+        <p>在终端执行对应系统的命令：</p>
+
+        <div class="terminal">
+          <span class="term-label">macOS / Linux</span>
+          <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre><code>curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash</code></pre>
+        </div>
+
+        <div class="terminal">
+          <span class="term-label">Windows PowerShell</span>
+          <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre><code>irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex</code></pre>
+        </div>
+
+        <p>脚本会自动完成全部准备工作：</p>
+        <ul>
+          <li>检测并自动安装缺失的前置依赖（Git、uv、Node.js 18+、Docker、Embedding 模型）</li>
+          <li>克隆源码到 <code>~/purrcat</code> 并完成沙盒镜像与全部依赖的安装</li>
+          <li>注册全局 <code>purrcat</code> 命令</li>
+        </ul>
+
+        <div class="warn-box">
+          <p><b>Windows 注意</b>：Docker Desktop 首次安装后需要手动启动一次以接受用户协议，之后安装流程才能继续。</p>
+          <p>整个流程取决于网络状况，首次拉取沙盒镜像可能需要 <mark class="marker">5~15 分钟</mark>，请耐心等待。部署完成后，终端内会显示部署成功，如果没有看到部署成功的提示，则说明脚本可能崩溃或需要重启，需要重新运行部署命令或拆解步骤自行部署。</p>
+        </div>
+
+        <h2 id="start">2. 启动</h2>
+        <div class="terminal">
+          <span class="term-label">terminal</span>
+          <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre><code>purrcat desktop start    <span class="c-cm"># 启动 Electron 桌面端</span></code></pre>
+        </div>
+
+        <h2 id="config">3. 在前端补全配置</h2>
+        <p>启动后，剩余缺失的部分（如模型配置）直接在界面内完成部署即可，无需手动编辑文件：</p>
+        <ol>
+          <li>打开 PurrCat 界面，点击右上角的<b>设置</b>入口</li>
+          <li>查看最下面的部署页面，看看有没有什么依赖没有部署完成</li>
+          <li>在模型配置中填写 API Key（兼容 OpenAI SDK 的模型均可，如 DeepSeek），必要时修改 Base URL</li>
+          <li>保存后即可开始使用</li>
+        </ol>
+
+        <div class="tip-box" data-title="配置文件在哪里">
+          <p>配置文件（<code>~/.purrcat/</code>）会在首次启动时自动生成默认模板，UI 中的修改会自动写回对应文件。如需重置为默认配置，删除该目录后重启即可。</p>
+        </div>
+
+        <h2 id="update">4. 更新</h2>
+        <div class="terminal">
+          <span class="term-label">terminal</span>
+          <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+          <pre><code>purrcat desktop update    <span class="c-cm"># 拉取最新源码并刷新依赖</span></code></pre>
+        </div>
+
+        <p>遇到问题请参见<a href="faq.html">常见问题</a>。</p>
+
+        <div class="article-footer">
+          <a class="back-link" href="../guide.html">← 返回指南</a>
+          <a class="back-link" href="development.html">下一本：开发指南 →</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html">
+          <img class="brand-logo" src="../assets/img/logo.png" alt="PurrCat logo">
+          <span class="brand-name">PurrCat</span>
+        </a>
+        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
+      </div>
+      <div class="footer-col">
+        <h4>文档</h4>
+        <a href="deployment.html">部署指南</a>
+        <a href="development.html">开发指南</a>
+        <a href="faq.html">常见问题</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
+        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
+        <a href="../ecosystem.html">生态一览</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
+        <span>PurrCat · 个人 AI Agent 框架</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

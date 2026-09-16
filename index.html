@@ -1,0 +1,413 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PurrCat - 经济、高效、可定制的个人 AI Agent 框架</title>
+  <meta name="description" content="PurrCat 是一个经济、高效、可定制、本地优先的个人 AI Agent 框架：多层记忆、DAG 工作流、沙盒安全、自进化能力，MIT 开源。">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link rel="preconnect" href="https://avatars.githubusercontent.com">
+  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <!-- ======================= 导航 ======================= -->
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html" aria-label="PurrCat 首页">
+        <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+        <span class="brand-name">PurrCat</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
+        <a class="nav-link is-active" href="./index.html">首页</a>
+        <a class="nav-link" href="./updates.html">动态</a>
+        <a class="nav-link" href="./guide.html">指南</a>
+        <a class="nav-link" href="./blog.html">Blog</a>
+        <a class="nav-link" href="./ecosystem.html">生态</a>
+      </nav>
+      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="gh-stars" data-gh-stars>★</span>
+      </a>
+      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- ======================= Hero ======================= -->
+    <section class="hero">
+      <div class="container hero-inner">
+        <div class="hero-text">
+          <h1 class="hero-title" aria-label="PurrCat">
+            <svg class="title-draw" viewBox="0 0 480 122" aria-hidden="true" focusable="false">
+              <text class="title-draw-text" x="4" y="104"><tspan class="td-purr">Purr</tspan><tspan class="td-cat">Cat</tspan></text>
+            </svg>
+          </h1>
+          <p class="hero-sub">认真干活、自主运行的<em>个人 AI Agent</em></p>
+          <p class="hero-desc">
+            经济、高效、可定制、本地优先。它不是又一个特定场景的 Agent 应用，而是一套完整的
+            Agent 基础设施——向下沉淀<mark class="marker">记忆、安全、调度与感知</mark>能力，
+            向上以插件形式承载一切可扩展的功能。你在场时它认真工作，你离开时它也能自主干活。
+          </p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="guide/deployment.html">快速开始</a>
+            <a class="btn btn-ghost" href="guide.html">翻翻指南</a>
+          </div>
+        </div>
+        <div class="hero-fig">
+          <img class="hero-img" src="assets/img/heros.png" alt="PurrCat 形象" width="480" height="360">
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 特性小旗子 ======================= -->
+    <section class="feature-strip" aria-label="核心特性">
+      <div class="container">
+        <div class="chips">
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 4l12 6-12 6L4 10l12-6z" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M4 16l12 6 12-6M4 22l12 6 12-6" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            混合记忆与知识图谱
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="6" cy="8" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="6" cy="24" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="26" cy="16" r="3.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/><path d="M9 9.5 L22.8 14.8 M9 22.5 L22.8 17.2" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+            Harness DAG 工作流
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3l11 4v8c0 7-4.5 11.5-11 14C9.5 26.5 5 22 5 15V7l11-4z" fill="#5da885" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M11 15.5l3.5 3.5 6.5-7" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            沙盒级宿主机安全
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 16c0-3.5 5-3.5 5 0s-5 7-9 4.5S9 11 14 8.5s13-2 14 4.5-6 12.5-14 11S3 16 8 9.5" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round"/></svg>
+            Trace2Skill 自进化
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3v6M20 3v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/><path d="M7 9h18v5a9 9 0 0 1-9 9 9 9 0 0 1-9-9V9z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 23v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/></svg>
+            传感器主动感知
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M11 11.5a5 5 0 1 1 7 4.5c-1.4.8-2 1.7-2 3.2" fill="none" stroke="#1a1a1a" stroke-width="3" stroke-linecap="round"/><circle cx="16" cy="24.5" r="2" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2"/></svg>
+            Token 经济学
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 13h4.5a3.2 3.2 0 1 1 6.3 0H22v4.5a3.2 3.2 0 1 1 0 6.3V28H7z" fill="#b58ad8" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/></svg>
+            无代码拓展生态
+          </span>
+          <span class="chip">
+            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 11h16" stroke="#d47a5a" stroke-width="2.8" stroke-linecap="round"/><path d="M17 6.5l5 4.5-5 4.5" fill="none" stroke="#d47a5a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 21H11" stroke="#5f95e8" stroke-width="2.8" stroke-linecap="round"/><path d="M15 16.5l-5 4.5 5 4.5" fill="none" stroke="#5f95e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            ACP与MCP协议兼容
+          </span>
+        </div>
+      </div>
+    </section>
+
+    <div class="doodle-divider" aria-hidden="true"></div>
+
+    <!-- ======================= 最新动态 ======================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">最新动态</h2>
+          <span class="section-en">- updates -</span>
+          <a class="section-more" href="updates.html">查看全部 →</a>
+        </div>
+        <div class="commit-wrap" data-reveal>
+          <ul class="update-list" id="update-list"></ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 最近 Blog ======================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">最新博客</h2>
+          <span class="section-en">- from the blog -</span>
+          <a class="section-more" href="blog.html">查看全部 →</a>
+        </div>
+        <div class="card-grid">
+          <a class="card-link" href="blog/entropy.html" data-reveal>
+            <div class="doodle-card">
+              <span class="card-num">01</span>
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="4" y="4" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="17" y="4" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="4" y="17" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="17" y="17" width="11" height="11" rx="2.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/></svg>
+              </div>
+              <h3 class="card-title">从一个骗局讲起</h3>
+              <p class="card-desc">「一句话生成一个符合你期待的网站？」——用「信息熵不可逆」这六个字，戳破当下 AI 叙事的最大泡沫。</p>
+              <div class="card-tags"><span class="card-tag">#信息熵</span><span class="card-tag">#使用哲学</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+          <a class="card-link" href="blog/dag.html" data-reveal>
+            <div class="doodle-card">
+              <span class="card-num">02</span>
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="6" cy="8" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="6" cy="24" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="26" cy="16" r="3.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/><path d="M9 9.5 L22.8 14.8 M9 22.5 L22.8 17.2" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
+              </div>
+              <h3 class="card-title">如何使用 DAG 工作流引擎</h3>
+              <p class="card-desc">拖拽编排思维链与多智能体协作：把一份长长的 SOP 拆成多个节点，每个节点提示词短而精。</p>
+              <div class="card-tags"><span class="card-tag">#DAG</span><span class="card-tag">#工作流</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+          <a class="card-link" href="blog/evolve.html" data-reveal>
+            <div class="doodle-card">
+              <span class="card-num">03</span>
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 16c0-3.5 5-3.5 5 0s-5 7-9 4.5S9 11 14 8.5s13-2 14 4.5-6 12.5-14 11S3 16 8 9.5" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round"/></svg>
+              </div>
+              <h3 class="card-title">如何使用自我进化工厂</h3>
+              <p class="card-desc">Trace to Skill：创建 Skill 最容易踩的坑是从零开始写。最佳实践是——先跑一遍，再总结成 Skill。</p>
+              <div class="card-tags"><span class="card-tag">#Trace2Skill</span><span class="card-tag">#最佳实践</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+          <a class="card-link" href="blog/unattended.html" data-reveal>
+            <div class="doodle-card">
+              <span class="card-num">04</span>
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 20.5A10.5 10.5 0 0 1 11.5 8 10.5 10.5 0 1 0 24 20.5z" fill="#5f95e8" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><circle cx="25" cy="8" r="1.6" fill="#1a1a1a"/><circle cx="28.5" cy="13" r="1.1" fill="#1a1a1a"/></svg>
+              </div>
+              <h3 class="card-title">无人值守：让 Agent 在空闲时自主工作</h3>
+              <p class="card-desc">写好 GOAL.md，打开 Heartbeat 心跳，Agent 就能在你睡觉的时候替你干活：巡查代码、追踪资讯、整理记忆。</p>
+              <div class="card-tags"><span class="card-tag">#Heartbeat</span><span class="card-tag">#GOAL</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <div class="doodle-divider" aria-hidden="true"></div>
+
+    <!-- ======================= 介绍 + 配图 ======================= -->
+    <section class="section">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">PurrCat 长什么样</h2>
+          <span class="section-en">- under the fur -</span>
+        </div>
+
+        <!-- 01 总览 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row">
+            <div class="doc-text">
+              <span class="doc-index">1</span>
+              <h3 class="doc-title">先睹为快 · 主界面</h3>
+              <p>PurrCat 不是又一个特定场景的 Agent 应用，而是一套完整的 Agent 基础设施。设计初心：在保障宿主机<b>绝对安全</b>的前提下，打造一个拥有私人工作空间、能够自由活动的个人 Agent——你在场时认真工作，你离开时自主干活。</p>
+              <ul>
+                <li><b>Electron 桌面端</b>开箱即用，内置独立浏览器</li>
+                <li><b>Git 式会话分支</b>：new / branch / switch 自由切换</li>
+                <li><b>一切皆插件</b>：工具、技能、传感器、任务图均为插件</li>
+                <li><b>配置驱动</b>：改改 JSON / YAML 就能重写 Agent 行为</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/main-ui.png" alt="PurrCat 主界面" loading="lazy">
+              </div>
+              <span class="fig-note">PurrCat 主界面 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 02 Harness -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row flip">
+            <div class="doc-text">
+              <span class="doc-index">2</span>
+              <h3 class="doc-title">可编排的 Harness 工作流引擎</h3>
+              <p>连 Agent 的思维链本身都是可编排的——复杂任务被拆解为一张可流转的任务图（DAG），由主 Agent 统一分配任务，避免 Agent 间自然语言对话带来的 Token 冗余。</p>
+              <ul>
+                <li><b>JSON 驱动热插拔</b>：单个 JSON 装载，运行时热更新</li>
+                <li><b>多态节点矩阵</b>：条件路由、人工干预、模板渲染、图片生成</li>
+                <li><b>PARADIGM.yaml</b>：声明式规则重写 Agent 主循环</li>
+                <li><b>状态机安全回滚</b>：任意节点注入指令、断点重连</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/workflow-editor.png" alt="思维链编排画布" loading="lazy">
+              </div>
+              <span class="fig-note">拖拽式编排画布 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 03 传感器 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row">
+            <div class="doc-text">
+              <span class="doc-index">3</span>
+              <h3 class="doc-title">主动感知的传感器机制</h3>
+              <p>绝大多数 Agent 只能被动等在对话框里「你问我答」。PurrCat 的传感器网关将外部世界与 Agent 本体直接连通，事件统一入口推送，Agent 也可以反向输出到任意通道。</p>
+              <ul>
+                <li><b>独立子进程隔离</b>：单个传感器崩溃不影响主进程</li>
+                <li><b>Stdio 管道 JSON-RPC</b>：不占用任何网络端口</li>
+                <li>内置 <b>System（心跳）</b>、<b>Feishu（WebSocket）</b>、<b>RSS</b> 传感器</li>
+                <li>低成本实现语音助手、RSS 订阅、社媒打通</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/plugin-sensor.png" alt="传感器示例" loading="lazy">
+              </div>
+              <span class="fig-note">传感器一键开关 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 04 记忆 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row flip">
+            <div class="doc-text">
+              <span class="doc-index">4</span>
+              <h3 class="doc-title">多层记忆系统</h3>
+              <p>解决传统 Agent「记不住事」的问题。基于人脑科学分层设计：短时工作记忆、MEMORY.md 核心档案，加上由三大引擎构成的长期记忆库 PurrMemo。</p>
+              <ul>
+                <li><b>事件记忆</b>：SQLite + FTS5，时间线客观溯源</li>
+                <li><b>语义记忆</b>：ChromaDB 向量库存储可复用经验</li>
+                <li><b>认知图谱</b>：NetworkX 实体关系图，动态强化/削弱</li>
+                <li><b>RRF 混合检索</b> + 仿生遗忘机制自动清理</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/memory-events.png" alt="事件记忆库" loading="lazy">
+              </div>
+              <span class="fig-note">事件记忆库 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 05 自进化 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row">
+            <div class="doc-text">
+              <span class="doc-index">5</span>
+              <h3 class="doc-title">自进化能力</h3>
+              <p>得益于自进化工厂（Evolve Factory），Agent 能实现能力的自我生产与迭代，形成「执行、沉淀、再执行」的能力飞轮——用得越多，积累的技能、工具与感知渠道越丰富。</p>
+              <ul>
+                <li><b>Trace2Skill</b>：把成功执行轨迹固化为可复用技能</li>
+                <li><b>MCP 工具自建</b>：Agent 自行搭建工具并热加载</li>
+                <li><b>传感器自建</b>：自行开发感知渠道，即插即用</li>
+                <li>新生技能需通过评估器质量验证方可入库</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/evolve-skill.png" alt="Trace2Skill 技能生产线" loading="lazy">
+              </div>
+              <span class="fig-note">Trace2Skill 生产线 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 06 Token 经济 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row flip">
+            <div class="doc-text">
+              <span class="doc-index">6</span>
+              <h3 class="doc-title">KV Cache 与 Token 经济学</h3>
+              <p>稳定的 KV Cache 命中率是系统的生命线：一次缓存未命中不仅导致响应时间暴增，更带来极大的 Token 资金消耗。PurrCat 从架构上把它管得明明白白。</p>
+              <ul>
+                <li><b>API Key 生命周期强绑定</b>，缓存命中率实测 99%+</li>
+                <li><b>记忆摘要经济学</b>：浓缩摘要替代全量历史参与推理</li>
+                <li><b>DAG 降本</b>：消除多 Agent 间自然语言通信冗余</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/kv-cache.png" alt="KV Cache 命中统计" loading="lazy">
+              </div>
+              <span class="fig-note">缓存命中统计 →</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- 07 前端 -->
+        <div class="doc-section" data-reveal>
+          <div class="doc-row">
+            <div class="doc-text">
+              <span class="doc-index">7</span>
+              <h3 class="doc-title">面向精准交互的前端设计</h3>
+              <p>面对网页设计、SVG 设计等创作类任务，不再需要用大量自然语言反复描述「那个左上角的蓝色按钮」——反馈精确到具体组件，缩短「描述、修改、再确认」的交互链路。</p>
+              <ul>
+                <li><b>DOM 级精准交互</b>：内置浏览器中直接选取元素定位</li>
+                <li><b>可视化 DAG 画布</b>：节点拖拽编排、JSON 一键导入导出</li>
+              </ul>
+            </div>
+            <div class="doc-fig">
+              <div class="frame">
+                <img src="assets/img/browser.png" alt="内置浏览器" loading="lazy">
+              </div>
+              <span class="fig-note">内置浏览器 →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= CTA ======================= -->
+    <section class="section">
+      <div class="container">
+        <div class="commit-wrap" data-reveal style="padding-top:44px;">
+          <div class="section-head" style="margin-bottom:10px;">
+            <h2 class="section-title">心动不如行动</h2>
+            <span class="section-en">- get purrcat -</span>
+          </div>
+          <p style="color:var(--ink-soft);">选择你的操作系统，一条命令快速部署：</p>
+          <div class="os-switch" role="group" aria-label="选择操作系统">
+            <button type="button" class="os-btn" data-os="windows">Windows</button>
+            <button type="button" class="os-btn" data-os="macos">macOS</button>
+            <button type="button" class="os-btn" data-os="linux">Linux</button>
+          </div>
+          <div class="terminal" id="install-term">
+            <span class="term-label">terminal</span>
+            <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
+            <pre><code>curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ======================= 页脚 ======================= -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="./index.html">
+          <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+          <span class="brand-name">PurrCat</span>
+        </a>
+        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
+      </div>
+      <div class="footer-col">
+        <h4>文档</h4>
+        <a href="guide/deployment.html">部署指南</a>
+        <a href="guide/development.html">开发指南</a>
+        <a href="guide/faq.html">常见问题</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
+        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
+        <a href="ecosystem.html">生态一览</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
+        <span>PurrCat · 个人 AI Agent</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data/updates.js"></script>
+  <script src="assets/js/main.js"></script>
+</body>
+</html>

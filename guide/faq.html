@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>常见问题 - PurrCat</title>
+  <meta name="description" content="PurrCat 常见问题：环境部署类、前置依赖检验、安装慢、虚拟化冲突。">
+  <link rel="icon" type="image/png" href="../assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="../index.html" aria-label="PurrCat 首页">
+        <img class="brand-logo" src="../assets/img/logo.png" alt="PurrCat logo">
+        <span class="brand-name">PurrCat</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
+        <a class="nav-link" href="../index.html">首页</a>
+        <a class="nav-link" href="../updates.html">动态</a>
+        <a class="nav-link is-active" href="../guide.html">指南</a>
+        <a class="nav-link" href="../blog.html">Blog</a>
+        <a class="nav-link" href="../ecosystem.html">生态</a>
+      </nav>
+      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="gh-stars" data-gh-stars>★</span>
+      </a>
+      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="page-hero">
+      <div class="container">
+        <span class="page-hero-kicker">- guide · faq -</span>
+        <h1>常见问题</h1>
+        <p>PurrCat 装不上、跑不动的时候，先来这里翻翻。</p>
+      </div>
+    </section>
+
+    <div class="container">
+      <article class="article" data-reveal>
+        <h2>一、环境部署类</h2>
+
+        <h3>1. 运行需要哪些前置依赖？如何检验？</h3>
+        <p>需要以下依赖：</p>
+        <ul>
+          <li><b>Docker</b>（Windows 还需要 Desktop）</li>
+          <li><b>uv</b></li>
+          <li><b>Node.js</b></li>
+          <li><b>Git</b></li>
+        </ul>
+        <p>运行以下命令不报错即安装成功：</p>
+        <pre><code>docker --version
+uv --version
+node --version
+git --version</code></pre>
+
+        <h3>2. 安装很慢、超时或失败？</h3>
+        <p>一般是网络问题，尤其是 docker 镜像拉取，需要网络 / VPN 比较稳定。</p>
+
+        <h3>3. 部署和虚拟化技术冲突？</h3>
+        <p>Docker 的正常运行依赖宿主机的虚拟化支持，常见问题：</p>
+        <ul>
+          <li><b>Windows（WSL2 / Hyper-V）</b>：Docker Desktop 需要主板开启硬件虚拟化（VT-x / AMD-V），很多笔记本出厂默认关闭，启动 Docker 会直接报错。需进 BIOS 开启。</li>
+          <li><b>VMware / VirtualBox 冲突</b>：宿主机同时运行其他虚拟机软件时，可能与 Hyper-V / WSL2 产生冲突，导致蓝屏或无法启动。</li>
+          <li><b>嵌套虚拟化（Nested Virtualization）</b>：如果 PurrCat 本身跑在虚拟机里（如云服务器、Parallels），需要额外开启嵌套虚拟化支持，否则 Docker 容器无法启动。</li>
+          <li><b>Linux</b>：Docker 原生支持最好，几乎没有冲突问题。但如果使用了非默认的容器运行时（如 containerd），可能与沙盒初始化脚本不兼容。</li>
+        </ul>
+
+        <div class="tip-box" data-title="还有别的疑问？">
+          <p>欢迎到 <a href="https://github.com/PurrPod/purrcat/issues" target="_blank" rel="noopener">GitHub Issues</a> 提问，附上报错截图和系统环境，我们会尽快回复。</p>
+        </div>
+
+        <div class="article-footer">
+          <a class="back-link" href="development.html">← 上一本：开发指南</a>
+          <a class="back-link" href="../guide.html">返回指南</a>
+        </div>
+      </article>
+    </div>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="../index.html">
+          <img class="brand-logo" src="../assets/img/logo.png" alt="PurrCat logo">
+          <span class="brand-name">PurrCat</span>
+        </a>
+        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
+      </div>
+      <div class="footer-col">
+        <h4>文档</h4>
+        <a href="deployment.html">部署指南</a>
+        <a href="development.html">开发指南</a>
+        <a href="faq.html">常见问题</a>
+        <a href="../blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
+        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
+        <a href="../ecosystem.html">生态一览</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
+        <span>PurrCat · 个人 AI Agent 框架</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="../assets/js/main.js"></script>
+</body>
+</html>

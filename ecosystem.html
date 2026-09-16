@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>生态 - PurrCat</title>
+  <meta name="description" content="PurrCat 生态：主仓库、传感器、MCP 工具集、社区技能集、图谱广场与 AgentLoop 循环插件。一切皆插件，插件零架构依赖。">
+  <link rel="icon" type="image/png" href="assets/img/logo.png">
+  <link rel="preconnect" href="https://fonts.loli.net">
+  <link rel="preconnect" href="https://api.github.com" crossorigin>
+  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+  <header class="site-nav" id="site-nav">
+    <div class="nav-inner">
+      <a class="brand" href="./index.html" aria-label="PurrCat 首页">
+        <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+        <span class="brand-name">PurrCat</span>
+      </a>
+      <nav class="nav-links" id="nav-links" aria-label="主导航">
+        <a class="nav-link" href="./index.html">首页</a>
+        <a class="nav-link" href="./updates.html">动态</a>
+        <a class="nav-link" href="./guide.html">指南</a>
+        <a class="nav-link" href="./blog.html">Blog</a>
+        <a class="nav-link is-active" href="./ecosystem.html">生态</a>
+      </nav>
+      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+        <span class="gh-stars" data-gh-stars>★</span>
+      </a>
+      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
+    </div>
+  </header>
+
+  <main>
+    <!-- ======================= 页面头 ======================= -->
+    <section class="page-hero">
+      <div class="container" style="position:relative;">
+        <svg class="doodle doodle-star-1 floaty" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M30 5l6.5 16 17 1.8-12.8 11.4L43.8 51 30 42.4 16.2 51l3.1-16.8L6.5 22.8l17-1.8z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="3.5" stroke-linejoin="round"/></svg>
+        <span class="page-hero-kicker">- the ecosystem -</span>
+        <h1>PurrCat <mark class="marker">生态</mark></h1>
+        <p>对 PurrCat 而言，除内核之外<mark class="marker-blue">一切皆插件</mark>。插件规范零架构依赖——为 PurrCat 写的插件可以反哺整个 Agent 生态，其它项目的插件也能低成本搬进来。</p>
+      </div>
+    </section>
+
+    <!-- ======================= 官方仓库 ======================= -->
+    <section class="section" style="padding-top:20px;">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">官方仓库</h2>
+          <span class="section-en">- official repos -</span>
+        </div>
+        <div class="eco-grid">
+          <a class="eco-card" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" data-reveal>
+            <span class="repo-name">github.com/PurrPod/purrcat</span>
+            <h3>主仓库 · purrcat</h3>
+            <p>框架本体：混合记忆、DAG 工作流、沙盒安全、传感器网关、自进化工厂。全部插件品类的样例实现也开源在这里，应用内插件市场可一键安装。</p>
+            <div class="eco-foot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <span>GitHub →</span>
+            </div>
+          </a>
+          <a class="eco-card" href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener" data-reveal>
+            <span class="repo-name">github.com/PurrPod/sensors</span>
+            <h3>传感器仓库 · sensors</h3>
+            <p>官方传感器集合：System（心跳轮询）、Feishu（WebSocket）、RSS 等。本地缺失的传感器脚本在启动时会自动从这里拉取，配置即安装。</p>
+            <div class="eco-foot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <span>GitHub →</span>
+            </div>
+          </a>
+          <a class="eco-card" href="https://github.com/PurrPod/mcps" target="_blank" rel="noopener" data-reveal>
+            <span class="repo-name">github.com/PurrPod/mcps</span>
+            <h3>MCP 工具集 · mcps</h3>
+            <p>官方精选 MCP 服务器接入样例：粘贴一段标准 JSON 到 <code>mcp_config.json</code> 即可零代码接入，握手后工具树自动热更新。</p>
+            <div class="eco-foot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <span>GitHub →</span>
+            </div>
+          </a>
+          <a class="eco-card" href="https://github.com/PurrPod/skills" target="_blank" rel="noopener" data-reveal>
+            <span class="repo-name">github.com/PurrPod/skills</span>
+            <h3>社区技能集 · skills</h3>
+            <p>将包含 <code>SKILL.md</code> 的技能目录放入 <code>~/.purrcat/skills</code> 即自动加载至检索树。好技能值得被所有猫复用，欢迎提 PR 分享。</p>
+            <div class="eco-foot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <span>GitHub →</span>
+            </div>
+          </a>
+          <a class="eco-card" href="https://github.com/PurrPod/graphs" target="_blank" rel="noopener" data-reveal>
+            <span class="repo-name">github.com/PurrPod/graphs</span>
+            <h3>图谱广场 · graphs</h3>
+            <p>把好用的 Harness 工作流导出为 JSON 分享给其他人，一键导入即用。好图谱值得流转起来，快来晒出你的编排。</p>
+            <div class="eco-foot">
+              <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+              <span>GitHub →</span>
+            </div>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 成长中 ======================= -->
+    <section class="section" style="padding-top:10px;">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">正在筹备</h2>
+          <span class="section-en">- coming soon -</span>
+        </div>
+        <div class="eco-grid-2">
+          <div class="eco-card is-placeholder" data-reveal>
+            <span class="stamp">即将上线</span>
+            <h3>AgentLoop 插件 · loops</h3>
+            <p>把「感知 → 规划 → 执行 → 反思」的 PARADIGM 循环沉淀为可复用的 AgentLoop 插件。官方循环插件仓库 loops 正在筹备，范式玩法可先翻开发指南。</p>
+            <div class="eco-foot"><span>#loops</span></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 插件市场截图 ======================= -->
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="doc-row" data-reveal>
+          <div class="doc-text">
+            <span class="doc-index">★</span>
+            <h3 class="doc-title">应用内插件市场</h3>
+            <p>全部种类的插件均有一部分高质量样例开源在 GitHub 官方仓库中，用户可在应用内的插件市场界面一键安装与加载。</p>
+            <ul>
+              <li>传感器脚本启动时若检测缺失，自动从云端拉取</li>
+              <li>前端 UI 提供可视化一键 ON/OFF 拨动开关</li>
+              <li>配合官方文档站与持续化的版本发布节奏，生态处于健康的成长通道</li>
+            </ul>
+          </div>
+          <div class="doc-fig">
+            <div class="frame">
+              <img src="assets/img/plugin-market.png" alt="插件市场" loading="lazy">
+            </div>
+            <span class="fig-note">插件市场 →</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================= 参与贡献 ======================= -->
+    <section class="section" style="padding-top:0;">
+      <div class="container">
+        <div class="section-head">
+          <h2 class="section-title">一起涂鸦</h2>
+          <span class="section-en">- contribute -</span>
+        </div>
+        <div class="card-grid">
+          <a class="card-link" href="guide/development.html" data-reveal>
+            <div class="doodle-card">
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6 26l2-6L22 6l4 4-14 14-6 2z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M20 8l4 4" stroke="#1a1a1a" stroke-width="2.5"/></svg>
+              </div>
+              <h3 class="card-title">从开发指南开始</h3>
+              <p class="card-desc">五层扩展机制总有一层适合你：改人格、写 Skill、拖 Graph、接 MCP、造 Sensor。改配置就能重写 Agent。</p>
+              <div class="card-tags"><span class="card-tag">#上手</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+          <a class="card-link" href="https://github.com/PurrPod/purrcat/issues" target="_blank" rel="noopener" data-reveal>
+            <div class="doodle-card">
+              <div class="card-icon">
+                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3v6M20 3v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/><path d="M7 9h18v5a9 9 0 0 1-9 9 9 9 0 0 1-9-9V9z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 23v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/></svg>
+              </div>
+              <h3 class="card-title">提 Issue / 许愿</h3>
+              <p class="card-desc">发现 bug、想许愿新功能、对架构有想法——都欢迎来开个帖子。涉及项目核心的更改会先在 issue 里讨论。</p>
+              <div class="card-tags"><span class="card-tag">#反馈</span><span class="card-tag">#讨论</span></div>
+              <svg class="card-arrow" viewBox="0 0 90 40" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M4 30 C 24 6 56 6 82 24" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round"/><path d="M70 18 L82 24 L72 32" fill="none" stroke="#d47a5a" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </div>
+          </a>
+        </div>
+
+        <div class="tip-box" data-title="开发原则速记" style="margin-top:34px;">
+          <p>一个 PR 只解决一个问题；涉及核心的更改先开 issue 讨论；涉及宿主机文件操作必须校验路径映射；提交信息用英文；异常提示要人性化。</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="./index.html">
+          <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
+          <span class="brand-name">PurrCat</span>
+        </a>
+        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
+      </div>
+      <div class="footer-col">
+        <h4>文档</h4>
+        <a href="guide/deployment.html">部署指南</a>
+        <a href="guide/development.html">开发指南</a>
+        <a href="guide/faq.html">常见问题</a>
+        <a href="blog.html">Blog</a>
+      </div>
+      <div class="footer-col">
+        <h4>社区</h4>
+        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
+        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
+        <a href="ecosystem.html">生态一览</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="footer-bottom-inner">
+        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
+        <span>PurrCat · 个人 AI Agent 框架</span>
+      </div>
+    </div>
+  </footer>
+
+  <script src="assets/js/main.js"></script>
+</body>
+</html>
