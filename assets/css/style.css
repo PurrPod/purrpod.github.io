@@ -116,7 +116,6 @@ mark.marker-green {
   z-index: 100;
   background: rgba(253, 250, 245, 0.92);
   backdrop-filter: blur(6px);
-  border-bottom: var(--border-w) solid var(--ink);
 }
 .nav-inner {
   max-width: 1080px;
@@ -281,7 +280,7 @@ mark.marker-green {
 /* ==========================================================================
    首页 Hero
    ========================================================================== */
-.hero { position: relative; padding: 168px 0 48px; overflow: hidden; }
+.hero { position: relative; padding: 208px 0 48px; overflow: hidden; }
 .hero-inner {
   display: flex;
   align-items: center;
@@ -348,7 +347,8 @@ mark.marker-green {
 .hero-fig { flex: 0.8; min-width: 0; position: relative; }
 /* 无框 hero 形象图，比整栏略小 */
 .hero-fig .hero-img {
-  width: min(340px, 100%);
+  width: min(227px, 100%);
+  height: auto;
   margin-inline: auto;
 }
 /* 手绘胶带 */
@@ -576,18 +576,6 @@ mark.marker-green {
   padding: 0 9px;
   color: var(--ink-soft);
 }
-.card-arrow {
-  position: absolute;
-  right: 22px;
-  bottom: 16px;
-  width: 40px;
-  height: 26px;
-  opacity: 0;
-  transform: translateX(-8px) rotate(-6deg);
-  transition: all 0.2s ease;
-}
-.doodle-card:hover .card-arrow { opacity: 1; transform: translateX(0) rotate(-6deg); }
-
 /* 卡片编号涂鸦 */
 .card-num {
   position: absolute;
@@ -699,7 +687,8 @@ a.sticky-link:hover .sticky-note {
 /* 偶数行翻转：文字在右、图片在左 */
 .doc-row.flip { flex-direction: row-reverse; }
 .doc-text { flex: 1; min-width: 0; }
-.doc-fig { flex: 1.05; min-width: 0; position: relative; }
+/* 配图下移一行（编号徽章行高），与标题文字顶部对齐 */
+.doc-fig { flex: 1.05; min-width: 0; position: relative; margin-top: 58px; }
 .doc-fig .frame {
   background: var(--paper-card);
   border: var(--border-w) solid var(--ink);
@@ -1194,7 +1183,6 @@ a.eco-card:hover { text-decoration: none; transform: translate(-3px, -4px); box-
    ========================================================================== */
 .site-footer {
   margin-top: 40px;
-  border-top: var(--border-w) solid var(--ink);
   background: #f1efe9; /* 淡灰色 */
 }
 .footer-inner {
@@ -1223,9 +1211,6 @@ a.eco-card:hover { text-decoration: none; transform: translate(-3px, -4px); box-
   padding: 3px 0;
 }
 .footer-col a:hover { color: var(--accent-deep); }
-.footer-bottom {
-  border-top: 1.5px solid rgba(26, 26, 26, 0.14);
-}
 .footer-bottom-inner {
   max-width: 1080px;
   margin: 0 auto;
@@ -1269,6 +1254,7 @@ html.js [data-reveal].revealed {
   .hero-inner { flex-direction: column-reverse; gap: 36px; }
   .hero-fig { width: min(80%, 320px); }
   .doc-row, .doc-row.flip { flex-direction: column; gap: 26px; }
+  .doc-fig { margin-top: 0; } /* 纵向堆叠时取消下移 */
   .card-grid { grid-template-columns: 1fr; }
   .eco-grid { grid-template-columns: 1fr; }
   .eco-grid-2 { grid-template-columns: 1fr; }
@@ -1300,7 +1286,7 @@ html.js [data-reveal].revealed {
   .commit-wrap { padding: 26px 20px 20px; }
   .article { padding: 24px 20px; margin: 28px 0 50px; }
   .terminal { padding: 36px 16px 16px; }
-  .hero { padding: 104px 0 28px; }
+  .hero { padding: 128px 0 28px; }
 }
 
 /* 减少动画偏好 */
