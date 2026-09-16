@@ -1,0 +1,52 @@
+# 官网部署：push 到 main 后自动重建动态列表并发布 GitHub Pages。
+#
+# 注意：需要在仓库 Settings → Pages → Build and deployment → Source
+# 选择 "GitHub Actions"，本工作流才能接管部署。
+name: Deploy website
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # 幂等重建：每次 push 都跑一遍，只要 data/updates/ 有更新，
+      # 动态页（updates.html）和首页最新动态（index.html）就会刷新。
+      # 两个页面都由 data/updates.js 渲染，重建这一个文件即可。
+      - name: Rebuild updates list
+        run: python scripts/build_updates.py
+
+      - uses: actions/configure-pages@v5
+
+      # 直接打包仓库根目录（该 action 自动排除 .git / .github）
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: .
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
