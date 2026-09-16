@@ -49,22 +49,11 @@
         <h2>实现步骤</h2>
 
         <h3>1. 编写 GOAL.md（待办目标清单）</h3>
-        <p>GOAL.md 记录你希望 Agent 在空闲时自主推进的<b>目标与待办事项</b>，位于 <code>~/.purrcat/core/GOAL.md</code>。Agent 每次被心跳唤醒时都会读取它并尝试推进进度；文件为空时注入兜底提示「当前没有待办事项」。</p>
+        <p>GOAL.md 记录你希望 Agent 在空闲时自主推进的<b>目标与待办事项</b>，位于 <code>~/.purrcat/core/GOAL.md</code>，也可以在前端的心跳开关处直接修改。Agent 每次被心跳唤醒时都会读取它并尝试推进进度。</p>
         <p>可以写入的目标示例：清理沙盒临时文件、整理近期记忆、巡检项目代码、追踪资讯更新等。</p>
 
         <h3>2. 开启 Heartbeat 功能</h3>
-        <p>在 <code>activate_sensor.json</code> 中将 <code>system_clock</code> 的 <code>enabled</code> 设为 <code>true</code>。Heartbeat 会按设定的时间间隔<b>反复唤醒</b> Agent。</p>
-
-        <pre><code>{
-  "system_clock": {
-    "enabled": true,
-    "env": {
-      "CRON_FILE": ".purrcat/core/cron.json"
-    },
-    "capabilities": { "observe": true, "express": false }
-  }
-}</code></pre>
-
+        <p>设置时间间隔，在前端直接开启。Heartbeat 会按设定的时间间隔<b>反复唤醒</b> Agent。</p>
         <div class="tip-box" data-title="触发间隔建议">
           <p>不要太频繁，推荐<b>半小时（1800 秒）</b>一次即可。太频繁的唤醒没有必要，反而浪费 Token。</p>
         </div>
@@ -88,9 +77,6 @@
           <li class="vs-bad">任务涉及修改宿主机文件的（除非已在 file.json 白名单中授权）</li>
         </ul>
 
-        <div class="tip-box" data-title="一句话总结">
-          <p>写好 GOAL.md，打开 Heartbeat，<mark class="marker">Agent 就能在你睡觉的时候替你干活</mark>。</p>
-        </div>
 
         <div class="article-footer">
           <a class="back-link" href="evolve.html">← 上一篇：如何使用自我进化工厂</a>
