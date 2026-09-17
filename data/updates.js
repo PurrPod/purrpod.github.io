@@ -7,12 +7,12 @@ window.PURRCAT_UPDATES = [
   },
   {
     "time": "2026-09-14 21:03",
-    "link": "blog/entropy.html",
+    "link": "blog/entropy/index.html",
     "content": "新文章《从一个骗局讲起》：用「信息熵不可逆」六个字，戳破「一句话生成网站」的叙事泡沫。"
   },
   {
     "time": "2026-09-13 15:47",
-    "link": "blog/dag.html",
+    "link": "blog/dag/index.html",
     "content": "DAG 工作流引擎支持拖拽编排，长 SOP 可以拆成短节点逐步确认，体验大幅优化。"
   },
   {
