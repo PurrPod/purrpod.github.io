@@ -1,0 +1,616 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Graph — PurrCat Docs</title>
+    <meta
+      name="description"
+      content="Build a PurrCat graph: multi-step workflows as nodes and edges in graph.json."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/page.css" />
+    <link rel="stylesheet" href="/assets/css/docs.css" />
+  </head>
+  <body class="kinpaku-chrome docs-kinpaku skills-layout-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
+      </a>
+
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
+
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home">Home</a>
+          <a href="/#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs" aria-current="page">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <div class="skills-layout">
+        <aside class="skills-sidebar" aria-label="Docs navigation">
+          <button
+            class="skills-sidebar-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="skills-sidebar-inner"
+            data-docs-nav-toggle
+          >
+            <span class="skills-sidebar-toggle-label">
+              <span class="i18n-zh">浏览文档</span><span class="i18n-en">Browse docs</span>
+            </span>
+            <svg
+              class="skills-sidebar-toggle-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </button>
+
+          <div class="skills-sidebar-inner" id="skills-sidebar-inner">
+            <nav aria-label="Guides">
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">从这里开始</span><span class="i18n-en">Start here</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/"
+                      ><span class="i18n-zh">总览</span><span class="i18n-en">Overview</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/#install"
+                      ><span class="i18n-zh">安装</span><span class="i18n-en">Install</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">用户教程</span><span class="i18n-en">Tutorials</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">如何定制自己的专属Agent</span
+                      ><span class="i18n-en">Make it your own agent</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">让Agent自己造插件</span
+                      ><span class="i18n-en">Have the agent build its own plugins</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">开发者文档</span><span class="i18n-en">Developer docs</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/plugins.html"
+                      ><span class="i18n-zh">扩展体系</span><span class="i18n-en">Extension model</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/ui-plugin.html"
+                      ><span class="i18n-zh">UI Plugin 开发</span><span class="i18n-en">UI plugin guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/sensor.html"
+                      ><span class="i18n-zh">Sensor 开发</span><span class="i18n-en">Sensor guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/graph.html" aria-current="page"
+                      ><span class="i18n-zh">Graph 开发</span><span class="i18n-en">Graph guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/agentloop.html"
+                      ><span class="i18n-zh">AgentLoop 开发</span><span class="i18n-en">AgentLoop guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/api.html"
+                      ><span class="i18n-zh">后端 API 参考</span><span class="i18n-en">Backend API reference</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </aside>
+        <div class="skills-main skills-main--docs-index">
+          <div class="docs-index">
+            <div class="docs-lang" role="group" aria-label="Language">
+              <span class="docs-lang-label">Language</span>
+              <div class="downloads-method-strip ks-instrument-strip is-paper" role="tablist">
+                <button
+                  class="ks-instrument-key is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  data-set-lang="en"
+                >
+                  English
+                </button>
+                <button
+                  class="ks-instrument-key"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-set-lang="zh"
+                >
+                  中文
+                </button>
+              </div>
+            </div>
+
+            <section class="docs-reference-section" aria-labelledby="doc-title">
+              <article
+                class="docs-dev-section"
+                id="dev-graph"
+                data-kicker-zh="插件类型 · Graph"
+                data-kicker-en="Plugin type · Graph"
+              >
+                <div class="docs-prose">
+                  <h1 id="doc-title">Graph</h1>
+                  <p>
+                    <span class="i18n-zh"
+                      >Graph（任务图 / 工作流）是任务编排中枢：用<strong>节点 + 边</strong>描述一条完整的多步骤工作流。每个
+                      Graph 是一个独立文件夹，由运行时引擎解析并按拓扑顺序执行。</span
+                    >
+                    <span class="i18n-en"
+                      >A graph is the orchestration hub: a full multi-step workflow described as
+                      <strong>nodes and edges</strong>. Each graph is a folder that the runtime parses and executes in
+                      topological order.</span
+                    >
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>graphs/&lt;graph-name&gt;/    # 市场仓库中的单元
+├── graph.json           # 图定义（必需）
+└── asset/               # 静态资源：看板 html 等（可选）</code></pre>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh">文件夹名必须与 <code>graph.json</code> 里的 <code>name</code> 字段严格一致（CI 校验）。</span>
+                    <span class="i18n-en">The folder name must match the <code>name</code> field inside <code>graph.json</code> exactly; CI checks it.</span>
+                  </p>
+                </div>
+
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">顶层字段</span><span class="i18n-en">Top-level field</span></th>
+                        <th scope="col"><span class="i18n-zh">说明</span><span class="i18n-en">Notes</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>name</code></td>
+                        <td><span class="i18n-zh">安装标识，必须与文件夹名一致</span><span class="i18n-en">Install id, identical to the folder name</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>description</code> / <code>description-zh</code></td>
+                        <td><span class="i18n-zh">英文 / 中文描述（市场展示）</span><span class="i18n-en">English and Chinese descriptions for the market</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>version</code></td>
+                        <td><span class="i18n-zh">Graph 规范版本，当前 <code>"2.0"</code></span><span class="i18n-en">Graph spec version, currently <code>"2.0"</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>core</code></td>
+                        <td><span class="i18n-zh">该图执行所用模型，缺省 <code>openai:deepseek-v4-flash</code></span><span class="i18n-en">Model used to run the graph, default <code>openai:deepseek-v4-flash</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>global_schema</code></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >全局输入变量的类型声明与必填校验，驱动前端表单与运行时校验；缺失或多余参数会把任务直接置为
+                            ERROR。</span
+                          >
+                          <span class="i18n-en"
+                            >Type declarations and required checks for the graph's inputs. Drives the front-end form and
+                            the runtime validation; missing or extra parameters put the task straight into ERROR.</span
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>nodes</code> / <code>edges</code></td>
+                        <td><span class="i18n-zh">节点定义数组与连边定义数组</span><span class="i18n-en">Node and edge arrays</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>dashboard</code></td>
+                        <td>
+                          <span class="i18n-zh">看板地址：单个字符串，或多看板数组 <code>[{ "name", "url" }]</code></span>
+                          <span class="i18n-en">Dashboard URL, or an array of them: <code>[{ "name", "url" }]</code></span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">节点类型清单</span><span class="i18n-en">Node types</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >节点定义由 <code>GET /api/graphs/nodes</code> 返回，源码位于
+                      <code>src/harness/node/extensions/&lt;type&gt;/&lt;type&gt;.json</code>。</span
+                    >
+                    <span class="i18n-en"
+                      ><code>GET /api/graphs/nodes</code> returns the definitions; the source lives in
+                      <code>src/harness/node/extensions/&lt;type&gt;/&lt;type&gt;.json</code>.</span
+                    >
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><code>type</code></th>
+                        <th scope="col"><span class="i18n-zh">用途</span><span class="i18n-en">Purpose</span></th>
+                        <th scope="col"><span class="i18n-zh">主要端口</span><span class="i18n-en">Main ports</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>task_input</code></td>
+                        <td><span class="i18n-zh">声明外部参数</span><span class="i18n-en">Declare external parameters</span></td>
+                        <td><code>— → global_vars</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>task_output</code></td>
+                        <td><span class="i18n-zh">定义最终返回的数据</span><span class="i18n-en">Define the final return value</span></td>
+                        <td><code>target_vars → —</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>string</code></td>
+                        <td>
+                          <span class="i18n-zh">直接书写内容，派生字符串/数字/布尔/JSON 四类输出</span>
+                          <span class="i18n-en">A literal value, derivable as string, number, boolean, or JSON</span>
+                        </td>
+                        <td><code>trigger → text / number / boolean / json</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>template_renderer</code></td>
+                        <td><span class="i18n-zh">用 Jinja2 把 <code>{{变量}}</code> 注入模板</span><span class="i18n-en">Render a template with Jinja2</span></td>
+                        <td><code>template / dynamic_vars → rendered_text</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>message_card_builder</code></td>
+                        <td><span class="i18n-zh">把文本 + 角色包装成标准 MessageList</span><span class="i18n-en">Wrap text and a role into a MessageList</span></td>
+                        <td><code>content / role → message_list</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>appender</code></td>
+                        <td><span class="i18n-zh">把 <code>append_list</code> 追到 <code>base_list</code> 后</span><span class="i18n-en">Append one list to another</span></td>
+                        <td><code>base_list / append_list → merged_list</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>json_builder</code> / <code>json_extractor</code></td>
+                        <td>
+                          <span class="i18n-zh">按 <code>kv_pairs</code> 组装 JSON / 按 <code>extract_keys</code> 精准取值</span>
+                          <span class="i18n-en">Build JSON from key-value pairs, or pull exact keys back out</span>
+                        </td>
+                        <td><code>kv_pairs → json_string</code> / <code>data → extract_keys</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>env_loader</code></td>
+                        <td><span class="i18n-zh">读图目录 <code>env.json</code>，按 <code>exposed_keys</code> 暴露</span><span class="i18n-en">Read <code>env.json</code> next to the graph and expose selected keys</span></td>
+                        <td><code>— → exposed_keys</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>skill_info</code> / <code>mcp_info</code></td>
+                        <td>
+                          <span class="i18n-zh">按声明拼装 Skill / MCP 工具的描述提示词</span>
+                          <span class="i18n-en">Assemble descriptive prompts for skills or MCP tools</span>
+                        </td>
+                        <td><code>trigger → skill_kit_string / mcp_kit_string</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>agent_loop</code></td>
+                        <td>
+                          <span class="i18n-zh">范式驱动的 Agent 大循环，见 AgentLoop 一节</span>
+                          <span class="i18n-en">The paradigm-driven agent loop, covered in the AgentLoop section</span>
+                        </td>
+                        <td><code>messages / agentloop → messages / summary</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>human_intervention</code></td>
+                        <td><span class="i18n-zh">挂起工作流，等人于前端输入指令后放行</span><span class="i18n-en">Pause the workflow until a human answers in the front end</span></td>
+                        <td><code>trigger / context_data / prompt → human_reply</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>command</code></td>
+                        <td><span class="i18n-zh">按目标 OS 在宿主机执行命令行</span><span class="i18n-en">Run a command on the host for the target OS</span></td>
+                        <td><code>command / os → stdout / stderr / exit_code</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>file_reader</code> / <code>file_writer</code></td>
+                        <td>
+                          <span class="i18n-zh">读取/预览 string 或 file（图片 / 文本 / HTML / SVG / PDF） / 把文本写入文件</span>
+                          <span class="i18n-en">Read or preview a value or file; write text to a file</span>
+                        </td>
+                        <td><code>source → content / file</code> / <code>content / filename → file</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">边与数据流映射</span><span class="i18n-en">Edges and data flow</span>
+                  </h3>
+                </div>
+                <pre class="docs-code-block"><code>{ "source": "nd_input", "target": "nd_tpl",
+  "sourceHandle": "prompt", "targetHandle": "prompt" }</code></pre>
+                <div class="docs-prose">
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"
+                        ><code>source</code> / <code>target</code> 是上游 / 下游节点 <code>id</code>，<code>sourceHandle</code> /
+                        <code>targetHandle</code> 是端口名（不写默认为 <code>"default"</code>）。同一节点可被多条边连入 / 连出，实现字段级精确映射。</span
+                      >
+                      <span class="i18n-en"
+                        ><code>source</code> and <code>target</code> are node ids; the handles name the ports (defaulting
+                        to <code>"default"</code>). A node can be wired many-to-many, giving field-level mapping.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        >端口分 <strong>static</strong> 与 <strong>dynamic</strong>；动态端口由 <code>dynamic_rules</code>
+                        驱动（如 <code>{ "watch_config": "template", "method": "regex" }</code> 按模板里的变量名生成）。</span
+                      >
+                      <span class="i18n-en"
+                        >Ports are either <strong>static</strong> or <strong>dynamic</strong>; dynamic ones are driven by
+                        <code>dynamic_rules</code>, for example
+                        <code>{ "watch_config": "template", "method": "regex" }</code> to derive ports from template
+                        variables.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>触发端口 <code>trigger</code></strong>：未连线时该节点开局自动执行；连线后则等上游数据再执行。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>The <code>trigger</code> port</strong> decides when a node fires: left unconnected, the
+                        node runs at the start; connected, it waits for upstream data.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        >节点间流转的是带类型的<strong>信封（Envelope）</strong>；已废弃的旧节点类型在加载时会报错并提示改用
+                        <code>file_reader</code> / <code>string</code> / <code>agent_loop</code>。</span
+                      >
+                      <span class="i18n-en"
+                        >Values travel between nodes as typed <strong>envelopes</strong>. Removed node types fail loudly at
+                        load time and point you at <code>file_reader</code>, <code>string</code>, or
+                        <code>agent_loop</code>.</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">看板与 <code>purrcat://</code> URI</span>
+                    <span class="i18n-en">Dashboards and <code>purrcat://</code> URIs</span>
+                  </h3>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"
+                        ><code>purrcat://graph/&lt;name&gt;/asset/&lt;file&gt;</code> → <code>{GRAPHS_DIR}/&lt;name&gt;/asset/&lt;file&gt;</code></span
+                      >
+                      <span class="i18n-en"
+                        ><code>purrcat://graph/&lt;name&gt;/asset/&lt;file&gt;</code> resolves to
+                        <code>{GRAPHS_DIR}/&lt;name&gt;/asset/&lt;file&gt;</code>.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><code>dashboard</code> 指向 <code>asset/</code> 下的 html 时写作
+                        <code>"purrcat://graph/my_graph/asset/dashboard.html"</code>；产物可用
+                        <code>GET /api/tasks/{task_id}/artifact?uri=&lt;uri&gt;</code> 下载。</span
+                      >
+                      <span class="i18n-en"
+                        >Point <code>dashboard</code> at an HTML file under <code>asset/</code>, e.g.
+                        <code>"purrcat://graph/my_graph/asset/dashboard.html"</code>. Artifacts download through
+                        <code>GET /api/tasks/{task_id}/artifact?uri=&lt;uri&gt;</code>.</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">开发与提交</span><span class="i18n-en">Build &amp; submit</span>
+                  </h3>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>可视化编辑</strong>：前端 DAG 画布内置编辑与一键 JSON 导入/导出。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Visual editing:</strong> the front-end DAG canvas edits graphs and imports or exports the
+                        JSON in one click.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>保存 / 读取</strong>：<code>GET/POST /api/graphs/{name}</code>、<code>GET /api/graphs/{name}/schema</code>。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Save and load:</strong> <code>GET/POST /api/graphs/{name}</code> and
+                        <code>GET /api/graphs/{name}/schema</code>.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>运行</strong>：<code>POST /api/tasks/run</code>（后台异步），状态走
+                        <code>GET /api/tasks/{task_id}/state</code>。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Run:</strong> <code>POST /api/tasks/run</code> is asynchronous; poll
+                        <code>GET /api/tasks/{task_id}/state</code>.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>提交</strong>：在 <code>extension/graphs/graphs/&lt;name&gt;/</code> 提 PR；CI 校验文件夹名与
+                        <code>name</code> 一致、描述字段非空，合并后自动并入全局 <code>registry.json</code>。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Submit:</strong> open a PR against
+                        <code>extension/graphs/graphs/&lt;name&gt;/</code>. CI verifies the name match and the description
+                        fields, and the merge updates the global <code>registry.json</code>.</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var langKey = 'purrcat:docs-lang';
+
+        function setLang(lang) {
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+          document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+            var active = button.getAttribute('data-set-lang') === lang;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+          try {
+            localStorage.setItem(langKey, lang);
+          } catch (e) {}
+        }
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem(langKey);
+        } catch (e) {}
+        setLang(saved === 'zh' ? 'zh' : 'en');
+
+        document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLang(button.getAttribute('data-set-lang'));
+          });
+        });
+
+        /* 提示词复制：抓当前语言下那一份提示词 */
+        document.querySelectorAll('[data-copy-prompt]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var scope = button.closest('.docs-recipe-card') || button.closest('.docs-prompt');
+            if (!scope) return;
+            var lang = root.getAttribute('data-lang') || 'zh';
+            var pre = scope.querySelector('.i18n-' + lang + ' pre') || scope.querySelector('pre');
+            if (!pre) return;
+            button.classList.add('copied');
+            window.clearTimeout(button._timer);
+            button._timer = window.setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1600);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(pre.textContent.trim()).catch(function () {});
+            }
+          });
+        });
+
+        /* 小屏下的文档目录折叠 */
+        var navToggle = document.querySelector('[data-docs-nav-toggle]');
+        if (navToggle) {
+          navToggle.addEventListener('click', function () {
+            var open = navToggle.getAttribute('aria-expanded') !== 'true';
+            navToggle.setAttribute('aria-expanded', String(open));
+            navToggle.closest('.skills-sidebar').classList.toggle('is-open', open);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

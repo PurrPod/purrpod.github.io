@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Docs — PurrCat</title>
+    <meta
+      name="description"
+      content="PurrCat documentation hub — install, copy-paste prompts, and developer docs for the four plugin types plus the backend API."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/page.css" />
+    <link rel="stylesheet" href="/assets/css/docs.css" />
+  </head>
+  <body class="kinpaku-chrome docs-kinpaku skills-layout-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
+      </a>
+
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
+
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home">Home</a>
+          <a href="/#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs" aria-current="page">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <div class="skills-layout">
+        <aside class="skills-sidebar" aria-label="Docs navigation">
+          <button
+            class="skills-sidebar-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="skills-sidebar-inner"
+            data-docs-nav-toggle
+          >
+            <span class="skills-sidebar-toggle-label">
+              <span class="i18n-zh">浏览文档</span><span class="i18n-en">Browse docs</span>
+            </span>
+            <svg
+              class="skills-sidebar-toggle-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </button>
+
+          <div class="skills-sidebar-inner" id="skills-sidebar-inner">
+            <nav aria-label="Guides">
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">从这里开始</span><span class="i18n-en">Start here</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/" aria-current="page"
+                      ><span class="i18n-zh">总览</span><span class="i18n-en">Overview</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/#install"
+                      ><span class="i18n-zh">安装</span><span class="i18n-en">Install</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">用户教程</span><span class="i18n-en">Tutorials</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">如何定制自己的专属Agent</span
+                      ><span class="i18n-en">Make it your own agent</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">让Agent自己造插件</span
+                      ><span class="i18n-en">Have the agent build its own plugins</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">开发者文档</span><span class="i18n-en">Developer docs</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/plugins.html"
+                      ><span class="i18n-zh">扩展体系</span><span class="i18n-en">Extension model</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/ui-plugin.html"
+                      ><span class="i18n-zh">UI Plugin 开发</span><span class="i18n-en">UI plugin guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/sensor.html"
+                      ><span class="i18n-zh">Sensor 开发</span><span class="i18n-en">Sensor guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/graph.html"
+                      ><span class="i18n-zh">Graph 开发</span><span class="i18n-en">Graph guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/agentloop.html"
+                      ><span class="i18n-zh">AgentLoop 开发</span><span class="i18n-en">AgentLoop guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/api.html"
+                      ><span class="i18n-zh">后端 API 参考</span><span class="i18n-en">Backend API reference</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </aside>
+        <div class="skills-main skills-main--docs-index">
+          <div class="docs-index">
+            <section class="docs-start-rail" id="overview" aria-labelledby="docs-start-h">
+              <div class="docs-lang" role="group" aria-label="Language">
+                <span class="docs-lang-label">Language</span>
+                <div class="downloads-method-strip ks-instrument-strip is-paper" role="tablist">
+                  <button
+                    class="ks-instrument-key is-active"
+                    type="button"
+                    role="tab"
+                    aria-selected="true"
+                    data-set-lang="en"
+                  >
+                    English
+                  </button>
+                  <button
+                    class="ks-instrument-key"
+                    type="button"
+                    role="tab"
+                    aria-selected="false"
+                    data-set-lang="zh"
+                  >
+                    中文
+                  </button>
+                </div>
+              </div>
+
+              <header class="docs-start-rail-head">
+                <h1 class="docs-start-rail-title" id="docs-start-h">
+                  <span class="i18n-zh">PurrCat 文档</span>
+                  <span class="i18n-en">PurrCat documentation</span>
+                </h1>
+              </header>
+
+              <section class="docs-start-paths" aria-label="Jump to a track">
+                <article class="docs-start-path">
+                  <h3>
+                    <span class="i18n-zh">我只想让它自己改造自己</span
+                    ><span class="i18n-en">I just want it to rebuild itself</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh">不用懂细节，直接告诉它想要的工作流，让它自己给自己造插件。</span>
+                    <span class="i18n-en"
+                      >Skip the details — describe the workflow you want and let it build its own plugins.</span
+                    >
+                  </p>
+                  <p class="docs-path-link">
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">看提示词示例 →</span><span class="i18n-en">See the prompt examples →</span></a
+                    >
+                  </p>
+                </article>
+                <article class="docs-start-path">
+                  <h3>
+                    <span class="i18n-zh">我想自己来改造它</span
+                    ><span class="i18n-en">I want to rebuild it myself</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh">先弄清楚六大插件各自能干什么，再自己动手调整。</span>
+                    <span class="i18n-en"
+                      >Learn what each of the six plugin types does, then adjust things yourself.</span
+                    >
+                  </p>
+                  <p class="docs-path-link">
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">看插件总览 →</span><span class="i18n-en">See the plugin overview →</span></a
+                    >
+                  </p>
+                </article>
+              </section>
+            </section>
+
+            <section
+              class="docs-dev-section docs-overview-section"
+              id="install"
+              data-kicker-zh="开始 · 安装"
+              data-kicker-en="Get started · Install"
+              aria-labelledby="install-h"
+            >
+              <div class="docs-prose">
+                <h2 id="install-h">
+                  <span class="i18n-zh">先把 PurrCat 装起来</span><span class="i18n-en">Install PurrCat first</span>
+                </h2>
+                <p>
+                  <span class="i18n-zh">一条命令装好，再启动桌面端；接口默认监听 <code>http://127.0.0.1:8000</code>。</span>
+                  <span class="i18n-en"
+                    >Install with one command, then launch the desktop app. The API listens on
+                    <code>http://127.0.0.1:8000</code> by default.</span
+                  >
+                </p>
+              </div>
+
+              <div class="downloads-install" data-install-tabs>
+                <div class="downloads-step">
+                  <div class="downloads-tabs">
+                    <span class="downloads-tabs-label" id="install-tabs-label">Install via</span>
+                    <div
+                      class="downloads-method-strip ks-instrument-strip is-paper"
+                      role="tablist"
+                      aria-labelledby="install-tabs-label"
+                    >
+                      <button
+                        class="downloads-tab ks-instrument-key is-active"
+                        type="button"
+                        role="tab"
+                        id="install-tab-unix"
+                        aria-controls="install-panel-unix"
+                        aria-selected="true"
+                        data-method="unix"
+                        tabindex="0"
+                      >
+                        macOS / Linux
+                      </button>
+                      <button
+                        class="downloads-tab ks-instrument-key"
+                        type="button"
+                        role="tab"
+                        id="install-tab-windows"
+                        aria-controls="install-panel-windows"
+                        aria-selected="false"
+                        data-method="windows"
+                        tabindex="-1"
+                      >
+                        Windows
+                      </button>
+                      <button
+                        class="downloads-tab ks-instrument-key"
+                        type="button"
+                        role="tab"
+                        id="install-tab-source"
+                        aria-controls="install-panel-source"
+                        aria-selected="false"
+                        data-method="source"
+                        tabindex="-1"
+                      >
+                        From source
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="downloads-method-panel"
+                    id="install-panel-unix"
+                    role="tabpanel"
+                    aria-labelledby="install-tab-unix"
+                    data-method-panel="unix"
+                  >
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">$</span>
+                      <code>curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash</code>
+                      <button
+                        class="downloads-copy"
+                        type="button"
+                        aria-label="Copy install command"
+                        data-copy-command="curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash"
+                      >
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="downloads-method-panel"
+                    id="install-panel-windows"
+                    role="tabpanel"
+                    aria-labelledby="install-tab-windows"
+                    data-method-panel="windows"
+                    hidden
+                  >
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">&gt;</span>
+                      <code>irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex</code>
+                      <button
+                        class="downloads-copy"
+                        type="button"
+                        aria-label="Copy install command"
+                        data-copy-command="irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex"
+                      >
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div
+                    class="downloads-method-panel"
+                    id="install-panel-source"
+                    role="tabpanel"
+                    aria-labelledby="install-tab-source"
+                    data-method-panel="source"
+                    hidden
+                  >
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">$</span>
+                      <code>git clone https://github.com/PurrPod/purrcat ~/purrcat</code>
+                      <button
+                        class="downloads-copy"
+                        type="button"
+                        aria-label="Copy clone command"
+                        data-copy-command="git clone https://github.com/PurrPod/purrcat ~/purrcat"
+                      >
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="downloads-step">
+                    <h3 class="downloads-cmd-label">
+                      <span class="downloads-cmd-num">01</span>
+                      <span class="i18n-zh">启动桌面端</span><span class="i18n-en">Launch the desktop app</span>
+                    </h3>
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">$</span>
+                      <code>purrcat desktop start</code>
+                      <button
+                        class="downloads-copy"
+                        type="button"
+                        aria-label="Copy start command"
+                        data-copy-command="purrcat desktop start"
+                      >
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                    <p class="downloads-method-note">
+                      <span class="i18n-zh"
+                        >默认走 <code>http://127.0.0.1:8000</code>，端口被占用时会自动顺延；需要固定端口就用 <code>PURRCAT_API_PORT</code> 指定。</span
+                      >
+                      <span class="i18n-en"
+                        >The API listens on <code>http://127.0.0.1:8000</code> and quietly moves to the next free
+                        port when that one is taken. Pin it with <code>PURRCAT_API_PORT</code> if you need to.</span
+                      >
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </section>
+
+            <section
+              class="docs-dev-section docs-overview-section"
+              id="what-is-purrcat"
+              data-kicker-zh="认识 PurrCat"
+              data-kicker-en="About PurrCat"
+              aria-labelledby="what-is-h"
+            >
+              <div class="docs-prose">
+                <h2 id="what-is-h">
+                  <span class="i18n-zh">什么是 PurrCat？</span><span class="i18n-en">What is PurrCat?</span>
+                </h2>
+                <p>
+                  <span class="i18n-zh">一个基于信息熵不可逆性理念设计的 Agent 底座。</span>
+                  <span class="i18n-en"
+                    >An agent foundation designed around the irreversibility of information entropy.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >信息一旦丢失，就无法保证被完整还原。就像一张被打上马赛克的图片，即使最强大的模型，也只能根据剩余信息推测原貌，而无法保证还原出真实的原图。</span
+                  >
+                  <span class="i18n-en"
+                    >Once information is lost, nothing guarantees it can be fully restored. Like a picture with a mosaic
+                    over it: even the strongest model can only guess at what was there from what remains — it cannot
+                    promise the original back.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >人与 Agent 的沟通也是如此。你表达的需求、任务中的背景、执行过程中的发现，都可能在传递中遗漏、压缩或失真。模型能力越强，并不意味着它就能自动知道你真正想要什么。</span
+                  >
+                  <span class="i18n-en"
+                    >The same goes for how you talk to an agent: the needs you express, the context behind a task, the
+                    discoveries made while running it — any of them can be dropped, compressed, or distorted on the way.
+                    A stronger model does not automatically know what you actually want.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >我们尊重信息熵不可逆这一事实。因此，PurrCat 不仅致力于提升 Agent 的任务交付能力，更致力于打造你与 Agent 之间更方便、更高效的信息信道。</span
+                  >
+                  <span class="i18n-en"
+                    >We take the irreversibility of information entropy as a given. So PurrCat works not only to raise
+                    the agent's task delivery, but to build a more convenient and more efficient information channel
+                    between you and your agent.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >让你的意图更容易表达，让必要的信息更准确地流动，让 Agent 更贴近你真正想要的结果。</span
+                  >
+                  <span class="i18n-en"
+                    >Make your intent easier to express, let the necessary information flow more accurately, and bring
+                    the agent closer to the result you actually want.</span
+                  >
+                </p>
+                <p class="docs-prose-tagline">
+                  <span class="i18n-zh">Build an Agent That Works Your Way.</span>
+                  <span class="i18n-en">Build an Agent That Works Your Way.</span>
+                </p>
+              </div>
+            </section>
+
+            <section
+              class="docs-dev-section docs-overview-section"
+              id="why-purrcat"
+              data-kicker-zh="设计理念"
+              data-kicker-en="Design"
+              aria-labelledby="why-h"
+            >
+              <div class="docs-prose">
+                <h2 id="why-h">
+                  <span class="i18n-zh">为什么选择 PurrCat？</span><span class="i18n-en">Why PurrCat?</span>
+                </h2>
+                <p>
+                  <span class="i18n-zh"
+                    >我们相信，好的 Agent 不应该只追求更强的模型，还应该拥有更好的信息流转方式。</span
+                  >
+                  <span class="i18n-en"
+                    >We believe a good agent should not only chase a stronger model, but also carry a better way for
+                    information to flow.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >模型会越来越强，工具会越来越多，Agent 能承担的任务也会越来越复杂。但有一件事不会因此自动消失：Agent 无法凭空获得你没有表达、系统也无法可靠推断的信息。</span
+                  >
+                  <span class="i18n-en"
+                    >Models will keep getting stronger, tools will keep multiplying, and the tasks an agent can take
+                    on will keep getting more complex — but one thing will not disappear on its own: an agent cannot
+                    conjure information you never expressed and the system cannot reliably infer.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >因此，我们希望 Agent 的进步，不只体现在模型能力上，也体现在人与 Agent 之间的信息如何表达、组织、传递和留存。</span
+                  >
+                  <span class="i18n-en"
+                    >So we want the agent's progress to show up not only in model capability, but in how information
+                    between you and the agent is expressed, organised, passed on, and kept.</span
+                  >
+                </p>
+                <p>
+                  <span class="i18n-zh"
+                    >这就是 PurrCat 的设计出发点：提升任务交付能力，打造更好的信息信道，让 Agent 不只更强，也更懂得按照你的方式工作。</span
+                  >
+                  <span class="i18n-en"
+                    >That is where PurrCat's design starts: raise task delivery and build a better information channel,
+                    so the agent is not only stronger — it also knows how to work your way.</span
+                  >
+                </p>
+              </div>
+
+              <div class="docs-map-grid">
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">01</span><span class="i18n-en">01</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让沟通不再局限于文字</span
+                    ><span class="i18n-en">Communication beyond text alone</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >有些需求，点一下比说十句话更清楚。通过可定制的 UI 插件、交互式界面和上下文补充机制，你可以直接向 Agent 表达意图，而不必每次都从头描述。</span
+                    >
+                    <span class="i18n-en"
+                      >Some needs are clearer with one click than with ten sentences. With customisable UI plugins,
+                      interactive interfaces, and context-supplementing mechanisms, you can put intent straight in front
+                      of the agent instead of describing it from scratch each time.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>更方便地表达，就是更高效地协作。</strong></span>
+                    <span class="i18n-en"><strong>Expressing it easily is collaborating efficiently.</strong></span>
+                  </p>
+                </article>
+
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">02</span><span class="i18n-en">02</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让信息按照你的方式流动</span
+                    ><span class="i18n-en">Information flows your way</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >每个人的工作方式都不一样，Agent 也不应该只有一种固定的工作方式。通过可编排的工作流、自定义 Agent Loop 和灵活的插件机制，你可以决定任务如何拆分、信息何时注入、工具何时调用，以及不同执行阶段如何协作。</span
+                    >
+                    <span class="i18n-en"
+                      >Everyone works differently, so an agent should not be stuck with one fixed way of working. With
+                      composable workflows, a custom Agent Loop, and a flexible plugin system, you decide how a task is
+                      split, when information is injected, when tools are called, and how stages cooperate.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>不是让你适应 Agent，而是让 Agent 适应你。</strong></span>
+                    <span class="i18n-en"
+                      ><strong>It is not you adapting to the agent, but the agent adapting to you.</strong></span
+                    >
+                  </p>
+                </article>
+
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">03</span><span class="i18n-en">03</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让重要的信息留得下来</span
+                    ><span class="i18n-en">What matters stays</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >完成一次任务不应该意味着所有经验都随之消失。PurrCat 通过多层记忆系统，帮助 Agent 留存事件、提取相关知识，并在后续任务中找回需要的信息。</span
+                    >
+                    <span class="i18n-en"
+                      >Finishing a task should not mean every bit of experience vanishes with it. Through a
+                      multi-layer memory system, PurrCat helps the agent keep events, extract relevant knowledge, and
+                      find what it needs again in later tasks.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>让过去的工作，成为未来的上下文。</strong></span>
+                    <span class="i18n-en"><strong>Let past work become future context.</strong></span>
+                  </p>
+                </article>
+
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">04</span><span class="i18n-en">04</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让一切成为插件</span
+                    ><span class="i18n-en">Everything is a plugin</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >PurrCat 将信源、信道、信息流转方式以及外部工具等相关逻辑抽象成了六大类插件，Agent 能力边界由插件决定，蕴含无限可能。你也可以在此基础上轻松造出独属于自己的 Agent。</span
+                    >
+                    <span class="i18n-en"
+                      >PurrCat abstracts the source, the channel, the way information flows, and external tools into
+                      six major plugin types. The agent's capability boundary is defined by its plugins, and the
+                      possibilities are endless — you can easily build an Agent of your own on that foundation.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>一套插件机制，装下 Agent 所有的可能性。</strong></span>
+                    <span class="i18n-en"><strong>One plugin mechanism, every possibility for the agent.</strong></span>
+                  </p>
+                </article>
+
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">05</span><span class="i18n-en">05</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让 Agent 的能力持续生长</span
+                    ><span class="i18n-en">Capability that keeps growing</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >工具、技能和工作流不必永远由开发者手工编写。PurrCat 的进化工厂支持 Agent 构建新的扩展能力，并通过评估、迭代和记录来验证改进效果。</span
+                    >
+                    <span class="i18n-en"
+                      >Tools, skills, and workflows do not have to be hand-written by developers forever. PurrCat's
+                      evolution factory lets the agent build new extensions, then validates the improvements through
+                      evaluation, iteration, and records.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>不只使用能力，也让能力有机会被创造和改进。</strong></span>
+                    <span class="i18n-en"
+                      ><strong>Not just using capability — creating and improving it.</strong></span
+                    >
+                  </p>
+                </article>
+
+                <article class="docs-map-card">
+                  <p class="docs-map-track">
+                    <span class="i18n-zh">06</span><span class="i18n-en">06</span>
+                  </p>
+                  <h3>
+                    <span class="i18n-zh">让自主工作拥有明确的边界</span
+                    ><span class="i18n-en">Autonomy with clear boundaries</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      >Agent 可以持续工作，但自主不意味着不受约束。PurrCat 通过独立执行沙箱、受控的文件交互，以及 Heartbeat 与 Goal 机制，为 Agent 提供持续工作的环境与明确的运行边界。</span
+                    >
+                    <span class="i18n-en"
+                      >An agent can keep working, but autonomy does not mean being unconstrained. With an isolated
+                      execution sandbox, controlled file interaction, and the Heartbeat and Goal mechanisms, PurrCat
+                      gives the agent a place to keep working and clear limits to work within.</span
+                    >
+                  </p>
+                  <p class="docs-map-link">
+                    <span class="i18n-zh"><strong>让 Agent 更自主，也让你更安心。</strong></span>
+                    <span class="i18n-en"
+                      ><strong>More autonomy for the agent, more peace of mind for you.</strong></span
+                    >
+                  </p>
+                </article>
+              </div>
+            </section>
+
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var langKey = 'purrcat:docs-lang';
+
+        function setLang(lang) {
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+          document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+            var active = button.getAttribute('data-set-lang') === lang;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+          try {
+            localStorage.setItem(langKey, lang);
+          } catch (e) {}
+        }
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem(langKey);
+        } catch (e) {}
+        setLang(saved === 'zh' ? 'zh' : 'en');
+
+        document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLang(button.getAttribute('data-set-lang'));
+          });
+        });
+
+        /* 提示词复制：抓当前语言下那一份提示词 */
+        document.querySelectorAll('[data-copy-prompt]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var scope = button.closest('.docs-recipe-card') || button.closest('.docs-prompt');
+            if (!scope) return;
+            var lang = root.getAttribute('data-lang') || 'zh';
+            var pre = scope.querySelector('.i18n-' + lang + ' pre') || scope.querySelector('pre');
+            if (!pre) return;
+            button.classList.add('copied');
+            window.clearTimeout(button._timer);
+            button._timer = window.setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1600);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(pre.textContent.trim()).catch(function () {});
+            }
+          });
+        });
+
+        /* 小屏下的文档目录折叠 */
+        var navToggle = document.querySelector('[data-docs-nav-toggle]');
+        if (navToggle) {
+          navToggle.addEventListener('click', function () {
+            var open = navToggle.getAttribute('aria-expanded') !== 'true';
+            navToggle.setAttribute('aria-expanded', String(open));
+            navToggle.closest('.skills-sidebar').classList.toggle('is-open', open);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

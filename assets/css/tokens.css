@@ -1,0 +1,172 @@
+/* 设计令牌 —— 取自 impeccable.style 的 kinpaku token 层，变量名与数值保持原样，
+   以便原版组件规则可以直接落进来。 */
+
+:root {
+  color-scheme: light;
+
+  /* 强调：金箔 kinpaku */
+  --ks-kinpaku: oklch(84% 0.19 80.46);
+  --ks-kinpaku-vivid: oklch(87% 0.2 85);
+  --ks-kinpaku-pale: oklch(86% 0.07 84);
+  --ks-kinpaku-rich: oklch(77% 0.13 82);
+  --ks-kinpaku-deep: oklch(61% 0.085 78);
+  --ks-on-gold: oklch(14% 0.018 95);
+  --ks-gold-line: var(--ks-kinpaku-rich);
+
+  /* 辅助：patina 青 */
+  --ks-patina: oklch(70% 0.12 188);
+  --ks-patina-pale: oklch(82% 0.07 188);
+  --ks-patina-deep: oklch(45% 0.1 190);
+  --ks-patina-ink: oklch(41% 0.11 190);
+
+  /* 高亮笔：长简报里被点名的 skill，紫色荧光笔涂出来的圆角框 */
+  --ks-mark: oklch(89% 0.085 312);
+  --ks-mark-edge: oklch(80% 0.11 312);
+  --ks-mark-ink: oklch(41% 0.17 312);
+
+  --ks-gold-ink: var(--ks-text-muted);
+  --ks-accent-ink: var(--ks-text-muted);
+  --ks-state-ink: var(--ks-patina-deep);
+  --ks-focus-ring: var(--ks-patina-deep);
+  --ks-kinpaku-ink: var(--ks-text-muted);
+  --ks-link-on-paper: var(--ks-ink);
+  --ks-link-on-paper-hover: var(--ks-ink);
+  --ks-link-on-paper-line: oklch(13% 0 0 / 0.28);
+  --ks-link-on-paper-line-hover: var(--ks-kinpaku);
+  --ks-nav-active: var(--ks-ink);
+  --ks-vermilion: oklch(52% 0.16 35);
+
+  /* 纸面 */
+  --ks-paper: oklch(97.8% 0 0);
+  --ks-paper-raised: oklch(99.5% 0 0);
+  --ks-paper-deep: oklch(95% 0 0);
+  --ks-gray: oklch(92% 0 0);
+  --ks-gray-2: oklch(88% 0 0);
+
+  /* 仪器深色 */
+  --ks-instrument: oklch(24% 0 0);
+  --ks-instrument-deep: oklch(17% 0 0);
+  --ks-instrument-raised: oklch(31% 0 0);
+  --ks-instrument-text: oklch(93% 0 0);
+  --ks-instrument-muted: oklch(68% 0 0);
+  --ks-instrument-rule: oklch(100% 0 0 / 0.12);
+  --ks-instrument-edge: oklch(100% 0 0 / 0.3);
+
+  /* 文字 */
+  --ks-ink: oklch(13% 0 0);
+  --ks-text: oklch(22% 0 0);
+  --ks-text-muted: oklch(46% 0 0);
+  --ks-text-faint: oklch(51% 0 0);
+  --ks-text-mute-deep: oklch(66% 0 0);
+
+  /* 线与边 */
+  --ks-rule: oklch(13% 0 0 / 0.08);
+  --ks-edge: oklch(13% 0 0 / 0.45);
+
+  /* 圆角与控制尺寸 */
+  --ks-radius-sm: 3px;
+  --ks-radius-md: 8px;
+  --ks-radius-lg: 16px;
+  --ks-radius-pill: 999px;
+  --ks-control-sm: 26px;
+  --ks-control-md: 32px;
+  --ks-control-lg: 44px;
+  --ks-section-pad: clamp(72px, 8vw, 120px);
+
+  /* 投影 */
+  --ks-lift-1: 0 1px 1px oklch(13% 0 0 / 0.05), 0 2px 3px oklch(13% 0 0 / 0.04), 0 6px 12px oklch(13% 0 0 / 0.05);
+  --ks-lift-2: 0 1px 1px oklch(13% 0 0 / 0.04), 0 3px 5px oklch(13% 0 0 / 0.05), 0 12px 20px oklch(13% 0 0 / 0.06), 0 32px 48px oklch(13% 0 0 / 0.07);
+  --ks-key-lift: 0 1px 2px oklch(0% 0 0 / 0.4);
+  --ks-cap-lift: inset 0 1px 0 oklch(100% 0 0 / 0.9), 0 1px 0 oklch(13% 0 0 / 0.14), 0 2px 3px oklch(13% 0 0 / 0.08);
+  --ks-cap-press: inset 0 1px 2px oklch(13% 0 0 / 0.14);
+  --ks-track-recess: inset 0 1px 3px oklch(13% 0 0 / 0.16), inset 0 -1px 0 oklch(100% 0 0 / 0.7);
+  --ks-led: 0 0 0 1px oklch(13% 0 0 / 0.12), 0 0 4px oklch(84% 0.19 80 / 0.6);
+  --ks-indicator-glow: 0 0 0 1px oklch(0% 0 0 / 0.3), 0 0 4px oklch(84% 0.19 80 / 0.65);
+
+  /* 代码 */
+  --ks-code-fg: var(--ks-ink);
+  --ks-code-bg: var(--ks-gray);
+  --ks-code-radius: 3px;
+  --ks-code-pad: 0.2em 0.45em;
+  --ks-code-block-fg: var(--ks-text);
+  --ks-code-block-bg: var(--ks-paper-deep);
+  --ks-code-block-border: var(--ks-rule);
+  --ks-code-block-radius: 3px;
+  --ks-code-cmd: var(--ks-link-on-paper);
+
+  /* 字体 */
+  --ks-font: "Albert Sans", "Avenir Next", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --ks-font-display: var(--ks-font-wordmark);
+  --ks-font-wordmark: "Alumni Sans", "Albert Sans", Arial, sans-serif;
+  --ks-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+
+  /* 字号阶梯 */
+  --ks-type-display-size: clamp(3.2rem, 6.2vw, 5.6rem);
+  --ks-type-display-weight: 200;
+  --ks-type-display-line: 1;
+  --ks-type-display-track: 0;
+  --ks-type-headline-size: clamp(2.4rem, 3.6vw, 3.4rem);
+  --ks-type-headline-weight: 300;
+  --ks-type-headline-line: 1.04;
+  --ks-type-headline-track: 0;
+  --ks-type-title-size: 1.0625rem;
+  --ks-type-title-weight: 600;
+  --ks-type-title-line: 1.35;
+  --ks-type-body-size: 1rem;
+  --ks-type-body-line: 1.65;
+  --ks-type-eyebrow-size: 0.6875rem;
+  --ks-type-eyebrow-track: 0.14em;
+  --ks-type-wordmark-size: 1.25rem;
+  --ks-type-wordmark-track: 0.18em;
+  --ks-type-mono-size: 0.6875rem;
+  --ks-type-mono-track: 0.12em;
+  --ks-type-micro-size: 0.6875rem;
+  --ks-type-label-size: 0.75rem;
+  --ks-type-ui-size: 0.8125rem;
+  --ks-type-ui-lead: 0.9375rem;
+  --ks-type-small-size: 0.875rem;
+  --ks-type-lead-size: 1.125rem;
+  --ks-type-subhead-size: 1.25rem;
+  --ks-type-title-lg-size: 1.5rem;
+
+  /* 动效 */
+  --ks-ease: cubic-bezier(0.2, 0.8, 0.2, 1);
+  --ks-quick: 0.12s;
+  --ks-settle: 0.2s;
+}
+
+/* 原站的 legacy 别名层 —— 页头、页脚等旧规则直接引用这批名字，
+   数值与原站 :root 完全一致。 */
+:root {
+  --font-display: var(--ks-font-display);
+  --font-body: var(--ks-font);
+  --font-mono: var(--ks-mono);
+
+  --spacing-xs: 8px;
+  --spacing-sm: 16px;
+  --spacing-md: 24px;
+  --spacing-lg: 32px;
+  --spacing-xl: 48px;
+  --spacing-2xl: 80px;
+  --spacing-3xl: 120px;
+
+  --width-max: 1400px;
+  --width-content: 900px;
+
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --duration-fast: 0.15s;
+  --duration-base: 0.3s;
+  --duration-slow: 0.6s;
+
+  --color-ink: var(--ks-ink);
+  --color-text: var(--ks-text);
+  --color-paper: var(--ks-paper);
+  --color-cream: var(--ks-paper-raised);
+  --color-charcoal: var(--ks-text);
+  --color-ash: var(--ks-text-muted);
+  --color-mist: var(--ks-rule);
+  --color-bg: var(--ks-paper-raised);
+  --color-accent: var(--ks-kinpaku);
+  --color-accent-hover: var(--ks-kinpaku-vivid);
+}

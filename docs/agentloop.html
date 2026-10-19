@@ -1,0 +1,644 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AgentLoop — PurrCat Docs</title>
+    <meta
+      name="description"
+      content="Build a PurrCat AgentLoop: a YAML paradigm declaring each loop stage, injection, and check."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/page.css" />
+    <link rel="stylesheet" href="/assets/css/docs.css" />
+  </head>
+  <body class="kinpaku-chrome docs-kinpaku skills-layout-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
+      </a>
+
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
+
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home">Home</a>
+          <a href="/#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs" aria-current="page">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <div class="skills-layout">
+        <aside class="skills-sidebar" aria-label="Docs navigation">
+          <button
+            class="skills-sidebar-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="skills-sidebar-inner"
+            data-docs-nav-toggle
+          >
+            <span class="skills-sidebar-toggle-label">
+              <span class="i18n-zh">浏览文档</span><span class="i18n-en">Browse docs</span>
+            </span>
+            <svg
+              class="skills-sidebar-toggle-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </button>
+
+          <div class="skills-sidebar-inner" id="skills-sidebar-inner">
+            <nav aria-label="Guides">
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">从这里开始</span><span class="i18n-en">Start here</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/"
+                      ><span class="i18n-zh">总览</span><span class="i18n-en">Overview</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/#install"
+                      ><span class="i18n-zh">安装</span><span class="i18n-en">Install</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">用户教程</span><span class="i18n-en">Tutorials</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">如何定制自己的专属Agent</span
+                      ><span class="i18n-en">Make it your own agent</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">让Agent自己造插件</span
+                      ><span class="i18n-en">Have the agent build its own plugins</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">开发者文档</span><span class="i18n-en">Developer docs</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/plugins.html"
+                      ><span class="i18n-zh">扩展体系</span><span class="i18n-en">Extension model</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/ui-plugin.html"
+                      ><span class="i18n-zh">UI Plugin 开发</span><span class="i18n-en">UI plugin guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/sensor.html"
+                      ><span class="i18n-zh">Sensor 开发</span><span class="i18n-en">Sensor guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/graph.html"
+                      ><span class="i18n-zh">Graph 开发</span><span class="i18n-en">Graph guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/agentloop.html" aria-current="page"
+                      ><span class="i18n-zh">AgentLoop 开发</span><span class="i18n-en">AgentLoop guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/api.html"
+                      ><span class="i18n-zh">后端 API 参考</span><span class="i18n-en">Backend API reference</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </aside>
+        <div class="skills-main skills-main--docs-index">
+          <div class="docs-index">
+            <div class="docs-lang" role="group" aria-label="Language">
+              <span class="docs-lang-label">Language</span>
+              <div class="downloads-method-strip ks-instrument-strip is-paper" role="tablist">
+                <button
+                  class="ks-instrument-key is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  data-set-lang="en"
+                >
+                  English
+                </button>
+                <button
+                  class="ks-instrument-key"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-set-lang="zh"
+                >
+                  中文
+                </button>
+              </div>
+            </div>
+
+            <section class="docs-reference-section" aria-labelledby="doc-title">
+              <article
+                class="docs-dev-section"
+                id="dev-loop"
+                data-kicker-zh="插件类型 · AgentLoop"
+                data-kicker-en="Plugin type · AgentLoop"
+              >
+                <div class="docs-prose">
+                  <h1 id="doc-title">AgentLoop</h1>
+                  <p>
+                    <span class="i18n-zh"
+                      >AgentLoop（范式 / PARADIGM）是 Agent 的<strong>主循环范式</strong>：用一份 YAML 声明每一轮循环在哪些<strong>阶段（stage）</strong>注入什么内容、执行什么检查，从而定制它的思考与行动流程。范式支持<strong>会话级热切换</strong>，且切换前后系统提示前缀保持一致，不破坏 KV Cache。</span
+                    >
+                    <span class="i18n-en"
+                      >AgentLoop (a paradigm) is the agent's <strong>main loop</strong>. A single YAML file declares what
+                      each <strong>stage</strong> injects and checks every round, shaping how the agent thinks and acts.
+                      Paradigms hot-swap per session, and the system-prompt prefix is kept stable so the KV cache
+                      survives the switch.</span
+                    >
+                  </p>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh">每轮循环依次触发若干阶段，每个阶段可挂多个 <strong>hook</strong>，按声明顺序执行。</span>
+                      <span class="i18n-en">Each round fires several stages in order; a stage can carry multiple <strong>hooks</strong> that run in declaration order.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh">hook 的三种作用：<strong>注入</strong>内容到系统提示/上下文、<strong>执行检查</strong>决定循环能否结束、<strong>产生反馈</strong>（通过 / 失败提示词）。</span>
+                      <span class="i18n-en">Hooks do three things: <strong>inject</strong> into the prompt or context, <strong>check</strong> whether the loop may end, and <strong>feed back</strong> a pass or fail prompt.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><code>on_loop_end</code> 的检查未通过且未达 <code>loop_end_max_retry</code> 上限时，本轮回打重试。</span>
+                      <span class="i18n-en">When an <code>on_loop_end</code> check fails below the <code>loop_end_max_retry</code> ceiling, the round is replayed.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <pre class="docs-code-block"><code>name: strict-finish
+description: 强制 Agent 调用 finish_task 并提供 summary 才允许结束
+description-en: Force the agent to call finish_task with a summary before ending.
+path: agent_vm                # 执行环境标识，保持默认
+loop_end_max_retry: 3         # on_loop_end 未通过时的最大重试轮数
+trigger:                      # 定时触发声明（可选）
+  - cron:
+      time: "08:08"
+      injection: "【Demo】闹钟响了"
+hooks:                        # 阶段 -&gt; hook 列表
+  on_build_system_prompt:
+    - injection: { content: "你是一个严谨的助手。" }
+  on_input_received:
+    - keyword_check: { keyword: "周报", type: user, successed_prompt: "用户要写周报：先列出数据来源与周期，再按模板生成。", failed_prompt: "本次输入与周报无关，不要生成周报。" }
+  on_loop_start:
+    - skill_info: { skills: ["my-skill"], failed_prompt: "缺少技能，请先获取。" }
+  on_loop_epoch:
+    - injection: { content: "当前进度：{{@TASKSPACE}}", interval: 3 }
+  on_loop_end:
+    - tool_use_check:
+        name: "finish_task"
+        parameter_check: "summary"
+        successed_prompt: "任务已完成，可以结束。"
+        failed_prompt: "尚未调用 finish_task 或缺少 summary 参数，请补齐后重试。"</code></pre>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">顶层字段</span><span class="i18n-en">Top-level fields</span></h3>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">字段</span><span class="i18n-en">Field</span></th>
+                        <th scope="col"><span class="i18n-zh">必填</span><span class="i18n-en">Required</span></th>
+                        <th scope="col"><span class="i18n-zh">说明</span><span class="i18n-en">Notes</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>name</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">Yes</span></td>
+                        <td><span class="i18n-zh">安装标识，与文件名一致</span><span class="i18n-en">Install id, identical to the file name</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>description</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">Yes</span></td>
+                        <td><span class="i18n-zh">中文描述（市场展示）</span><span class="i18n-en">Chinese description for the market</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>description-en</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">Yes</span></td>
+                        <td><span class="i18n-zh">英文描述</span><span class="i18n-en">English description</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>path</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">Yes</span></td>
+                        <td><span class="i18n-zh">执行环境，保持 <code>agent_vm</code></span><span class="i18n-en">Execution environment, keep <code>agent_vm</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>loop_end_max_retry</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">No</span></td>
+                        <td><span class="i18n-zh"><code>on_loop_end</code> 检查未通过时的最大重试轮数</span><span class="i18n-en">Max retry rounds when an <code>on_loop_end</code> check fails</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>trigger</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">No</span></td>
+                        <td><span class="i18n-zh">定时触发声明：<code>{ "cron": { "time": "HH:MM", "injection": "文本" } }</code>，到点向当前会话注入一条消息。</span><span class="i18n-en">Timed trigger: <code>{ "cron": { "time": "HH:MM", "injection": "text" } }</code> injects a message into the current session at the given time.</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>hooks</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">Yes</span></td>
+                        <td><span class="i18n-zh">阶段到 hook 列表的映射</span><span class="i18n-en">Map of stage to hook list</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">阶段（stage）</span><span class="i18n-en">Stages</span></h3>
+                  <p>
+                    <span class="i18n-zh"><code>hooks</code> 的键即阶段名，全部可选、按需声明。</span>
+                    <span class="i18n-en">The keys of <code>hooks</code> are the stage names; all are optional.</span>
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">阶段</span><span class="i18n-en">Stage</span></th>
+                        <th scope="col"><span class="i18n-zh">时机</span><span class="i18n-en">When</span></th>
+                        <th scope="col"><span class="i18n-zh">典型 hook</span><span class="i18n-en">Typical hooks</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>on_build_system_prompt</code></td>
+                        <td><span class="i18n-zh">构建系统提示时</span><span class="i18n-en">While building the system prompt</span></td>
+                        <td><code>injection</code> · <code>memo_injection</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_input_received</code></td>
+                        <td><span class="i18n-zh">收到用户输入时（携带本批 <code>received_messages</code>）</span><span class="i18n-en">On user input (carries this batch's <code>received_messages</code>)</span></td>
+                        <td><code>keyword_check</code> · <code>injection</code> · <code>search</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_loop_start</code></td>
+                        <td><span class="i18n-zh">一轮循环开始时</span><span class="i18n-en">When a round begins</span></td>
+                        <td><code>injection</code> · <code>skill_info</code> · <code>file_operation</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_loop_epoch</code></td>
+                        <td><span class="i18n-zh">循环内每一 epoch（每次模型调用）前</span><span class="i18n-en">Before each epoch inside the round (per model call)</span></td>
+                        <td><code>injection</code> · <code>file_operation</code> · <code>command_run</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_tool_calling</code></td>
+                        <td><span class="i18n-zh">即将调用工具时</span><span class="i18n-en">Just before a tool call</span></td>
+                        <td><code>tool_use_check</code> · <code>injection</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_loop_end</code></td>
+                        <td><span class="i18n-zh">一轮循环结束判定时</span><span class="i18n-en">When deciding whether the round ends</span></td>
+                        <td><code>tool_use_check</code> · <code>file_operation</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"><code>keyword_check</code>（in检查）只检查「本批收到的输入」，因此仅在带 <code>received_messages</code> 的 <code>on_input_received</code> 阶段有意义；它不拦截输入，唯一产出就是提示词——两个提示词都留空则等于什么都没做。</span>
+                    <span class="i18n-en"><code>keyword_check</code> only inspects the current batch of input, so it is meaningful only in an <code>on_input_received</code> stage. It never blocks input: its only output is the prompt, and with both prompts left empty it does nothing at all.</span>
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">hook 类型</span><span class="i18n-en">Hook types</span></h3>
+                  <p>
+                    <span class="i18n-zh">每个 hook 是一个「单键对象」：<code>&lt;action&gt;</code> 为键，值为该 action 的参数对象。</span>
+                    <span class="i18n-en">Each hook is a single-key object: the key is the <code>&lt;action&gt;</code>, the value is its parameter object.</span>
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">action</span><span class="i18n-en">Action</span></th>
+                        <th scope="col"><span class="i18n-zh">参数</span><span class="i18n-en">Parameters</span></th>
+                        <th scope="col"><span class="i18n-zh">说明</span><span class="i18n-en">Notes</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>injection</code></td>
+                        <td><code>content</code></td>
+                        <td><span class="i18n-zh">直接注入提示文本；<code>content</code> 支持 <code>@引用</code></span><span class="i18n-en">Injects prompt text directly; <code>content</code> supports <code>@</code> references</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>memo_injection</code></td>
+                        <td><code>type</code> · <code>count</code></td>
+                        <td><span class="i18n-zh">注入记忆：<code>type</code> 取 <code>full</code> / <code>light</code> / 自定义 key，<code>count</code> 为条目数</span><span class="i18n-en">Injects memory: <code>type</code> is <code>full</code> / <code>light</code> / a custom key, <code>count</code> is the number of entries</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>skill_info</code></td>
+                        <td><code>skills</code> · <code>failed_prompt</code></td>
+                        <td><span class="i18n-zh">拼装指定技能的描述提示；缺失时给 <code>failed_prompt</code></span><span class="i18n-en">Assembles descriptions of the named skills; falls back to <code>failed_prompt</code> when missing</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>search</code></td>
+                        <td><code>query</code> · <code>route</code></td>
+                        <td><span class="i18n-zh">调检索工具并注入结果；<code>route</code> ∈ <code>skill</code> / <code>mcp</code> / <code>memory</code> / <code>local</code> / <code>web</code>，默认 <code>local</code></span><span class="i18n-en">Runs retrieval and injects the result; <code>route</code> ∈ <code>skill</code> / <code>mcp</code> / <code>memory</code> / <code>local</code> / <code>web</code>, default <code>local</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>tool_use_check</code></td>
+                        <td><code>name</code> · <code>parameter_check</code> · <code>successed_prompt</code> · <code>failed_prompt</code></td>
+                        <td><span class="i18n-zh">检查本轮是否调用了工具 <code>name</code>（可要求特定参数）；据此放行或回打并附提示</span><span class="i18n-en">Checks whether tool <code>name</code> was called (optionally with a required parameter); passes or replays with a prompt</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>keyword_check</code></td>
+                        <td><code>keyword</code> · <code>type</code> · <code>successed_prompt</code> · <code>failed_prompt</code></td>
+                        <td><span class="i18n-zh">in检查：看本批输入里有没有 <code>keyword</code>，<code>type</code> 只检查该类型的消息（留空不限）；只做提示注入、不拦截输入（见下方「in检查的语义」）</span><span class="i18n-en">The in-check: looks for <code>keyword</code> in the current batch of input; <code>type</code> restricts which message types are inspected (empty means any). It only injects prompts and never blocks input (see “The in-check” below)</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>file_operation</code></td>
+                        <td><code>action</code> · <code>path</code> · <code>content</code> · <code>failed_prompt</code></td>
+                        <td><span class="i18n-zh">文件检查 / 操作，<code>action</code> ∈ <code>read</code> / <code>exist_check</code> / <code>write_in</code> / <code>add_in</code> / <code>delete</code></span><span class="i18n-en">File check or operation; <code>action</code> ∈ <code>read</code> / <code>exist_check</code> / <code>write_in</code> / <code>add_in</code> / <code>delete</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>command_run</code></td>
+                        <td><code>command</code> · <code>return_log</code> · <code>failed_prompt</code></td>
+                        <td><span class="i18n-zh">执行命令并按结果判定，常用于 <code>on_loop_epoch</code></span><span class="i18n-en">Runs a command and judges by its result; common in <code>on_loop_epoch</code></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh">通用参数：<code>delay</code>（仅在第 N 个 epoch 执行）、<code>interval</code>（每 N 个 epoch 执行一次）、<code>expect</code>（<code>on_loop_end</code> 中 <code>"fail"</code> 表示「未满足才算通过」，用于反向结束条件）。</span>
+                    <span class="i18n-en">Shared parameters: <code>delay</code> (run on the Nth epoch only), <code>interval</code> (run every N epochs), and <code>expect</code> (<code>"fail"</code> in <code>on_loop_end</code> means the loop passes only when the check is unmet, for inverted end conditions).</span>
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">检查类动作的通用语义（提示词才是它的产出）</span><span class="i18n-en">Check actions in general: the prompt is the payload</span></h3>
+                  <p>
+                    <span class="i18n-zh">检查类动作（<code>tool_use_check</code>、<code>keyword_check</code>、<code>file_operation</code> 的 <code>read</code> / <code>exist_check</code> / <code>delete</code>、<code>command_run</code>、<code>skill_info</code>）只做两件事：判断通过 / 不通过，并把 <code>successed_prompt</code> / <code>failed_prompt</code> 以 role=user 的提示消息注入回历史给模型看。</span>
+                    <span class="i18n-en">Check actions (<code>tool_use_check</code>, <code>keyword_check</code>, <code>file_operation</code> with <code>read</code> / <code>exist_check</code> / <code>delete</code>, <code>command_run</code>, <code>skill_info</code>) do exactly two things: decide pass / fail, and inject <code>successed_prompt</code> / <code>failed_prompt</code> back into history as a role=user hint for the model to read.</span>
+                  </p>
+                  <p>
+                    <span class="i18n-zh">因此<strong>不写提示词的检查等于白写</strong>：条件不通过时既没有回打理由，也没有任何内容注入给模型。除「纯放行的闸门」外，都应写出 <code>failed_prompt</code>。</span>
+                    <span class="i18n-en">So <strong>a check without prompts is a no-op</strong>: when it fails there is no replay reason and nothing injected for the model. Unless it is a pure gate, always write <code>failed_prompt</code>.</span>
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">阶段</span><span class="i18n-en">Stage</span></th>
+                        <th scope="col"><span class="i18n-zh">不通过时的后果</span><span class="i18n-en">What a failure does</span></th>
+                        <th scope="col"><span class="i18n-zh">提示词效果</span><span class="i18n-en">Effect of the prompt</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>on_tool_calling</code></td>
+                        <td><span class="i18n-zh">拦下本次工具调用的后续流程、继续循环</span><span class="i18n-en">The current tool call's follow-up is held back and the loop continues</span></td>
+                        <td><span class="i18n-zh">注入 <code>failed_prompt</code>，模型据此重来</span><span class="i18n-en">Injects <code>failed_prompt</code> so the model can redo it</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_loop_end</code></td>
+                        <td><span class="i18n-zh">未达 <code>loop_end_max_retry</code> 上限时整轮打回重试（系统另附一条通用打回提示）</span><span class="i18n-en">The whole round is replayed until <code>loop_end_max_retry</code> is reached (a generic replay hint is added too)</span></td>
+                        <td><span class="i18n-zh">注入 <code>failed_prompt</code>；<strong>通过时 <code>successed_prompt</code> 不生效</strong>（结束即静默放行）</span><span class="i18n-en">Injects <code>failed_prompt</code>; on pass <code>successed_prompt</code> has no effect (ending is silent)</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>on_input_received</code></td>
+                        <td><span class="i18n-zh"><strong>不拦不挡，只做提示</strong>（不决定循环能否结束）</span><span class="i18n-en"><strong>Blocks nothing, only hints</strong> (it cannot end the loop)</span></td>
+                        <td><span class="i18n-zh">命中注入 <code>successed_prompt</code>，未命中注入 <code>failed_prompt</code></span><span class="i18n-en">A hit injects <code>successed_prompt</code>; a miss injects <code>failed_prompt</code></span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh">结论：挂在 <code>on_input_received</code> 上的检查<strong>价值 100% 体现在提示词上</strong>，只写检查条件、两个提示词都留空，是最典型的“写了但没用”的写法。</span>
+                    <span class="i18n-en">Bottom line: for a check on <code>on_input_received</code>, <strong>the prompts are 100% of its value</strong>; declaring the condition with both prompts empty is the classic “wrote it, useless” case.</span>
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">in检查（<code>keyword_check</code>）的语义</span><span class="i18n-en">The in-check (<code>keyword_check</code>)</span></h3>
+                  <ul>
+                    <li><span class="i18n-zh">它检查的是<strong>输入侧</strong>：本批以 role=user 注入历史的消息里有没有 <code>keyword</code>——不检查模型输出，也不检查文件。</span><span class="i18n-en">It inspects the <strong>input side</strong>: whether the current batch of role=user history messages contains <code>keyword</code> — not model output, not files.</span></li>
+                    <li><span class="i18n-zh">「输入」不只是用户真实提问：钩子自己注入的提示消息（含 <code>on_loop_end</code> 的打回提示）同样算输入，想只针对真实用户提问时用 <code>type: user</code> 收窄；<code>type</code> 留空则不限制消息类型。</span><span class="i18n-en">“Input” is not just a real user question: hook-injected hints (including <code>on_loop_end</code> replay hints) count too. Narrow to real user messages with <code>type: user</code>; leaving <code>type</code> empty means any message type.</span></li>
+                    <li><span class="i18n-zh">命中即通过、未命中即不通过，但它<strong>不拦截输入、不阻塞流程、不影响循环能否结束</strong>，唯一作用是往历史里追加一条提示，用来做<strong>输入分诊</strong>。</span><span class="i18n-en">A hit passes, a miss fails, but it <strong>never blocks input or the flow and cannot end the loop</strong>; its only job is to append a hint into history — input triage.</span></li>
+                    <li><span class="i18n-zh">只在 <code>on_input_received</code> 上有意义：其他阶段拿不到本批输入，会<strong>恒定判为「未命中」</strong>并一直注入 <code>failed_prompt</code>。</span><span class="i18n-en">Only meaningful in <code>on_input_received</code>: other stages get no input batch, so they always fail and keep injecting <code>failed_prompt</code>.</span></li>
+                  </ul>
+                </div>
+
+                <pre class="docs-code-block"><code>on_input_received:
+  # 输入分诊：用户提到「周报」才引导周报流程；没提到也要明确告诉模型别乱走流程
+  - keyword_check:
+      keyword: "周报"
+      type: user
+      successed_prompt: "用户要写周报：先列出数据来源与周期，再按模板生成。"
+      failed_prompt: "本次输入与周报无关，不要生成周报，按用户真实诉求处理。"</code></pre>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh"><code>@引用</code> 语法</span><span class="i18n-en"><code>@</code> reference syntax</span></h3>
+                  <p>
+                    <span class="i18n-zh">在 <code>injection.content</code> 内可直接使用：</span>
+                    <span class="i18n-en">Usable directly inside <code>injection.content</code>:</span>
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">引用</span><span class="i18n-en">Reference</span></th>
+                        <th scope="col"><span class="i18n-zh">含义</span><span class="i18n-en">Meaning</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr><td><code>@RULES</code></td><td><span class="i18n-zh">系统规则</span><span class="i18n-en">System rules</span></td></tr>
+                      <tr><td><code>@INFO</code></td><td><span class="i18n-zh">环境信息</span><span class="i18n-en">Environment info</span></td></tr>
+                      <tr><td><code>@SOUL</code></td><td><span class="i18n-zh">人格 / 灵魂设定</span><span class="i18n-en">Persona / soul</span></td></tr>
+                      <tr><td><code>@MEMORY</code></td><td><span class="i18n-zh">记忆</span><span class="i18n-en">Memory</span></td></tr>
+                      <tr><td><code>@SYS</code></td><td><span class="i18n-zh">系统提示</span><span class="i18n-en">System prompt</span></td></tr>
+                      <tr><td><code>@USERQUERY</code></td><td><span class="i18n-zh">本轮用户输入</span><span class="i18n-en">This round's user input</span></td></tr>
+                      <tr><td><code>@TASKSPACE</code></td><td><span class="i18n-zh">任务空间</span><span class="i18n-en">Task space</span></td></tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3><span class="i18n-zh">接口</span><span class="i18n-en">Interfaces</span></h3>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"><strong>列出 / 读取 / 保存</strong>：<code>GET /api/paradigms</code>、<code>GET/POST /api/paradigms/{name}</code>。</span>
+                      <span class="i18n-en"><strong>List, read, save:</strong> <code>GET /api/paradigms</code> and <code>GET/POST /api/paradigms/{name}</code>.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>会话热切换</strong>：<code>POST /api/sessions/{session_id}/paradigm</code>（切换后 KV Cache 前缀保持，冷启动更快）。</span>
+                      <span class="i18n-en"><strong>Hot swap:</strong> <code>POST /api/sessions/{session_id}/paradigm</code> keeps the KV-cache prefix, so cold starts are faster.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>默认范式</strong>：<code>~/.purrcat/paradigms/PARADIGM.yaml</code>；用户未提供时回退到内置 <code>src/agent/system_rules/PARADIGM.yaml</code>。</span>
+                      <span class="i18n-en"><strong>Default paradigm:</strong> <code>~/.purrcat/paradigms/PARADIGM.yaml</code>, falling back to the built-in <code>src/agent/system_rules/PARADIGM.yaml</code>.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>落地目录</strong>：<code>~/.purrcat/paradigms/</code>；市场仓库 <code>PurrPod/agentloops</code>。</span>
+                      <span class="i18n-en"><strong>Runtime directory:</strong> <code>~/.purrcat/paradigms/</code>; market repository <code>PurrPod/agentloops</code>.</span>
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var langKey = 'purrcat:docs-lang';
+
+        function setLang(lang) {
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+          document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+            var active = button.getAttribute('data-set-lang') === lang;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+          try {
+            localStorage.setItem(langKey, lang);
+          } catch (e) {}
+        }
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem(langKey);
+        } catch (e) {}
+        setLang(saved === 'zh' ? 'zh' : 'en');
+
+        document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLang(button.getAttribute('data-set-lang'));
+          });
+        });
+
+        /* 提示词复制：抓当前语言下那一份提示词 */
+        document.querySelectorAll('[data-copy-prompt]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var scope = button.closest('.docs-recipe-card') || button.closest('.docs-prompt');
+            if (!scope) return;
+            var lang = root.getAttribute('data-lang') || 'zh';
+            var pre = scope.querySelector('.i18n-' + lang + ' pre') || scope.querySelector('pre');
+            if (!pre) return;
+            button.classList.add('copied');
+            window.clearTimeout(button._timer);
+            button._timer = window.setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1600);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(pre.textContent.trim()).catch(function () {});
+            }
+          });
+        });
+
+        /* 小屏下的文档目录折叠 */
+        var navToggle = document.querySelector('[data-docs-nav-toggle]');
+        if (navToggle) {
+          navToggle.addEventListener('click', function () {
+            var open = navToggle.getAttribute('aria-expanded') !== 'true';
+            navToggle.setAttribute('aria-expanded', String(open));
+            navToggle.closest('.skills-sidebar').classList.toggle('is-open', open);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

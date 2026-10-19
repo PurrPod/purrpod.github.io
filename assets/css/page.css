@@ -1,0 +1,124 @@
+/* 简介页与 docs 占位页共用的样式 */
+
+.subpage {
+  padding-block: calc(var(--ks-section-pad) / 2);
+}
+
+.page-head {
+  display: grid;
+  gap: 12px;
+  max-width: 68ch;
+  margin-bottom: 40px;
+}
+
+.page-head .section-title {
+  font-size: clamp(2.4rem, 4.4vw, 3.6rem);
+}
+
+/* 占位卡片：整体走 kinpaku 的纸面 + 发丝线语言 */
+.placeholder {
+  border: 1px dashed var(--ks-gray-2);
+  border-radius: var(--ks-radius-sm);
+  background: var(--ks-paper-raised);
+  padding: 24px;
+  display: grid;
+  gap: 14px;
+  max-width: 760px;
+}
+
+.placeholder__head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.placeholder__led {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--ks-patina);
+}
+
+.placeholder h2 {
+  font-family: var(--ks-font);
+  font-size: var(--ks-type-lead-size);
+  font-weight: 500;
+  color: var(--ks-ink);
+}
+
+.placeholder ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 8px;
+}
+
+.placeholder li {
+  position: relative;
+  padding-left: 16px;
+  font-size: 0.875rem;
+  color: var(--ks-text);
+  line-height: 1.6;
+}
+
+.placeholder li::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 0.65em;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--ks-patina);
+}
+
+/* docs 占位：左侧目录 + 右侧正文骨架 */
+
+.doc-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 200px) minmax(0, 1fr);
+  gap: clamp(24px, 4vw, 56px);
+  align-items: start;
+}
+
+.doc-nav {
+  position: sticky;
+  top: 104px;
+  display: grid;
+  gap: 2px;
+}
+
+.doc-nav h2 {
+  font-family: var(--ks-mono);
+  font-size: var(--ks-type-eyebrow-size);
+  letter-spacing: var(--ks-type-eyebrow-track);
+  text-transform: uppercase;
+  color: var(--ks-text-faint);
+  font-weight: 500;
+  margin-bottom: 8px;
+}
+
+.doc-nav a {
+  font-size: 0.875rem;
+  color: var(--ks-text-muted);
+  text-decoration: none;
+  padding: 6px 0 6px 12px;
+  border-left: 2px solid var(--ks-rule);
+}
+
+.doc-nav a:hover,
+.doc-nav a[aria-current="page"] {
+  color: var(--ks-ink);
+  border-left-color: var(--ks-kinpaku);
+}
+
+@media (max-width: 820px) {
+  .doc-layout {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .doc-nav {
+    position: static;
+  }
+}

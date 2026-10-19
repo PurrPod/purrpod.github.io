@@ -1,0 +1,1131 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>UI Plugin — PurrCat Docs</title>
+    <meta
+      name="description"
+      content="Build a PurrCat UI plugin: plugin.json manifest, iframe mounting, slot.area, and the callAction bus."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/page.css" />
+    <link rel="stylesheet" href="/assets/css/docs.css" />
+  </head>
+  <body class="kinpaku-chrome docs-kinpaku skills-layout-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
+      </a>
+
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
+
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home">Home</a>
+          <a href="/#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs" aria-current="page">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <div class="skills-layout">
+        <aside class="skills-sidebar" aria-label="Docs navigation">
+          <button
+            class="skills-sidebar-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="skills-sidebar-inner"
+            data-docs-nav-toggle
+          >
+            <span class="skills-sidebar-toggle-label">
+              <span class="i18n-zh">浏览文档</span><span class="i18n-en">Browse docs</span>
+            </span>
+            <svg
+              class="skills-sidebar-toggle-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </button>
+
+          <div class="skills-sidebar-inner" id="skills-sidebar-inner">
+            <nav aria-label="Guides">
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">从这里开始</span><span class="i18n-en">Start here</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/"
+                      ><span class="i18n-zh">总览</span><span class="i18n-en">Overview</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/#install"
+                      ><span class="i18n-zh">安装</span><span class="i18n-en">Install</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">用户教程</span><span class="i18n-en">Tutorials</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">如何定制自己的专属Agent</span
+                      ><span class="i18n-en">Make it your own agent</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">让Agent自己造插件</span
+                      ><span class="i18n-en">Have the agent build its own plugins</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">开发者文档</span><span class="i18n-en">Developer docs</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/plugins.html"
+                      ><span class="i18n-zh">扩展体系</span><span class="i18n-en">Extension model</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/ui-plugin.html" aria-current="page"
+                      ><span class="i18n-zh">UI Plugin 开发</span><span class="i18n-en">UI plugin guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/sensor.html"
+                      ><span class="i18n-zh">Sensor 开发</span><span class="i18n-en">Sensor guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/graph.html"
+                      ><span class="i18n-zh">Graph 开发</span><span class="i18n-en">Graph guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/agentloop.html"
+                      ><span class="i18n-zh">AgentLoop 开发</span><span class="i18n-en">AgentLoop guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/api.html"
+                      ><span class="i18n-zh">后端 API 参考</span><span class="i18n-en">Backend API reference</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </aside>
+        <div class="skills-main skills-main--docs-index">
+          <div class="docs-index">
+            <div class="docs-lang" role="group" aria-label="Language">
+              <span class="docs-lang-label">Language</span>
+              <div class="downloads-method-strip ks-instrument-strip is-paper" role="tablist">
+                <button
+                  class="ks-instrument-key is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  data-set-lang="en"
+                >
+                  English
+                </button>
+                <button
+                  class="ks-instrument-key"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-set-lang="zh"
+                >
+                  中文
+                </button>
+              </div>
+            </div>
+
+            <section class="docs-reference-section" aria-labelledby="doc-title">
+              <article
+                class="docs-dev-section"
+                id="dev-ui"
+                data-kicker-zh="插件类型 · UI 插件"
+                data-kicker-en="Plugin type · UI plugin"
+              >
+                <div class="docs-prose">
+                  <h1 id="doc-title">UI Plugin</h1>
+                  <p>
+                    <span class="i18n-zh"
+                      >UI Plugin 是极简模式（<code>web-minimal</code>）的界面插件。宿主是纯静态页面，插件以
+                      <strong>iframe</strong> 挂载、按 <code>slot.area</code> 入驻不同区域，通过
+                      <strong>postMessage 的 <code>callAction</code> 动作总线</strong>与宿主通信。</span
+                    >
+                    <span class="i18n-en"
+                      >A UI plugin is an interface plugin for minimal mode. The host is a static page, plugins mount as
+                      an <strong>iframe</strong>, land in an area declared by <code>slot.area</code>, and talk to the host
+                      over the <strong><code>callAction</code> postMessage bus</strong>.</span
+                    >
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">目录结构</span><span class="i18n-en">Layout</span>
+                  </h3>
+                </div>
+                <pre class="docs-code-block"><code>ui-plugins/&lt;id&gt;/          # 市场仓库中的单元
+├── plugin.json          # 清单（必需）
+├── index.html           # entry 入口页面（必需）
+└── ...                  # 样式/脚本/图片等相对引用资源（可选）</code></pre>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh">文件夹名 = <code>plugin.json</code> 的 <code>id</code> = 插件标识，三者必须一致。</span>
+                    <span class="i18n-en">Folder name, <code>plugin.json</code>'s <code>id</code>, and the plugin identity must all be the same string.</span>
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh"><code>plugin.json</code> 字段</span>
+                    <span class="i18n-en"><code>plugin.json</code> fields</span>
+                  </h3>
+                </div>
+                <pre class="docs-code-block"><code>{
+  "id": "doodle-chat",
+  "name": "涂鸦聊天",
+  "description": "English one-liner.",
+  "description-en": "English one-liner.",
+  "icon": "🖍️",
+  "slot": { "area": "panel" },
+  "entry": "index.html",
+  "image": "cover.png",
+  "root": "user",
+  "builtin": false,
+  "dependency": [],
+  "configSchema": [
+    { "key": "color", "type": "select", "label": "主题色",
+      "options": [{ "value": "warm", "label": "暖" }, { "value": "cool", "label": "冷" }],
+      "default": "warm" }
+  ],
+  "backend": { "kind": "npm" }
+}</code></pre>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">字段</span><span class="i18n-en">Field</span></th>
+                        <th scope="col"><span class="i18n-zh">必填</span><span class="i18n-en">Required</span></th>
+                        <th scope="col"><span class="i18n-zh">说明</span><span class="i18n-en">Notes</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>id</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td>
+                          <span class="i18n-zh">插件标识，与文件夹名一致</span>
+                          <span class="i18n-en">Plugin identity, identical to the folder name</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>name</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td><span class="i18n-zh">展示名</span><span class="i18n-en">Display name</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>description</code> / <code>description-en</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td><span class="i18n-zh">中/英文一句话描述</span><span class="i18n-en">One-line description in each language</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>icon</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td><span class="i18n-zh">图标（emoji 或图片路径）</span><span class="i18n-en">Icon, as an emoji or an image path</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>slot</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >入驻区域，见下表。旧写法 <code>slotDef: { "type": "panel", "area": "panel" }</code> 亦可。</span
+                          >
+                          <span class="i18n-en"
+                            >The area to mount into (table below). The older
+                            <code>slotDef: { "type": "panel", "area": "panel" }</code> form still works.</span
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>entry</code></td>
+                        <td><span class="i18n-zh">是</span><span class="i18n-en">yes</span></td>
+                        <td><span class="i18n-zh">入口 html，默认 <code>index.html</code></span><span class="i18n-en">Entry HTML, defaults to <code>index.html</code></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>root</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">no</span></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >来源标记 <code>user</code> / <code>sandbox</code> / <code>builtin</code>，同 id 冲突时优先级为 用户 &gt; 沙盒 &gt; 内置。</span
+                          >
+                          <span class="i18n-en"
+                            >Origin marker: <code>user</code>, <code>sandbox</code>, or <code>builtin</code>. On id
+                            collisions, user beats sandbox beats builtin.</span
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>dependency</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">no</span></td>
+                        <td><span class="i18n-zh">依赖数组，见上文</span><span class="i18n-en">Dependency array, see above</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>configSchema</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">no</span></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >声明式配置表单，<code>type</code> 取 <code>text</code> / <code>switch</code> /
+                            <code>number</code> / <code>select</code> / <code>range</code> / <code>wallpapers</code>。</span
+                          >
+                          <span class="i18n-en"
+                            >Declarative config form. <code>type</code> is <code>text</code>, <code>switch</code>,
+                            <code>number</code>, <code>select</code>, <code>range</code>, or <code>wallpapers</code>.</span
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>backend</code></td>
+                        <td><span class="i18n-zh">否</span><span class="i18n-en">no</span></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >后端形态；<code>{ "kind": "npm" }</code> 表示插件自带 <code>server/server.js</code>（Node 后端）。</span
+                          >
+                          <span class="i18n-en"
+                            >Backend shape. <code>{ "kind": "npm" }</code> means the plugin ships
+                            <code>server/server.js</code>.</span
+                          >
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh"><code>slot.area</code> 区域清单</span>
+                    <span class="i18n-en"><code>slot.area</code> values</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"
+                      ><code>area</code> 是插件声明的唯一入驻维度；<strong>行为（单例 / 容器抽屉 / 浮窗）由宿主按区域内置</strong>，插件不要自行声明窗口类型。</span
+                    >
+                    <span class="i18n-en"
+                      ><code>area</code> is the only thing a plugin declares. The host decides the behaviour —
+                      singleton, container drawer, or floating window — so plugins should never declare a window type
+                      themselves.</span
+                    >
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><code>area</code></th>
+                        <th scope="col"><span class="i18n-zh">名称</span><span class="i18n-en">Name</span></th>
+                        <th scope="col"><span class="i18n-zh">宿主内置行为</span><span class="i18n-en">Host behaviour</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>rail</code></td>
+                        <td><span class="i18n-zh">左侧白条</span><span class="i18n-en">Left rail</span></td>
+                        <td><span class="i18n-zh">图标栏本身，含仅图标 / 图标+文字两态</span><span class="i18n-en">The icon rail itself, with icon-only and icon+label states</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>sidebar</code></td>
+                        <td><span class="i18n-zh">会话列表</span><span class="i18n-en">Session list</span></td>
+                        <td><span class="i18n-zh">同区域单例</span><span class="i18n-en">Singleton per area</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>session</code></td>
+                        <td><span class="i18n-zh">会话</span><span class="i18n-en">Session</span></td>
+                        <td><span class="i18n-zh">同区域单例</span><span class="i18n-en">Singleton per area</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>background</code></td>
+                        <td><span class="i18n-zh">背景</span><span class="i18n-en">Background</span></td>
+                        <td><span class="i18n-zh">同区域单例</span><span class="i18n-en">Singleton per area</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>panel-container</code></td>
+                        <td><span class="i18n-zh">面板容器</span><span class="i18n-en">Panel container</span></td>
+                        <td><span class="i18n-zh">全局唯一容器，右上角抽屉切换视图</span><span class="i18n-en">One global container; the drawer at its top-right switches views</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>panel</code></td>
+                        <td><span class="i18n-zh">面板</span><span class="i18n-en">Panel</span></td>
+                        <td><span class="i18n-zh">与聊天区并排的内容插件</span><span class="i18n-en">Content plugin sitting beside the chat</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>pet</code></td>
+                        <td><span class="i18n-zh">浮窗</span><span class="i18n-en">Floating window</span></td>
+                        <td><span class="i18n-zh">多实例，可拖拽 / 缩放 / 隐藏</span><span class="i18n-en">Multiple instances, draggable, resizable, hideable</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>popup</code></td>
+                        <td><span class="i18n-zh">模态弹窗</span><span class="i18n-en">Modal</span></td>
+                        <td><span class="i18n-zh">居中模态弹窗</span><span class="i18n-en">Centred modal</span></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh"><code>callAction</code> 动作总线</span>
+                    <span class="i18n-en">The <code>callAction</code> bus</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh">插件调用宿主时发这条消息，<code>id</code> 用于匹配响应：</span>
+                    <span class="i18n-en">A plugin calls the host with this message; <code>id</code> matches the reply:</span>
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>window.parent.postMessage({ type: 'callAction', id: 'req-1',
+  actionId: 'config.get', payload: { plugin_id: 'doodle-chat' } }, '*');</code></pre>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">宿主 → 插件</span><span class="i18n-en">Host → plugin</span></th>
+                        <th scope="col"><span class="i18n-zh">结构</span><span class="i18n-en">Shape</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><span class="i18n-zh">调用结果</span><span class="i18n-en">Call result</span></td>
+                        <td><code>{ type: 'callActionResult', id, ok, data | error }</code></td>
+                      </tr>
+                      <tr>
+                        <td><span class="i18n-zh">配置下发</span><span class="i18n-en">Config push</span></td>
+                        <td><code>{ type: 'configApply', config }</code></td>
+                      </tr>
+                      <tr>
+                        <td><span class="i18n-zh">事件广播</span><span class="i18n-en">Event broadcast</span></td>
+                        <td><code>{ type: 'event', event, data }</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h4>
+                    <span class="i18n-zh"><code>actionId</code> 契约（payload → data）</span>
+                    <span class="i18n-en"><code>actionId</code> contracts (payload → data)</span>
+                  </h4>
+                  <p>
+                    <span class="i18n-zh"
+                      >应答信封 <code>{ type: 'callActionResult', id, ok, data | error }</code>；<code>ok</code> 为 false 时读 <code>error</code>，未知 actionId 返回 <code>null</code>。实现见 <code>ui/web-minimal/assets/host.js</code> 的 <code>dispatch()</code>。<br /><strong>文件与上传</strong>：宿主 / 前端 / 后端同机，<code>dialog.files</code> 返回绝对路径，后端可直接 <code>fs</code> 读取（不必 base64 走 <code>plugin.rpc</code>）；要交给 Agent（大模型）读用 <code>POST /agent/upload</code>（落盘 <code>agent_vm/.buffer/upload</code>）。</span
+                    >
+                    <span class="i18n-en"
+                      >Reply envelope: <code>{ type: 'callActionResult', id, ok, data | error }</code>; read <code>error</code> when <code>ok</code> is false; an unknown actionId returns <code>null</code>. Implementation: <code>dispatch()</code> in <code>ui/web-minimal/assets/host.js</code>.<br /><strong>Files &amp; upload</strong>: host / frontend / backend share one machine, so <code>dialog.files</code> returns absolute paths the backend can read with <code>fs</code> (no base64 over <code>plugin.rpc</code>); to hand a file to the Agent (LLM), use <code>POST /agent/upload</code> (lands in <code>agent_vm/.buffer/upload</code>).</span
+                    >
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><code>actionId</code></th>
+                        <th scope="col">payload</th>
+                        <th scope="col"><span class="i18n-zh">返回（data）</span><span class="i18n-en">returns (data)</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>会话 / 对话</strong></span><span class="i18n-en"><strong>Session &amp; chat</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>state.get</code></td>
+                        <td>—</td>
+                        <td>
+                          <span class="i18n-zh">宿主群状态副本 <code>{activeSessionId, sessions, draft, draftParadigm, activeBranchId, ...}</code>（其中 <code>plugins</code> 为 <code>undefined</code>）</span>
+                          <span class="i18n-en">Host group-state snapshot <code>{activeSessionId, sessions, draft, draftParadigm, activeBranchId, ...}</code> (with <code>plugins</code> <code>undefined</code>)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>chat.send</code></td>
+                        <td><code>{session_id?, message}</code></td>
+                        <td>
+                          <span class="i18n-zh">后端 <code>/api/chat</code> 的 JSON body（含 <code>processed_message</code>）</span>
+                          <span class="i18n-en">JSON body of <code>/api/chat</code> (includes <code>processed_message</code>)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>chat.sendBatch</code></td>
+                        <td><code>{session_id?, events: [...]}</code></td>
+                        <td>
+                          <span class="i18n-zh">后端 <code>/api/chat/batch</code> 的 JSON body（含 <code>processed_events</code>）</span>
+                          <span class="i18n-en">JSON body of <code>/api/chat/batch</code> (includes <code>processed_events</code>)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>chat.interrupt</code></td>
+                        <td><code>{session_id?}</code></td>
+                        <td>
+                          <span class="i18n-zh">后端 <code>/api/chat/interrupt</code> 的 JSON body</span>
+                          <span class="i18n-en">JSON body of <code>/api/chat/interrupt</code></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>chat.traceToSkill</code></td>
+                        <td><code>{session_id?, name, goal, is_upgrade?}</code></td>
+                        <td>
+                          <code>{status:"ok"}</code>
+                          <span class="i18n-zh">（<code>name</code> / <code>goal</code> 为空会抛错）</span>
+                          <span class="i18n-en">(throws when <code>name</code> / <code>goal</code> is empty)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>sessions.list</code></td>
+                        <td>—</td>
+                        <td><span class="i18n-zh">会话数组</span><span class="i18n-en">Array of sessions</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>sessions.new</code></td>
+                        <td>—</td>
+                        <td>
+                          <code>{status:"ok", draft:true}</code>
+                          <span class="i18n-zh">；Agent 忙碌时 <code>{status:"busy"}</code>（不新建）</span>
+                          <span class="i18n-en">; <code>{status:"busy"}</code> while the Agent is busy (no new session)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>session.switch</code></td>
+                        <td><code>{session_id}</code></td>
+                        <td>
+                          <code>{status:"ok"}</code>
+                          <span class="i18n-zh">；忙碌且切到别的会话时 <code>{status:"busy"}</code></span>
+                          <span class="i18n-en">; <code>{status:"busy"}</code> when busy and switching away</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>session.rename</code></td>
+                        <td><code>{session_id, alias}</code></td>
+                        <td><code>{status:"ok", alias}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>session.delete</code></td>
+                        <td><code>{session_id}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>session.branch</code></td>
+                        <td><code>{session_id?, alias?}</code></td>
+                        <td>
+                          <span class="i18n-zh">后端返回的会话对象（含 <code>id</code>）；忙碌时 <code>{status:"busy"}</code></span>
+                          <span class="i18n-en">The session object returned by the backend (with <code>id</code>); <code>{status:"busy"}</code> while busy</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>session.setDraftParadigm</code></td>
+                        <td><code>{paradigm}</code></td>
+                        <td>
+                          <code>{status:"ok", paradigm}</code>
+                          <span class="i18n-zh">；非草稿态 <code>{status:"noop"}</code></span>
+                          <span class="i18n-en">; <code>{status:"noop"}</code> when not a draft</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>branch.select</code></td>
+                        <td><code>{branch_id?}</code> <span class="i18n-zh">（默认 <code>main</code>）</span><span class="i18n-en">(defaults to <code>main</code>)</span></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>requests.list</code></td>
+                        <td>—</td>
+                        <td><span class="i18n-zh">待审批请求数组</span><span class="i18n-en">Array of pending requests</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>requests.resolve</code></td>
+                        <td><code>{request_id, approved, feedback?, ignore?, duration?}</code></td>
+                        <td><span class="i18n-zh">后端请求 JSON</span><span class="i18n-en">Backend request JSON</span></td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>配置 / 设置</strong></span><span class="i18n-en"><strong>Config &amp; settings</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>config.get</code></td>
+                        <td><code>{plugin_id}</code></td>
+                        <td>
+                          <span class="i18n-zh">该插件配置对象（无则 <code>{}</code>）</span>
+                          <span class="i18n-en">That plugin's config object (<code>{}</code> if none)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>config.set</code></td>
+                        <td><code>{plugin_id, config}</code></td>
+                        <td><span class="i18n-zh">合并后的配置对象</span><span class="i18n-en">The merged config object</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>settings.meta</code></td>
+                        <td>—</td>
+                        <td><code>{plugins, config}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>settings.open</code> / <code>settings.close</code></td>
+                        <td>—</td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>文件 / 数据</strong></span><span class="i18n-en"><strong>Files &amp; data</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>dialog.files</code></td>
+                        <td>—</td>
+                        <td>
+                          <span class="i18n-zh"><strong>绝对路径字符串数组</strong>；取消 → <code>[]</code>（Electron 外调用抛错）</span>
+                          <span class="i18n-en"><strong>Array of absolute path strings</strong>; <code>[]</code> on cancel (throws outside Electron)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>dialog.folder</code></td>
+                        <td>—</td>
+                        <td>
+                          <span class="i18n-zh">同上（文件夹的绝对路径数组）</span>
+                          <span class="i18n-en">Same as above (absolute folder paths)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>dialog.resolveFiles</code></td>
+                        <td>
+                          <code>{files: [File]}</code>
+                          <span class="i18n-zh">（<code>&lt;input type=file&gt;</code> 选好的 File）</span>
+                          <span class="i18n-en">(Files picked via <code>&lt;input type=file&gt;</code>)</span>
+                        </td>
+                        <td><code>{paths: [...]}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>dialog.pickWallpaper</code></td>
+                        <td>—</td>
+                        <td>
+                          <span class="i18n-zh">上传后的后端 JSON；取消 → <code>null</code></span>
+                          <span class="i18n-en">Backend JSON after upload; <code>null</code> on cancel</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>ref.graphs</code></td>
+                        <td>—</td>
+                        <td><span class="i18n-zh">名称字符串数组</span><span class="i18n-en">Array of name strings</span></td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>容器（float 插件用；宿主只操作调用方自己的实例）</strong></span><span class="i18n-en"><strong>Container (for float plugins; the host only touches the caller's own instance)</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>slot.move</code></td>
+                        <td><code>{dx?, dy?}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>slot.close</code></td>
+                        <td>—</td>
+                        <td>
+                          <code>{status:"ok"}</code>
+                          <span class="i18n-zh">（隐藏调用方浮窗）</span>
+                          <span class="i18n-en">(hides the caller's floating window)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>slot.hide</code></td>
+                        <td>—</td>
+                        <td>
+                          <code>{status:"ok"}</code>
+                          <span class="i18n-zh">（「关闭并记住」，白条可再启用）</span>
+                          <span class="i18n-en">("close and remember"; re-enable from the rail)</span>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>插件自身</strong></span><span class="i18n-en"><strong>Plugin itself</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>plugin.delete</code></td>
+                        <td><code>{plugin_id}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>plugin.rpc</code></td>
+                        <td><code>{plugin_id, handler, payload?, timeout?}</code></td>
+                        <td>
+                          <span class="i18n-zh"><strong>handler 的 <code>result</code> 本身</strong>（不是 <code>{result}</code> 包装）</span>
+                          <span class="i18n-en"><strong>The handler's <code>result</code> itself</strong> (no <code>{result}</code> wrapper)</span>
+                        </td>
+                      </tr>
+
+                      <tr>
+                        <td colspan="3"><span class="i18n-zh"><strong>内置浏览器（原生视图，仅 Electron 主窗口可用）</strong></span><span class="i18n-en"><strong>Built-in browser (native view; Electron main window only)</strong></span></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.available</code></td>
+                        <td>—</td>
+                        <td><code>{available: boolean}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.newTab</code></td>
+                        <td><code>{url}</code></td>
+                        <td><code>{tabId}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.closeTab</code></td>
+                        <td><code>{tabId, nextTabId?}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.switchTab</code></td>
+                        <td><code>{tabId}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.navigate</code></td>
+                        <td><code>{tabId, url}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.reload</code> / <code>browser.goBack</code> / <code>browser.goForward</code></td>
+                        <td><code>{tabId}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.bounds</code></td>
+                        <td>
+                          <code>{x, y, w, h}</code>
+                          <span class="i18n-zh">（相对 iframe 的 CSS 像素）</span>
+                          <span class="i18n-en">(CSS pixels relative to the iframe)</span>
+                        </td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.hide</code></td>
+                        <td>—</td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.pickStart</code></td>
+                        <td><code>{tabId}</code></td>
+                        <td><code>{imageDataUrl, width, height, viewportCssWidth, viewportCssHeight}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.pickEnd</code></td>
+                        <td><code>{tabId}</code></td>
+                        <td><code>{status:"ok"}</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.locate</code></td>
+                        <td><code>{tabId, x, y}</code></td>
+                        <td>
+                          <span class="i18n-zh">元素定位结果；不可用 → <code>null</code></span>
+                          <span class="i18n-en">Element hit result; <code>null</code> if unavailable</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.pickElement</code></td>
+                        <td><code>{tabId, x, y}</code></td>
+                        <td>
+                          <span class="i18n-zh">元素语义信息（<code>outerHTML</code> / <code>innerText</code> / <code>attributes</code> / <code>cssSelector</code> / <code>rect</code>）；不可用 → <code>null</code></span>
+                          <span class="i18n-en">Element semantics (<code>outerHTML</code> / <code>innerText</code> / <code>attributes</code> / <code>cssSelector</code> / <code>rect</code>); <code>null</code> if unavailable</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.openExternal</code></td>
+                        <td><code>{url}</code></td>
+                        <td>
+                          <code>{status:"ok"}</code>
+                          <span class="i18n-zh">（系统浏览器打开）</span>
+                          <span class="i18n-en">(opens in the system browser)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.openUrl</code></td>
+                        <td><code>{url}</code></td>
+                        <td>
+                          <span class="i18n-zh">统一链接路由结果（http → 内置浏览器）</span>
+                          <span class="i18n-en">Unified link routing result (http → built-in browser)</span>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="docs-prose">
+                  <h4>
+                    <span class="i18n-zh">事件（节选）</span><span class="i18n-en">Events (excerpt)</span>
+                  </h4>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><code>event</code></th>
+                        <th scope="col"><span class="i18n-zh">时机</span><span class="i18n-en">When</span></th>
+                        <th scope="col"><span class="i18n-zh">范围</span><span class="i18n-en">Scope</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>host.unmount</code></td>
+                        <td><span class="i18n-zh">宿主卸载插件</span><span class="i18n-en">The host unmounts the plugin</span></td>
+                        <td><span class="i18n-zh">全体</span><span class="i18n-en">all</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>host.nativeCover</code></td>
+                        <td><span class="i18n-zh">原生界面覆盖插件显示区域</span><span class="i18n-en">Native UI covers the plugin's area</span></td>
+                        <td><span class="i18n-zh">全体</span><span class="i18n-en">all</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>session.switched</code> / <code>branch.switched</code></td>
+                        <td><span class="i18n-zh">会话或对话分支切换</span><span class="i18n-en">The session or branch switched</span></td>
+                        <td><span class="i18n-zh">全体</span><span class="i18n-en">all</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>requests.updated</code></td>
+                        <td><span class="i18n-zh">待办请求状态变化</span><span class="i18n-en">A pending request changed state</span></td>
+                        <td><span class="i18n-zh">全体</span><span class="i18n-en">all</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>browser.tabEvent</code></td>
+                        <td><span class="i18n-zh">内置浏览器标签页事件</span><span class="i18n-en">Built-in browser tab event</span></td>
+                        <td><span class="i18n-zh">全体</span><span class="i18n-en">all</span></td>
+                      </tr>
+                      <tr>
+                        <td><code>layout.empty</code></td>
+                        <td><span class="i18n-zh">布局空置（无会话等）</span><span class="i18n-en">The layout is empty</span></td>
+                        <td><code>session</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>config.updated</code></td>
+                        <td><span class="i18n-zh">插件配置被更新</span><span class="i18n-en">The plugin's config was updated</span></td>
+                        <td><code>settings</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>conversation.local</code></td>
+                        <td><span class="i18n-zh">本会话消息流本地即时插入</span><span class="i18n-en">Local immediate insert into the stream</span></td>
+                        <td><code>session</code> / <code>sidebar</code></td>
+                      </tr>
+                      <tr>
+                        <td><code>conversation.updated</code></td>
+                        <td><span class="i18n-zh">本会话消息流发生变化</span><span class="i18n-en">The session's message stream changed</span></td>
+                        <td><code>session</code> / <code>sidebar</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"
+                      >事件<strong>按 slot 路由</strong>，只发给声明了对应槽的插件。所以 <code>panel</code> 槽的插件<strong>收不到 <code>conversation.*</code></strong>，而且它只带 <code>session_id</code>（无消息内容、无"完成"标记）——要判定 Agent 任务完成得自行轮询（产物 <code>mtime</code> / <code>state.get</code>）+ 超时兜底。</span
+                    >
+                    <span class="i18n-en"
+                      >Events are <strong>routed by slot</strong> and only reach plugins in that slot. So a plugin in the <code>panel</code> slot <strong>never receives <code>conversation.*</code></strong>, which only carries <code>session_id</code> anyway (no message content, no "done" flag) — to detect that an Agent task finished, poll instead (artifact <code>mtime</code> / <code>state.get</code>) with a timeout fallback.</span
+                    >
+                  </p>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">开发注意</span><span class="i18n-en">Gotchas</span>
+                  </h3>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh">宿主 CSS 变量<strong>不跨 iframe 继承</strong>，插件样式必须自带 fallback，如 <code>color: var(--wm-label, #16191d)</code>；token 全量见 <code>ui/web-minimal/assets/theme.css</code>。</span>
+                      <span class="i18n-en">Host CSS variables <strong>do not cross the iframe</strong> — always ship a fallback, e.g. <code>color: var(--wm-label, #16191d)</code>; the full token list is in <code>ui/web-minimal/assets/theme.css</code>.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh">宿主跑在 Electron 里，<code>window.prompt</code> / <code>alert</code> / <code>confirm</code> 不可用（<code>prompt</code> 直接返回 <code>null</code>）；输入与二次确认请用插件自绘浮层。</span>
+                      <span class="i18n-en">The host runs in Electron, where <code>window.prompt</code> / <code>alert</code> / <code>confirm</code> are unavailable (<code>prompt</code> just returns <code>null</code>); build your own overlay for input and confirmation.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">最小可运行示例</span><span class="i18n-en">Minimal runnable example</span>
+                  </h3>
+                  <p>
+                    <span class="i18n-zh"><strong>plugin.json</strong></span>
+                    <span class="i18n-en"><strong>plugin.json</strong></span>
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>{
+  "id": "hello-panel",
+  "name": "Hello 面板",
+  "description": "A minimal panel plugin.",
+  "description-en": "A minimal panel plugin.",
+  "icon": "🐾",
+  "slot": { "area": "panel" },
+  "entry": "index.html",
+  "configSchema": [
+    { "key": "greeting", "type": "text", "label": "问候语", "default": "喵~" }
+  ]
+}</code></pre>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"><strong>index.html</strong></span>
+                    <span class="i18n-en"><strong>index.html</strong></span>
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>&lt;!doctype html&gt;
+&lt;html lang="zh-CN"&gt;
+&lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;title&gt;Hello&lt;/title&gt;
+&lt;style&gt;body{font-family:system-ui;margin:16px;background:transparent}&lt;/style&gt;&lt;/head&gt;
+&lt;body&gt;
+  &lt;h3 id="hi"&gt;喵~&lt;/h3&gt;
+  &lt;button id="send"&gt;发到会话&lt;/button&gt;
+&lt;script&gt;
+  let reqSeq = 0;
+  const pending = new Map();
+  function call(actionId, payload) {
+    const id = 'r' + (++reqSeq);
+    return new Promise(res =&gt; { pending.set(id, res);
+      window.parent.postMessage({ type: 'callAction', id, actionId, payload }, '*'); });
+  }
+  window.addEventListener('message', e =&gt; {
+    const m = e.data || {};
+    if (m.type === 'callActionResult' &amp;&amp; pending.has(m.id)) { pending.get(m.id)(m.ok ? m.data : m.error); pending.delete(m.id); }
+    if (m.type === 'configApply') { document.getElementById('hi').textContent = m.config.greeting || '喵~'; }
+  });
+  document.getElementById('send').onclick = () =&gt; call('chat.send', { message: '你好，来自面板插件' });
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;</code></pre>
+
+                <div class="docs-prose">
+                  <h3>
+                    <span class="i18n-zh">开发与调试</span><span class="i18n-en">Build &amp; debug</span>
+                  </h3>
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>本地预览</strong>：插件目录放到 <code>~/.purrcat/webmin-plugins/&lt;id&gt;/</code>，重启极简宿主（<code>/minimal</code> 页面 <code>Ctrl+R</code>）即可加载。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Local preview:</strong> drop the folder into
+                        <code>~/.purrcat/webmin-plugins/&lt;id&gt;/</code> and reload the host page at
+                        <code>/minimal</code> with <code>Ctrl+R</code>.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>调试</strong>：插件跑在 iframe 里，用开发者工具选中对应 iframe 上下文看 Console；<code>callAction</code> 出错会落在宿主控制台。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Debugging:</strong> the plugin runs inside an iframe — pick that iframe's context in
+                        DevTools to read its console. <code>callAction</code> errors surface in the host console.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>自带后端</strong>：声明 <code>backend: { "kind": "npm" }</code> 并提供
+                        <code>server/server.js</code>（Node；依赖放插件自己的 <code>package.json</code> / <code>node_modules</code>），插件侧用
+                        <code>plugin.rpc</code> 调用；宿主把它当独立子进程拉起，进程退出后下次 RPC 会自动重新拉起。<br />
+                        协议走 stdio 单行 JSON：宿主发 <code>{"id","handler","payload"}</code>，插件回
+                        <code>{"id","ok":true,"result":...}</code> 或 <code>{"id","ok":false,"error":"..."}</code>；
+                        <strong>启动后必须向 stdout 打一行 <code>{"event":"ready"}</code></strong>，否则宿主 15 秒后判定"后端未就绪"；
+                        stdout 只许输出协议行。<br />
+                        <strong>调试</strong>：后端 <code>stderr</code> 会被宿主捕获并在报错里回显；iframe 的 <code>console</code> 在宿主
+                        Electron 窗口的开发者工具（<code>Ctrl+Shift+I</code>）里看。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Own backend:</strong> declare <code>backend: { "kind": "npm" }</code>, ship
+                        <code>server/server.js</code> (Node; dependencies go in the plugin's own <code>package.json</code> /
+                        <code>node_modules</code>), and call it from the plugin with <code>plugin.rpc</code>; the host runs it as a
+                        separate child process and auto-restarts it on the next RPC after it exits.<br />
+                        The protocol is stdio, one JSON line at a time: the host sends <code>{"id","handler","payload"}</code> and
+                        the plugin replies <code>{"id","ok":true,"result":...}</code> or
+                        <code>{"id","ok":false,"error":"..."}</code>; <strong>on startup it must write one line
+                        <code>{"event":"ready"}</code> to stdout</strong>, or the host reports "backend not ready" after
+                        15&nbsp;s; only protocol lines may go to stdout.<br />
+                        <strong>Debugging</strong>: backend <code>stderr</code> is captured by the host and surfaced in error
+                        messages; the iframe's <code>console</code> is in the host Electron window's DevTools
+                        (<code>Ctrl+Shift+I</code>).</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        >完整字段见仓库 <code>docs/plugins/ui-plugin.md</code>，宿主接入见 <code>docs/api/webmin.md</code>。</span
+                      >
+                      <span class="i18n-en"
+                        >Full details: <code>docs/plugins/ui-plugin.md</code> and <code>docs/api/webmin.md</code>.</span
+                      >
+                    </li>
+                  </ul>
+                  <p>
+                    <span class="i18n-zh">最小骨架（照此改即可，<strong>别漏掉最后那行 ready</strong>）：</span>
+                    <span class="i18n-en">Minimal skeleton (adapt this, <strong>don't drop the final ready line</strong>):</span>
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>'use strict';
+const readline = require('readline');
+const handlers = {
+  ping: (payload) =&gt; ({ pong: (payload &amp;&amp; payload.msg) || null }),
+};
+function send(obj) { process.stdout.write(JSON.stringify(obj) + '\n'); }
+readline.createInterface({ input: process.stdin, crlfDelay: Infinity }).on('line', (line) =&gt; {
+  const text = String(line || '').trim();
+  if (!text) return;
+  let req;
+  try { req = JSON.parse(text); }
+  catch (_) { send({ id: null, ok: false, error: '请求不是合法 JSON' }); return; }
+  const fn = handlers[req.handler];
+  if (!fn) { send({ id: req.id, ok: false, error: '未知 handler: ' + req.handler }); return; }
+  try { send({ id: req.id, ok: true, result: fn(req.payload || {}) }); }
+  catch (e) { send({ id: req.id, ok: false, error: String((e &amp;&amp; e.message) || e) }); }
+});
+// ★ 必须：就绪握手，缺了它宿主会等 15 秒后判定"后端未就绪"
+send({ event: 'ready' });</code></pre>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var langKey = 'purrcat:docs-lang';
+
+        function setLang(lang) {
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+          document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+            var active = button.getAttribute('data-set-lang') === lang;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+          try {
+            localStorage.setItem(langKey, lang);
+          } catch (e) {}
+        }
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem(langKey);
+        } catch (e) {}
+        setLang(saved === 'zh' ? 'zh' : 'en');
+
+        document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLang(button.getAttribute('data-set-lang'));
+          });
+        });
+
+        /* 提示词复制：抓当前语言下那一份提示词 */
+        document.querySelectorAll('[data-copy-prompt]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var scope = button.closest('.docs-recipe-card') || button.closest('.docs-prompt');
+            if (!scope) return;
+            var lang = root.getAttribute('data-lang') || 'zh';
+            var pre = scope.querySelector('.i18n-' + lang + ' pre') || scope.querySelector('pre');
+            if (!pre) return;
+            button.classList.add('copied');
+            window.clearTimeout(button._timer);
+            button._timer = window.setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1600);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(pre.textContent.trim()).catch(function () {});
+            }
+          });
+        });
+
+        /* 小屏下的文档目录折叠 */
+        var navToggle = document.querySelector('[data-docs-nav-toggle]');
+        if (navToggle) {
+          navToggle.addEventListener('click', function () {
+            var open = navToggle.getAttribute('aria-expanded') !== 'true';
+            navToggle.setAttribute('aria-expanded', String(open));
+            navToggle.closest('.skills-sidebar').classList.toggle('is-open', open);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>

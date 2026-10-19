@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en" data-lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Extension model — PurrCat Docs</title>
+    <meta
+      name="description"
+      content="The four PurrCat plugin types, their runtime directories, and how they depend on each other."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/page.css" />
+    <link rel="stylesheet" href="/assets/css/docs.css" />
+  </head>
+  <body class="kinpaku-chrome docs-kinpaku skills-layout-page">
+    <a class="skip-link" href="#main">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
+      </a>
+
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
+
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home">Home</a>
+          <a href="/#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs" aria-current="page">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
+        </a>
+      </div>
+    </header>
+    <main id="main">
+      <div class="skills-layout">
+        <aside class="skills-sidebar" aria-label="Docs navigation">
+          <button
+            class="skills-sidebar-toggle"
+            type="button"
+            aria-expanded="false"
+            aria-controls="skills-sidebar-inner"
+            data-docs-nav-toggle
+          >
+            <span class="skills-sidebar-toggle-label">
+              <span class="i18n-zh">浏览文档</span><span class="i18n-en">Browse docs</span>
+            </span>
+            <svg
+              class="skills-sidebar-toggle-chevron"
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.5"
+              aria-hidden="true"
+            >
+              <path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </button>
+
+          <div class="skills-sidebar-inner" id="skills-sidebar-inner">
+            <nav aria-label="Guides">
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">从这里开始</span><span class="i18n-en">Start here</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/"
+                      ><span class="i18n-zh">总览</span><span class="i18n-en">Overview</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/#install"
+                      ><span class="i18n-zh">安装</span><span class="i18n-en">Install</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">用户教程</span><span class="i18n-en">Tutorials</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/customize.html"
+                      ><span class="i18n-zh">如何定制自己的专属Agent</span
+                      ><span class="i18n-en">Make it your own agent</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/recipes.html"
+                      ><span class="i18n-zh">让Agent自己造插件</span
+                      ><span class="i18n-en">Have the agent build its own plugins</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+
+              <div class="skills-sidebar-group">
+                <h2 class="skills-sidebar-category">
+                  <span class="i18n-zh">开发者文档</span><span class="i18n-en">Developer docs</span>
+                </h2>
+                <ul class="skills-sidebar-list">
+                  <li>
+                    <a href="/docs/plugins.html" aria-current="page"
+                      ><span class="i18n-zh">扩展体系</span><span class="i18n-en">Extension model</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/ui-plugin.html"
+                      ><span class="i18n-zh">UI Plugin 开发</span><span class="i18n-en">UI plugin guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/sensor.html"
+                      ><span class="i18n-zh">Sensor 开发</span><span class="i18n-en">Sensor guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/graph.html"
+                      ><span class="i18n-zh">Graph 开发</span><span class="i18n-en">Graph guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/agentloop.html"
+                      ><span class="i18n-zh">AgentLoop 开发</span><span class="i18n-en">AgentLoop guide</span></a
+                    >
+                  </li>
+                  <li>
+                    <a href="/docs/api.html"
+                      ><span class="i18n-zh">后端 API 参考</span><span class="i18n-en">Backend API reference</span></a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </nav>
+          </div>
+        </aside>
+        <div class="skills-main skills-main--docs-index">
+          <div class="docs-index">
+            <div class="docs-lang" role="group" aria-label="Language">
+              <span class="docs-lang-label">Language</span>
+              <div class="downloads-method-strip ks-instrument-strip is-paper" role="tablist">
+                <button
+                  class="ks-instrument-key is-active"
+                  type="button"
+                  role="tab"
+                  aria-selected="true"
+                  data-set-lang="en"
+                >
+                  English
+                </button>
+                <button
+                  class="ks-instrument-key"
+                  type="button"
+                  role="tab"
+                  aria-selected="false"
+                  data-set-lang="zh"
+                >
+                  中文
+                </button>
+              </div>
+            </div>
+
+            <section class="docs-reference-section" aria-labelledby="doc-title">
+              <article
+                class="docs-dev-section"
+                data-kicker-zh="插件体系 · 总览"
+                data-kicker-en="Plugin model · Overview"
+              >
+                <div class="docs-prose">
+                  <h1 id="doc-title">
+                    <span class="i18n-zh">插件扩展体系</span><span class="i18n-en">Extension model</span>
+                  </h1>
+                  <p>
+                    <span class="i18n-zh"
+                      >PurrCat 通过「插件」扩展能力。除社区通用的 <strong>Skill</strong>（技能包）与
+                      <strong>MCP</strong>（外部工具服务）外，另有四类专属插件，分别对应 Agent
+                      的感官、编排、主循环与界面。</span
+                    >
+                    <span class="i18n-en"
+                      >PurrCat extends itself through plugins. Beyond the community-standard
+                      <strong>skill</strong> and <strong>MCP</strong> extension points, there are four PurrCat-specific
+                      types, one for each of the agent's senses, orchestration, main loop, and interface.</span
+                    >
+                  </p>
+                </div>
+
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">类型</span><span class="i18n-en">Type</span></th>
+                        <th scope="col"><span class="i18n-zh">定位</span><span class="i18n-en">Role</span></th>
+                        <th scope="col"><span class="i18n-zh">形态</span><span class="i18n-en">Form</span></th>
+                        <th scope="col"><span class="i18n-zh">落地目录</span><span class="i18n-en">Runtime directory</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><a href="/docs/sensor.html"><code>sensor</code></a></td>
+                        <td>
+                          <span class="i18n-zh">感官中枢：把外部事件推给 Agent，并把回复送回外部渠道</span>
+                          <span class="i18n-en">Senses: push outside events to the agent and carry replies back out</span>
+                        </td>
+                        <td>
+                          <span class="i18n-zh">单文件 Python 常驻子进程</span>
+                          <span class="i18n-en">Single-file long-running Python subprocess</span>
+                        </td>
+                        <td><code>~/.purrcat/sensor/</code></td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/graph.html"><code>graph</code></a></td>
+                        <td>
+                          <span class="i18n-zh">任务编排中枢：用节点 + 边描述多步骤工作流</span>
+                          <span class="i18n-en">Orchestration: a multi-step workflow as nodes and edges</span>
+                        </td>
+                        <td>
+                          <span class="i18n-zh">文件夹（<code>graph.json</code> + <code>asset/</code>）</span>
+                          <span class="i18n-en">Folder (<code>graph.json</code> + <code>asset/</code>)</span>
+                        </td>
+                        <td><code>~/.purrcat/graph/&lt;name&gt;/</code></td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/agentloop.html"><code>agentloop</code></a></td>
+                        <td>
+                          <span class="i18n-zh">主循环范式：声明每轮循环在哪些阶段注入什么、检查什么</span>
+                          <span class="i18n-en">Main loop: what each stage injects and checks every round</span>
+                        </td>
+                        <td>
+                          <span class="i18n-zh">单个 YAML 文件</span><span class="i18n-en">A single YAML file</span>
+                        </td>
+                        <td><code>~/.purrcat/paradigms/</code></td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/ui-plugin.html"><code>plugin</code></a></td>
+                        <td>
+                          <span class="i18n-zh">UI 插件：极简模式（<code>web-minimal</code>）的界面插件</span>
+                          <span class="i18n-en">UI plugin: an interface plugin for minimal mode (<code>web-minimal</code>)</span>
+                        </td>
+                        <td>
+                          <span class="i18n-zh">文件夹（<code>plugin.json</code> + <code>index.html</code>）</span>
+                          <span class="i18n-en">Folder (<code>plugin.json</code> + <code>index.html</code>)</span>
+                        </td>
+                        <td><code>~/.purrcat/webmin-plugins/</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+
+                <h3>
+                  <span class="i18n-zh">依赖机制</span><span class="i18n-en">Dependencies</span>
+                </h3>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"
+                      >除 Sensor 外，其余三类的清单文件都支持 <code>dependency</code> 声明数组。元素固定形如
+                      <code>{ "type": "&lt;类型&gt;", "id": "&lt;安装标识&gt;" }</code>，<code>type</code>
+                      白名单为 <code>skill</code> / <code>plugin</code> / <code>mcp</code> /
+                      <code>agentloop</code> / <code>sensor</code> / <code>graph</code>，无依赖时写
+                      <code>[]</code>。用户从市场安装某插件时，其 <code>dependency</code> 里声明的依赖会被自动一并安装。</span
+                    >
+                    <span class="i18n-en"
+                      >Every manifest except a sensor supports a <code>dependency</code> array. Each entry is
+                      <code>{ "type": "&lt;type&gt;", "id": "&lt;install id&gt;" }</code>, where <code>type</code> is one
+                      of <code>skill</code>, <code>plugin</code>, <code>mcp</code>, <code>agentloop</code>,
+                      <code>sensor</code>, or <code>graph</code>. Use <code>[]</code> when there are none. Installing a
+                      plugin from the market pulls its declared dependencies in automatically.</span
+                    >
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>"dependency": [
+  { "type": "skill",     "id": "my-skill" },
+  { "type": "agentloop", "id": "my-loop" },
+  { "type": "graph",     "id": "my-graph" },
+  { "type": "sensor",    "id": "my-sensor" },
+  { "type": "plugin",    "id": "my-ui-plugin" },
+  { "type": "mcp",       "id": "my-mcp" }
+]</code></pre>
+
+                <h3>
+                  <span class="i18n-zh">生效位置</span><span class="i18n-en">Where plugins live</span>
+                </h3>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"
+                      >插件只有放进下列目录才会被加载，各类型的清单与配置文件也写在这些目录内（从市场安装时会自动落到位）。</span
+                    >
+                    <span class="i18n-en"
+                      >A plugin is only loaded once it sits in the directory below; each type's manifest and config files live there too (installing from the market places them for you).</span
+                    >
+                  </p>
+                </div>
+                <div class="docs-table-wrap">
+                  <table class="docs-table">
+                    <thead>
+                      <tr>
+                        <th scope="col"><span class="i18n-zh">插件类型</span><span class="i18n-en">Type</span></th>
+                        <th scope="col"><span class="i18n-zh">生效目录</span><span class="i18n-en">Runtime directory</span></th>
+                        <th scope="col"><span class="i18n-zh">清单 / 配置文件</span><span class="i18n-en">Manifest / config</span></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td><code>skill</code></td>
+                        <td><code>~/.purrcat/skills/&lt;name&gt;/</code></td>
+                        <td>
+                          <span class="i18n-zh">技能包本体（<code>SKILL.md</code> 及随附文件）</span>
+                          <span class="i18n-en">The skill folder itself (<code>SKILL.md</code> plus bundled files)</span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><code>mcp</code></td>
+                        <td><code>~/.purrcat/mcps/&lt;name&gt;/</code></td>
+                        <td><code>~/.purrcat/mcp_config.json</code></td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/sensor.html"><code>sensor</code></a></td>
+                        <td><code>~/.purrcat/sensor/&lt;name&gt;.py</code></td>
+                        <td>
+                          <span class="i18n-zh"
+                            >同目录的 <code>config.json</code>；启用开关与凭证写入
+                            <code>~/.purrcat/activate_sensor.json</code></span
+                          >
+                          <span class="i18n-en"
+                            ><code>config.json</code> beside it; the enable switch and credentials are written to
+                            <code>~/.purrcat/activate_sensor.json</code></span
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/graph.html"><code>graph</code></a></td>
+                        <td><code>~/.purrcat/graph/&lt;name&gt;/</code></td>
+                        <td><code>graph.json</code>（+ <code>asset/</code> 资源）</td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/agentloop.html"><code>agentloop</code></a></td>
+                        <td><code>~/.purrcat/paradigms/&lt;name&gt;.yaml</code></td>
+                        <td>
+                          <span class="i18n-zh">即该 YAML 本体；默认范式为 <code>PARADIGM.yaml</code></span>
+                          <span class="i18n-en">The YAML file itself; the default loop is <code>PARADIGM.yaml</code></span>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td><a href="/docs/ui-plugin.html"><code>plugin</code></a></td>
+                        <td>
+                          <span class="i18n-zh">三处根目录，优先级 <strong>user &gt; sandbox &gt; builtin</strong>（见下）</span>
+                          <span class="i18n-en">Three roots, priority <strong>user &gt; sandbox &gt; builtin</strong> (see below)</span>
+                        </td>
+                        <td><code>plugin.json</code> + <code>index.html</code></td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"
+                      ><strong>UI Plugin 的三种生效位置</strong>：同一个 <code>id</code> 出现在多处时，优先级最高的那份生效。</span
+                    >
+                    <span class="i18n-en"
+                      ><strong>UI plugins have three roots</strong>: when the same <code>id</code> appears in more than one, the highest-priority copy wins.</span
+                    >
+                  </p>
+                </div>
+                <pre class="docs-code-block"><code>~/.purrcat/webmin-plugins/&lt;id&gt;/       用户（优先级最高）
+agent_vm/ui-plugin/&lt;id&gt;/             沙盒（Agent 开发区）
+ui/web-minimal/plugins/builtin/&lt;id&gt;/ 内置（随分发，只读）</code></pre>
+                <div class="docs-prose">
+                  <p>
+                    <span class="i18n-zh"
+                      >安装 UI 插件时，其注册表条目的 <code>root</code> 字段（<code>user</code> / <code>sandbox</code> /
+                      <code>builtin</code>）决定它落到上面哪一处。</span
+                    >
+                    <span class="i18n-en"
+                      >When installing a UI plugin, the <code>root</code> field of its registry entry (<code>user</code> /
+                      <code>sandbox</code> / <code>builtin</code>) decides which root it lands in.</span
+                    >
+                  </p>
+                </div>
+
+                <h3>
+                  <span class="i18n-zh">组合关系</span><span class="i18n-en">How they combine</span>
+                </h3>
+                <pre class="docs-code-block"><code>外部渠道 ─▶ Sensor ─┐
+                    ├──▶ Agent ◀── UI Plugin ◀── 用户
+                    │
+   AgentLoop ───────┼─▶ 注入引导信息 · 必要节点审批 / 打回
+   原生工具 ────────┴─▶ 发现并调用 Graph / MCP / Skill</code></pre>
+                <div class="docs-prose">
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"><strong>Sensor → Agent（注入信息）</strong>：外部世界通过 Sensor 向 Agent 注入信息，Sensor 可接社交媒体等外部渠道。</span>
+                      <span class="i18n-en"><strong>Sensor → Agent (inject input):</strong> the outside world pushes information into the agent through a sensor, which can tap social channels and other external sources.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>UI Plugin → Agent（注入指令）</strong>：用户通过 UI Plugin 向 Agent 注入指令。</span>
+                      <span class="i18n-en"><strong>UI Plugin → Agent (inject commands):</strong> the user sends commands into the agent through a UI plugin.</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>AgentLoop（引导 + 审批）</strong>：Agent 收到信息后，系统按 AgentLoop 的规定注入引导信息，并在必要节点进行审批与打回（如记忆归档检查）。</span>
+                      <span class="i18n-en"><strong>AgentLoop (guidance + approval):</strong> once the agent receives input, the system injects guidance as the loop declares, and triggers approvals or send-backs at key checkpoints (memory-archiving checks, for example).</span>
+                    </li>
+                    <li>
+                      <span class="i18n-zh"><strong>原生工具</strong>：Agent 通过原生工具，可以发现和调用 Graph、MCP 工具、Skill，或是直接使用原生工具完成任务。</span>
+                      <span class="i18n-en"><strong>Native tools:</strong> through its native tools the agent discovers and calls graphs, MCP tools, and skills, or simply completes the task with those tools directly.</span>
+                    </li>
+                  </ul>
+                </div>
+
+                <h3>
+                  <span class="i18n-zh">通用开发约定</span><span class="i18n-en">Conventions</span>
+                </h3>
+                <div class="docs-prose">
+                  <ul>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>命名一致性</strong>：安装标识（<code>id</code> / <code>name</code>）必须与文件夹名或文件名（去掉扩展名）严格一致，CI 会校验。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Naming:</strong> the install id must match the folder or file name exactly. CI checks it.</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>必填元数据</strong>：每个清单文件都要有英文 <code>description</code> 与中文
+                        <code>description-zh</code>（AgentLoop 为 <code>description</code> / <code>description-en</code>）。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Metadata:</strong> every manifest carries both an English and a Chinese description
+                        (<code>description-zh</code> for plugins and graphs, <code>description-en</code> for agent loops).</span
+                      >
+                    </li>
+                    <li>
+                      <span class="i18n-zh"
+                        ><strong>热更新</strong>：安装/更新后一般无需重启——Sensor 走
+                        <code>/api/config/sensor/reload</code>；UI 插件与 Graph/范式走内存热更新或前端 <code>Ctrl+R</code>。</span
+                      >
+                      <span class="i18n-en"
+                        ><strong>Hot reload:</strong> installing or updating usually needs no restart. Sensors reload
+                        through <code>/api/config/sensor/reload</code>; UI plugins, graphs, and loops hot-swap from disk
+                        or with a <code>Ctrl+R</code> in the front end.</span
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </article>
+            </section>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="/#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+    <script>
+      (function () {
+        var root = document.documentElement;
+        var langKey = 'purrcat:docs-lang';
+
+        function setLang(lang) {
+          root.setAttribute('data-lang', lang);
+          root.setAttribute('lang', lang === 'zh' ? 'zh-CN' : 'en');
+          document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+            var active = button.getAttribute('data-set-lang') === lang;
+            button.classList.toggle('is-active', active);
+            button.setAttribute('aria-selected', String(active));
+          });
+          try {
+            localStorage.setItem(langKey, lang);
+          } catch (e) {}
+        }
+
+        var saved = null;
+        try {
+          saved = localStorage.getItem(langKey);
+        } catch (e) {}
+        setLang(saved === 'zh' ? 'zh' : 'en');
+
+        document.querySelectorAll('[data-set-lang]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            setLang(button.getAttribute('data-set-lang'));
+          });
+        });
+
+        /* 提示词复制：抓当前语言下那一份提示词 */
+        document.querySelectorAll('[data-copy-prompt]').forEach(function (button) {
+          button.addEventListener('click', function () {
+            var scope = button.closest('.docs-recipe-card') || button.closest('.docs-prompt');
+            if (!scope) return;
+            var lang = root.getAttribute('data-lang') || 'zh';
+            var pre = scope.querySelector('.i18n-' + lang + ' pre') || scope.querySelector('pre');
+            if (!pre) return;
+            button.classList.add('copied');
+            window.clearTimeout(button._timer);
+            button._timer = window.setTimeout(function () {
+              button.classList.remove('copied');
+            }, 1600);
+            if (navigator.clipboard && navigator.clipboard.writeText) {
+              navigator.clipboard.writeText(pre.textContent.trim()).catch(function () {});
+            }
+          });
+        });
+
+        /* 小屏下的文档目录折叠 */
+        var navToggle = document.querySelector('[data-docs-nav-toggle]');
+        if (navToggle) {
+          navToggle.addEventListener('click', function () {
+            var open = navToggle.getAttribute('aria-expanded') !== 'true';
+            navToggle.setAttribute('aria-expanded', String(open));
+            navToggle.closest('.skills-sidebar').classList.toggle('is-open', open);
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
