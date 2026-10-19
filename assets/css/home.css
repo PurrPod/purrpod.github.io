@@ -1600,6 +1600,20 @@
     justify-self: center;
   }
 
+  /* 单列堆叠后卡片不再需要靠右贴住文案栏：收窄舞台并居中，两侧留出弧形标签的余量 */
+  .hero-proof {
+    width: min(430px, calc(100% - 64px));
+    margin-inline: auto;
+  }
+
+  .hero-proof-canvas {
+    padding-inline: 0;
+  }
+
+  .hero-proof-canvas > article {
+    width: 100%;
+  }
+
   .hero-logos {
     grid-template-columns: repeat(5, minmax(0, auto));
     justify-content: start;
