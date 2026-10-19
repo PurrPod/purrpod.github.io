@@ -1,401 +1,868 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>PurrCat - 经济、高效、可定制的个人 AI Agent 框架</title>
-  <meta name="description" content="PurrCat 是一个经济、高效、可定制、本地优先的个人 AI Agent 框架：多层记忆、DAG 工作流、沙盒安全、自进化能力，MIT 开源。">
-  <link rel="icon" type="image/png" href="assets/img/logo.png">
-  <link rel="preconnect" href="https://fonts.loli.net">
-  <link rel="preconnect" href="https://api.github.com" crossorigin>
-  <link rel="preconnect" href="https://avatars.githubusercontent.com">
-  <link href="https://fonts.loli.net/css2?family=Patrick+Hand&family=ZCOOL+KuaiLe&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/css/style.css">
-</head>
-<body>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>PurrCat — Build an Agent That Works Your Way</title>
+    <meta
+      name="description"
+      content="PurrCat is an agent foundation designed around information theory. Let expression no longer be a lossy compression — let the agent work your way."
+    />
+    <meta name="theme-color" content="#fafafa" />
+    <link rel="icon" href="/assets/img/purrcat-logo.png" />
 
-  <!-- ======================= 导航 ======================= -->
-  <header class="site-nav" id="site-nav">
-    <div class="nav-inner">
-      <a class="brand" href="./index.html" aria-label="PurrCat 首页">
-        <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
-        <span class="brand-name">PurrCat</span>
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="PurrCat — Build an Agent That Works Your Way" />
+    <meta property="og:description" content="An agent foundation designed around information theory." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Albert+Sans:wght@400;500;600;700&family=Alumni+Sans:wght@200..800&family=JetBrains+Mono:wght@400;500&display=swap"
+    />
+
+    <link rel="stylesheet" href="/assets/css/tokens.css" />
+    <link rel="stylesheet" href="/assets/css/base.css" />
+    <link rel="stylesheet" href="/assets/css/home.css" />
+  </head>
+  <body class="kinpaku-chrome home-kinpaku">
+    <a class="skip-link" href="#main-content">Skip to content</a>
+
+    <header class="site-header" data-site-header data-nav-open="false">
+      <a href="/" class="site-header-brand" aria-label="PurrCat home">
+        <span class="site-header-brand-logo" aria-hidden="true">
+          <img src="/assets/img/purrcat-logo.png" alt="" width="32" height="32" />
+        </span>
+        <span class="site-header-brand-name">PurrCat</span>
       </a>
-      <nav class="nav-links" id="nav-links" aria-label="主导航">
-        <a class="nav-link is-active" href="./index.html">首页</a>
-        <a class="nav-link" href="./updates.html">动态</a>
-        <a class="nav-link" href="./guide.html">指南</a>
-        <a class="nav-link" href="./blog.html">Blog</a>
-        <a class="nav-link" href="./ecosystem.html">生态</a>
-      </nav>
-      <a class="gh-link" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener" title="PurrPod/purrcat">
-        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
-        <span class="gh-stars" data-gh-stars>★</span>
-      </a>
-      <button class="nav-burger" id="nav-burger" aria-label="打开菜单" aria-expanded="false">☰</button>
-    </div>
-  </header>
 
-  <main>
+      <button
+        type="button"
+        class="site-header-menu"
+        aria-label="Open navigation"
+        aria-expanded="false"
+        aria-controls="site-header-nav-panel"
+        data-site-header-menu
+      >
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+        <span class="site-header-menu-line" aria-hidden="true"></span>
+      </button>
 
-    <!-- ======================= Hero ======================= -->
-    <section class="hero">
-      <div class="container hero-inner">
-        <div class="hero-text">
-          <h1 class="hero-title" aria-label="PurrCat">
-            <svg class="title-draw" viewBox="0 0 480 122" aria-hidden="true" focusable="false">
-              <text class="title-draw-text" x="4" y="104"><tspan class="td-purr">Purr</tspan><tspan class="td-cat">Cat</tspan></text>
-            </svg>
-          </h1>
-          <p class="hero-sub">认真干活、自主运行的个人 AI Agent</p>
-          <p class="hero-desc">
-            经济、高效、可定制、本地优先。它不是又一个特定场景的 Agent 应用，而是一套完整的
-            Agent 基础设施——向下沉淀<mark class="marker">记忆、安全、调度与感知</mark>能力，
-            向上以插件形式承载一切可扩展的功能。
-          </p>
-          <div class="hero-actions">
-            <a class="btn btn-primary" href="guide/deployment.html">快速开始</a>
-            <a class="btn btn-ghost" href="guide.html">翻翻指南</a>
-          </div>
-        </div>
-        <div class="hero-fig">
-          <img class="hero-img" src="assets/img/heros.png" alt="PurrCat 形象" width="480" height="360">
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= 特性小旗子 ======================= -->
-    <section class="feature-strip" aria-label="核心特性">
-      <div class="container">
-        <div class="chips">
-                   <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M12 3v6M20 3v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/><path d="M7 9h18v5a9 9 0 0 1-9 9 9 9 0 0 1-9-9V9z" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M16 23v6" stroke="#1a1a1a" stroke-width="2.8" stroke-linecap="round"/></svg>
-            传感器主动感知
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="16" cy="16" r="12" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><path d="M11.5 9.5l4.5 6 4.5-6M16 15.5V23M12.8 18.5h6.4M12.8 21.5h6.4" fill="none" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            Token 经济学
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M7 13h4.5a3.2 3.2 0 1 1 6.3 0H22v4.5a3.2 3.2 0 1 1 0 6.3V28H7z" fill="#b58ad8" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/></svg>
-            无代码拓展生态
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M5 11h16" stroke="#d47a5a" stroke-width="2.8" stroke-linecap="round"/><path d="M17 6.5l5 4.5-5 4.5" fill="none" stroke="#d47a5a" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M27 21H11" stroke="#5f95e8" stroke-width="2.8" stroke-linecap="round"/><path d="M15 16.5l-5 4.5 5 4.5" fill="none" stroke="#5f95e8" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            ACP与MCP协议兼容
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 4l12 6-12 6L4 10l12-6z" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M4 16l12 6 12-6M4 22l12 6 12-6" fill="none" stroke="#1a1a1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            混合记忆与知识图谱
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="6" cy="8" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="6" cy="24" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="26" cy="16" r="3.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/><path d="M9 9.5 L22.8 14.8 M9 22.5 L22.8 17.2" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
-            Harness DAG 工作流
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 3l11 4v8c0 7-4.5 11.5-11 14C9.5 26.5 5 22 5 15V7l11-4z" fill="#5da885" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><path d="M11 15.5l3.5 3.5 6.5-7" fill="none" stroke="#ffffff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            沙盒级宿主机安全
-          </span>
-          <span class="chip">
-            <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 16c0-3.5 5-3.5 5 0s-5 7-9 4.5S9 11 14 8.5s13-2 14 4.5-6 12.5-14 11S3 16 8 9.5" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round"/></svg>
-            Trace2Skill 自进化
-          </span>
- 
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= 最新动态 ======================= -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">最新动态</h2>
-          <span class="section-en">- updates -</span>
-          <a class="section-more" href="updates.html">查看全部 →</a>
-        </div>
-        <div class="commit-wrap" data-reveal>
-          <ul class="update-list" id="update-list"></ul>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= 最近 Blog ======================= -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">最新博客</h2>
-          <span class="section-en">- from the blog -</span>
-          <a class="section-more" href="blog.html">查看全部 →</a>
-        </div>
-        <div class="card-grid">
-          <a class="card-link" href="blog/entropy/index.html" data-reveal>
-            <div class="doodle-card">
-              <span class="card-num">01</span>
-              <div class="card-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><rect x="4" y="4" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="17" y="4" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="4" y="17" width="11" height="11" rx="2.5" fill="none" stroke="#1a1a1a" stroke-width="2.5"/><rect x="17" y="17" width="11" height="11" rx="2.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/></svg>
-              </div>
-              <h3 class="card-title">从一个骗局讲起</h3>
-              <p class="card-desc">「一句话生成一个符合你期待的网站？」——用「信息熵不可逆」这六个字，戳破当下 AI 叙事的最大泡沫。</p>
-              <div class="card-tags"><span class="card-tag">#信息熵</span><span class="card-tag">#使用哲学</span></div>
-            </div>
-          </a>
-          <a class="card-link" href="blog/dag/index.html" data-reveal>
-            <div class="doodle-card">
-              <span class="card-num">02</span>
-              <div class="card-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><circle cx="6" cy="8" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="6" cy="24" r="3.5" fill="#ffd93d" stroke="#1a1a1a" stroke-width="2.5"/><circle cx="26" cy="16" r="3.5" fill="#d47a5a" stroke="#1a1a1a" stroke-width="2.5"/><path d="M9 9.5 L22.8 14.8 M9 22.5 L22.8 17.2" stroke="#1a1a1a" stroke-width="2.2" stroke-linecap="round" fill="none"/></svg>
-              </div>
-              <h3 class="card-title">如何使用 DAG 工作流引擎</h3>
-              <p class="card-desc">拖拽编排思维链与多智能体协作：把一份长长的 SOP 拆成多个节点，每个节点提示词短而精。</p>
-              <div class="card-tags"><span class="card-tag">#DAG</span><span class="card-tag">#工作流</span></div>
-            </div>
-          </a>
-          <a class="card-link" href="blog/evolve/index.html" data-reveal>
-            <div class="doodle-card">
-              <span class="card-num">03</span>
-              <div class="card-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M16 16c0-3.5 5-3.5 5 0s-5 7-9 4.5S9 11 14 8.5s13-2 14 4.5-6 12.5-14 11S3 16 8 9.5" fill="none" stroke="#1a1a1a" stroke-width="2.6" stroke-linecap="round"/></svg>
-              </div>
-              <h3 class="card-title">如何使用自我进化工厂</h3>
-              <p class="card-desc">Trace to Skill：创建 Skill 最容易踩的坑是从零开始写。最佳实践是——先跑一遍，再总结成 Skill。</p>
-              <div class="card-tags"><span class="card-tag">#Trace2Skill</span><span class="card-tag">#最佳实践</span></div>
-            </div>
-          </a>
-          <a class="card-link" href="blog/unattended/index.html" data-reveal>
-            <div class="doodle-card">
-              <span class="card-num">04</span>
-              <div class="card-icon">
-                <svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M24 20.5A10.5 10.5 0 0 1 11.5 8 10.5 10.5 0 1 0 24 20.5z" fill="#5f95e8" stroke="#1a1a1a" stroke-width="2.5" stroke-linejoin="round"/><circle cx="25" cy="8" r="1.6" fill="#1a1a1a"/><circle cx="28.5" cy="13" r="1.1" fill="#1a1a1a"/></svg>
-              </div>
-              <h3 class="card-title">无人值守：让 Agent 在空闲时自主工作</h3>
-              <p class="card-desc">写好 GOAL.md，打开 Heartbeat 心跳，Agent 就能在你睡觉的时候替你干活：巡查代码、追踪资讯、整理记忆。</p>
-              <div class="card-tags"><span class="card-tag">#Heartbeat</span><span class="card-tag">#GOAL</span></div>
-            </div>
-          </a>
-        </div>
-      </div>
-    </section>
-
-    <div class="doodle-divider" aria-hidden="true"></div>
-
-    <!-- ======================= 介绍 + 配图 ======================= -->
-    <section class="section">
-      <div class="container">
-        <div class="section-head">
-          <h2 class="section-title">PurrCat 长什么样</h2>
-          <span class="section-en">- under the fur -</span>
-        </div>
-
-        <!-- 01 总览 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row">
-            <div class="doc-text">
-              <span class="doc-index">1</span>
-              <h3 class="doc-title">先睹为快 · 主界面</h3>
-              <p>PurrCat 不是又一个特定场景的 Agent 应用，而是一套完整的 Agent 基础设施。设计初心：在保障宿主机<b>绝对安全</b>的前提下，打造一个拥有私人工作空间、能够自由活动的个人 Agent——你在场时认真工作，你离开时自主干活。</p>
-              <ul>
-                <li><b>Electron 桌面端</b>开箱即用，内置独立浏览器</li>
-                <li><b>Git 式会话分支</b>：new / branch / switch 自由切换</li>
-                <li><b>一切皆插件</b>：工具、技能、传感器、任务图均为插件</li>
-                <li><b>配置驱动</b>：改改 JSON / YAML 就能重写 Agent 行为</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/main-ui.png" alt="PurrCat 主界面" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 02 Harness -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row flip">
-            <div class="doc-text">
-              <span class="doc-index">2</span>
-              <h3 class="doc-title">可编排的 Harness 工作流引擎</h3>
-              <p>连 Agent 的思维链本身都是可编排的——复杂任务被拆解为一张可流转的任务图（DAG），由主 Agent 统一分配任务，避免 Agent 间自然语言对话带来的 Token 冗余。</p>
-              <ul>
-                <li><b>JSON 驱动热插拔</b>：单个 JSON 装载，运行时热更新</li>
-                <li><b>多态节点矩阵</b>：条件路由、人工干预、模板渲染、图片生成</li>
-                <li><b>PARADIGM.yaml</b>：声明式规则重写 Agent 主循环</li>
-                <li><b>状态机安全回滚</b>：任意节点注入指令、断点重连</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/workflow-editor.png" alt="思维链编排画布" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 03 传感器 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row">
-            <div class="doc-text">
-              <span class="doc-index">3</span>
-              <h3 class="doc-title">主动感知的传感器机制</h3>
-              <p>绝大多数 Agent 只能被动等在对话框里「你问我答」。PurrCat 的传感器网关将外部世界与 Agent 本体直接连通，事件统一入口推送，Agent 也可以反向输出到任意通道。</p>
-              <ul>
-                <li><b>独立子进程隔离</b>：单个传感器崩溃不影响主进程</li>
-                <li><b>Stdio 管道 JSON-RPC</b>：不占用任何网络端口</li>
-                <li>内置 <b>System（心跳）</b>、<b>Feishu（WebSocket）</b>、<b>RSS</b> 传感器</li>
-                <li>低成本实现语音助手、RSS 订阅、社媒打通</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/plugin-sensor.png" alt="传感器示例" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 04 记忆 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row flip">
-            <div class="doc-text">
-              <span class="doc-index">4</span>
-              <h3 class="doc-title">多层记忆系统</h3>
-              <p>解决传统 Agent「记不住事」的问题。基于人脑科学分层设计：短时工作记忆、MEMORY.md 核心档案，加上由三大引擎构成的长期记忆库 PurrMemo。</p>
-              <ul>
-                <li><b>事件记忆</b>：SQLite + FTS5，时间线客观溯源</li>
-                <li><b>语义记忆</b>：ChromaDB 向量库存储可复用经验</li>
-                <li><b>认知图谱</b>：NetworkX 实体关系图，动态强化/削弱</li>
-                <li><b>RRF 混合检索</b> + 仿生遗忘机制自动清理</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/memory-events.png" alt="事件记忆库" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 05 自进化 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row">
-            <div class="doc-text">
-              <span class="doc-index">5</span>
-              <h3 class="doc-title">自进化能力</h3>
-              <p>得益于自进化工厂（Evolve Factory），Agent 能实现能力的自我生产与迭代，形成「执行、沉淀、再执行」的能力飞轮——用得越多，积累的技能、工具与感知渠道越丰富。</p>
-              <ul>
-                <li><b>Trace2Skill</b>：把成功执行轨迹固化为可复用技能</li>
-                <li><b>MCP 工具自建</b>：Agent 自行搭建工具并热加载</li>
-                <li><b>传感器自建</b>：自行开发感知渠道，即插即用</li>
-                <li>新生技能需通过评估器质量验证方可入库</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/evolve-skill.png" alt="Trace2Skill 技能生产线" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 06 Token 经济 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row flip">
-            <div class="doc-text">
-              <span class="doc-index">6</span>
-              <h3 class="doc-title">KV Cache 与 Token 经济学</h3>
-              <p>稳定的 KV Cache 命中率是系统的生命线：一次缓存未命中不仅导致响应时间暴增，更带来极大的 Token 资金消耗。PurrCat 从架构上把它管得明明白白。</p>
-              <ul>
-                <li><b>API Key 生命周期强绑定</b>，缓存命中率实测 99%+</li>
-                <li><b>记忆摘要经济学</b>：浓缩摘要替代全量历史参与推理</li>
-                <li><b>DAG 降本</b>：消除多 Agent 间自然语言通信冗余</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/kv-cache.png" alt="KV Cache 命中统计" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 07 前端 -->
-        <div class="doc-section" data-reveal>
-          <div class="doc-row">
-            <div class="doc-text">
-              <span class="doc-index">7</span>
-              <h3 class="doc-title">面向精准交互的前端设计</h3>
-              <p>面对网页设计、SVG 设计等创作类任务，不再需要用大量自然语言反复描述「那个左上角的蓝色按钮」——反馈精确到具体组件，缩短「描述、修改、再确认」的交互链路。</p>
-              <ul>
-                <li><b>DOM 级精准交互</b>：内置浏览器中直接选取元素定位</li>
-                <li><b>可视化 DAG 画布</b>：节点拖拽编排、JSON 一键导入导出</li>
-              </ul>
-            </div>
-            <div class="doc-fig">
-              <div class="frame">
-                <img src="assets/img/browser.png" alt="内置浏览器" loading="lazy">
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ======================= CTA ======================= -->
-    <section class="section">
-      <div class="container">
-        <div class="commit-wrap" data-reveal style="padding-top:44px;">
-          <div class="section-head" style="margin-bottom:10px;">
-            <h2 class="section-title">心动不如行动</h2>
-            <span class="section-en">- get purrcat -</span>
-          </div>
-          <p style="color:var(--ink-soft);">选择你的操作系统，一条命令快速部署：</p>
-          <div class="os-switch" role="group" aria-label="选择操作系统">
-            <button type="button" class="os-btn" data-os="windows">Windows</button>
-            <button type="button" class="os-btn" data-os="macos">macOS</button>
-            <button type="button" class="os-btn" data-os="linux">Linux</button>
-          </div>
-          <div class="terminal" id="install-term">
-            <span class="term-label">terminal</span>
-            <div class="terminal-dots" aria-hidden="true"><i></i><i></i><i></i></div>
-            <pre><code>curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash</code></pre>
-          </div>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <!-- ======================= 页脚 ======================= -->
-  <footer class="site-footer">
-    <div class="footer-inner">
-      <div class="footer-brand">
-        <a class="brand" href="./index.html">
-          <img class="brand-logo" src="assets/img/logo.png" alt="PurrCat logo">
-          <span class="brand-name">PurrCat</span>
+      <div class="site-header-right" id="site-header-nav-panel">
+        <nav class="site-header-nav" aria-label="Primary">
+          <a href="/" data-nav="home" aria-current="page">Home</a>
+          <a href="#features" data-nav="features">Features</a>
+          <a href="/docs/" data-nav="docs">Docs</a>
+          <a href="/about.html" data-nav="about">About</a>
+        </nav>
+        <a
+          href="https://github.com/PurrPod/purrcat"
+          class="site-header-github"
+          target="_blank"
+          rel="noopener"
+          aria-label="PurrCat on GitHub"
+        >
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path
+              d="M12 2C6.477 2 2 6.484 2 12.017c0 4.425 2.865 8.18 6.839 9.504.5.092.682-.217.682-.483 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.032 1.531 1.032.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.113-4.555-4.951 0-1.093.39-1.988 1.029-2.688-.103-.253-.446-1.272.098-2.65 0 0 .84-.27 2.75 1.026A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.296 2.747-1.027 2.747-1.027.546 1.379.202 2.398.1 2.651.64.7 1.028 1.595 1.028 2.688 0 3.848-2.339 4.695-4.566 4.943.359.309.678.92.678 1.855 0 1.338-.012 2.419-.012 2.747 0 .268.18.58.688.482A10.019 10.019 0 0022 12.017C22 6.484 17.522 2 12 2z"
+            ></path>
+          </svg>
+          <span class="site-header-github-label">Star</span>
+          <svg class="site-header-github-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M12 2l2.76 6.36L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l7.24-.91L12 2z"></path>
+          </svg>
         </a>
-        <p>经济、高效、可定制、本地优先的个人 AI Agent 框架。MIT 许可证开源，可自由使用、修改与分发，包括商业用途。</p>
       </div>
-      <div class="footer-col">
-        <h4>文档</h4>
-        <a href="guide/deployment.html">部署指南</a>
-        <a href="guide/development.html">开发指南</a>
-        <a href="guide/faq.html">常见问题</a>
-        <a href="blog.html">Blog</a>
-      </div>
-      <div class="footer-col">
-        <h4>社区</h4>
-        <a href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">GitHub 主仓库</a>
-        <a href="https://github.com/PurrPod/sensors" target="_blank" rel="noopener">传感器仓库</a>
-        <a href="ecosystem.html">生态一览</a>
-      </div>
-    </div>
-    <div class="footer-bottom">
-      <div class="footer-bottom-inner">
-        <span>© <span data-year>2026</span> PurrPod · MIT License</span>
-        <span>PurrCat · 个人 AI Agent</span>
-      </div>
-    </div>
-  </footer>
+    </header>
 
-  <script src="data/updates.js"></script>
-  <script src="assets/js/main.js"></script>
-</body>
+    <main id="main-content">
+      <!-- ---------- 英雄区：左滑杆 / 右文案 ---------- -->
+      <section id="hero" class="hero">
+        <canvas class="hero-particles" aria-hidden="true"></canvas>
+        <div class="hero-container">
+          <div class="hero-left">
+            <h1 class="hero-title">Build an agent that works <span class="hero-mark">your way</span>.</h1>
+            <p class="hero-body">
+              Let expression no longer be a lossy compression. PurrCat treats intent as the thing worth
+              preserving — how it enters the system, how it flows through execution, and what is worth
+              keeping afterwards.
+            </p>
+            <div class="hero-actions">
+              <a href="#downloads" class="ks-button ks-button-primary"
+                >Install PurrCat<span class="ks-button-arrow" aria-hidden="true"
+                  ><svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+                    <path d="M0 4h14M10 0l4 4-4 4"></path></svg></span
+              ></a>
+              <a href="/docs/" class="ks-button ks-button-ghost">Read the docs</a>
+            </div>
+            <div class="hero-logos" aria-label="What PurrCat works with">
+              <span class="hero-chip">MCP servers</span>
+              <span class="hero-chip">Agent Skills</span>
+              <span class="hero-chip">Docker sandbox</span>
+              <span class="hero-chip">Electron desktop</span>
+              <span class="hero-chip">DAG workflows</span>
+              <span class="hero-logos-caption" aria-hidden="true"
+                >MCP servers · Agent Skills · Docker sandbox · Electron desktop · DAG workflows</span
+              >
+            </div>
+          </div>
+
+          <div class="hero-right">
+            <section class="hero-proof" data-hero-proof aria-label="Context before and after PurrCat">
+              <div class="hero-proof-stage">
+                <div class="hero-proof-panel is-active">
+                  <div class="hero-proof-layer hero-proof-layer--before">
+                    <div class="hero-proof-canvas">
+                      <article class="hero-chat hero-chat--before">
+                        <svg class="hero-proof-side-label hero-proof-side-label--before" viewBox="0 0 80 80" aria-hidden="true">
+                          <path id="proof-arc-before" d="M 6 40 A 34 34 0 0 1 40 6" fill="none"></path>
+                          <text>
+                            <textPath href="#proof-arc-before" startOffset="50%" text-anchor="middle">Before</textPath>
+                          </text>
+                        </svg>
+                        <div class="demo-chat">
+                          <div class="demo-thread">
+                            <p class="demo-bubble demo-bubble--agent">Ready. What are we making today?</p>
+                            <p class="demo-bubble demo-bubble--user">Help me cut the demo video: grab the three clips in ~/footage/demo, drop the boring middle, caption it from the audio, pick a music bed that fits the pacing, keep it under 60 seconds, export 9:16 for shorts and 16:9 for the site, use the <span class="demo-skill">$ffmpeg</span> skill and the <span class="demo-skill">$caption</span> skill, follow the <span class="demo-skill">$brand-edit</span> workflow my team wrote, and pull the brand colours from the asset MCP server. Last time you cut the ending too early.</p>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+
+                  <div class="hero-proof-layer hero-proof-layer--after">
+                    <div class="hero-proof-canvas">
+                      <article class="hero-chat hero-chat--after">
+                        <svg class="hero-proof-side-label hero-proof-side-label--after" viewBox="0 0 80 80" aria-hidden="true">
+                          <path id="proof-arc-after" d="M 40 74 A 34 34 0 0 0 74 40" fill="none"></path>
+                          <text>
+                            <textPath href="#proof-arc-after" startOffset="50%" text-anchor="middle">After</textPath>
+                          </text>
+                        </svg>
+                        <div class="demo-chat">
+                          <div class="demo-thread">
+                            <p class="demo-bubble demo-bubble--agent">Ready. What are we making today?</p>
+                            <p class="demo-bubble demo-bubble--user">Cut the demo video for me.</p>
+                            <ul class="demo-auto">
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">skills</span><span class="demo-auto-val">ffmpeg-cut · auto-caption</span></li>
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">workflow</span><span class="demo-auto-val">brand-edit v3</span></li>
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">clips</span><span class="demo-auto-val">3 · ~/footage/demo</span></li>
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">target</span><span class="demo-auto-val">&lt; 60s · 9:16 + 16:9</span></li>
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">assets</span><span class="demo-auto-val">asset-library MCP</span></li>
+                              <li class="demo-bubble demo-bubble--user demo-bubble--auto is-in"><b class="demo-auto-tag">Auto</b><span class="demo-auto-key">memory</span><span class="demo-auto-val">brand colours · last cut ran short</span></li>
+                            </ul>
+                          </div>
+                        </div>
+                      </article>
+                    </div>
+                  </div>
+
+                  <div class="hero-proof-seam" aria-hidden="true"></div>
+                  <div class="hero-proof-drag" aria-hidden="true"></div>
+                  <input
+                    class="hero-proof-range"
+                    type="range"
+                    min="0"
+                    max="100"
+                    value="71"
+                    aria-label="Reveal the after example"
+                    data-proof-range
+                  />
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </section>
+
+      <!-- ---------- 能力滚动条 ---------- -->
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span class="marquee__item">UI plugins</span>
+          <span class="marquee__item">Agent skills</span>
+          <span class="marquee__item">MCP servers</span>
+          <span class="marquee__item">Sensors</span>
+          <span class="marquee__item">Agent loops</span>
+          <span class="marquee__item">Workflows</span>
+          <span class="marquee__item">Knowledge graphs</span>
+          <span class="marquee__item">Evaluation sets</span>
+          <span class="marquee__item">Docker sandbox</span>
+          <span class="marquee__item">Electron desktop</span>
+          <span class="marquee__item">UI plugins</span>
+          <span class="marquee__item">Agent skills</span>
+          <span class="marquee__item">MCP servers</span>
+          <span class="marquee__item">Sensors</span>
+          <span class="marquee__item">Agent loops</span>
+          <span class="marquee__item">Workflows</span>
+          <span class="marquee__item">Knowledge graphs</span>
+          <span class="marquee__item">Evaluation sets</span>
+          <span class="marquee__item">Docker sandbox</span>
+          <span class="marquee__item">Electron desktop</span>
+        </div>
+      </div>
+
+      <div class="site-content">
+        <!-- ---------- 特性 ---------- -->
+        <section class="section" id="features">
+          <div class="section-header">
+            <p class="ks-eyebrow ks-eyebrow--gold">What's inside</p>
+            <h2 class="section-title">Five commitments, one foundation.</h2>
+            <p class="section-lead">
+              From how information enters the agent, to how tasks execute, how memory is organised, and
+              how capabilities expand — you orchestrate all of it the way you work.
+            </p>
+          </div>
+
+          <div class="features">
+            <article class="feature feature--wide reveal">
+              <p class="feature__index">00</p>
+              <h3 class="feature__title">Information-Driven Agent Design</h3>
+              <p class="feature__quote">The model decides capability; information decides direction.</p>
+              <ul class="feature__list">
+                <li>
+                  <b>UI plugin architecture.</b> Fold your working context into UI panels — a click can
+                  communicate what a paragraph used to.
+                </li>
+                <li>
+                  <b>Orchestrated information flow.</b> Describe the agent's execution as a configurable
+                  DAG and orchestrate the loop with a single yaml file; you decide when information gets
+                  injected.
+                </li>
+                <li>
+                  <b>Multi-layer hybrid memory.</b> Short-term working memory, <code>MEMORY.md</code>, and
+                  PurrMemo's episodic, semantic, and knowledge-graph layers, injected in stages.
+                </li>
+                <li>
+                  <b>Sub-agents that share context.</b> Their own branch id, model instance, and event
+                  loop — over one shared contextual foundation.
+                </li>
+              </ul>
+            </article>
+
+            <article class="feature reveal">
+              <p class="feature__index">01</p>
+              <h3 class="feature__title">Everything Is Plugins</h3>
+              <p class="feature__quote">
+                Beyond the kernel — capabilities, flows, and interfaces are all extensible.
+              </p>
+              <ul class="feature__list">
+                <li>Tools, skills, sensors, agent loops, workflows and UI panels all plug in or get replaced.</li>
+                <li>One yaml file configures information injection, tool-use checks, and loop-exit conditions.</li>
+                <li>
+                  Six extension types: <code>skill</code>, <code>ui-plugin</code>, <code>mcp</code>,
+                  <code>agentloop</code>, <code>sensor</code>, <code>graph</code>.
+                </li>
+              </ul>
+            </article>
+
+            <article class="feature reveal">
+              <p class="feature__index">02</p>
+              <h3 class="feature__title">RSI Self-Evolution System</h3>
+              <p class="feature__quote">
+                Not only using capabilities, but building, evaluating, and iterating them.
+              </p>
+              <ul class="feature__list">
+                <li>The agent builds its own plugins: Trace2Skill, MCP tool building, sensor building.</li>
+                <li>
+                  Generated skills ship with a <code>SKILL.md</code> and an <code>evals.json</code> set,
+                  and must pass the built-in evaluator.
+                </li>
+                <li>Hot reload, standalone HTML evaluation reports, and an iteration archive that can roll back.</li>
+              </ul>
+            </article>
+
+            <article class="feature reveal">
+              <p class="feature__index">03</p>
+              <h3 class="feature__title">Secure Self-Hosting</h3>
+              <p class="feature__quote">
+                The agent has its own workspace; your host machine is still yours to control.
+              </p>
+              <ul class="feature__list">
+                <li>Commands and files live in a dedicated Docker container with persistent workspace and logs.</li>
+                <li>Imports are size- and path-validated; exports can trigger a Git snapshot for audit.</li>
+                <li><code>GOAL.md</code> plus a heartbeat cycle lets the agent patrol and report while idle.</li>
+              </ul>
+            </article>
+
+            <article class="feature reveal">
+              <p class="feature__index">04</p>
+              <h3 class="feature__title">Efficient Context &amp; Tool Management</h3>
+              <p class="feature__quote">
+                Reduce unnecessary tool information; keep a stable long-session cache.
+              </p>
+              <ul class="feature__list">
+                <li>Key manager binds a session to one key, keeping the long-session prefix cache intact.</li>
+                <li>
+                  Tools and skills are stored then retrieved on demand — an attention problem turned into
+                  a retrieval problem.
+                </li>
+                <li>Workflows pass node results as structured data, cutting repeated restatement between agents.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <!-- ---------- 演示：before/now 对比 + 三场景插件工作台 ---------- -->
+        <section class="section demo" id="demo" data-demo>
+          <div class="section-header section-header--center">
+            <p class="ks-eyebrow ks-eyebrow--gold">See it run</p>
+            <h2 class="section-title">You used to type the brief. Now you press one button.</h2>
+            <p class="section-lead">
+              Three everyday jobs, one plugin surface. Pick a job and the panel mounts, the loop switches,
+              and the agent fills in everything you used to type yourself.
+            </p>
+          </div>
+
+          <!-- 场景选择：一个 AI + 的开关，左右箭头循环切三种活 -->
+          <div class="demo-switch" aria-label="Demo scenarios">
+            <span class="demo-switch-affix">AI +</span>
+            <span class="demo-switch-box ks-instrument-strip is-paper">
+              <button class="demo-switch-arrow" type="button" data-demo-prev aria-label="Previous job">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 6 9 12 15 18"></polyline></svg>
+              </button>
+              <span class="demo-switch-label" data-demo-switch-label aria-live="polite">video</span>
+              <button class="demo-switch-arrow" type="button" data-demo-next aria-label="Next job">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 6 15 12 9 18"></polyline></svg>
+              </button>
+            </span>
+          </div>
+          <p class="demo-own">
+            <a href="/docs/"
+              >Build your own workbench<span class="demo-own-arrow" aria-hidden="true">→</span></a
+            >
+          </p>
+
+          <!-- Before / Now 切换：Before 看老办法（自己把整份简报打出来），Now 就是下面的工作台 -->
+          <div class="demo-compare-tabs ks-instrument-strip is-paper has-thumb" role="group" aria-label="Compare before and now">
+            <button class="demo-compare-tab ks-instrument-key" type="button" data-demo-view="before" aria-pressed="false">Before</button>
+            <button class="demo-compare-tab ks-instrument-key" type="button" data-demo-view="now" aria-pressed="true">Now</button>
+            <span class="ks-thumb" aria-hidden="true"></span>
+          </div>
+
+          <!-- Before 卡和 Now 工作台各自成块：手动切换，互不拉伸 -->
+          <div class="demo-stage">
+          <div class="demo-compare" data-demo-compare hidden>
+            <article class="custom-chat" data-demo-chat="long">
+              <header class="custom-chat-head">
+                <span class="demo-card-kicker">Before</span>
+                <span class="demo-card-tag">Type everything yourself</span>
+              </header>
+              <div class="demo-thread custom-thread">
+                <p class="demo-bubble demo-bubble--agent">Ready. What are we making today?</p>
+                <p class="demo-bubble demo-bubble--user" data-demo-sent hidden><span data-demo-typed="long"></span></p>
+              </div>
+              <div class="custom-composer">
+                <div class="custom-bar">
+                  <div class="custom-input demo-before-input" data-demo-input>
+                    <span data-demo-echo></span><i class="demo-caret" aria-hidden="true"></i>
+                  </div>
+                  <div class="custom-bar-row">
+                    <span class="custom-plus" aria-hidden="true">＋</span>
+                    <span class="custom-mode demo-before-ghost" aria-hidden="true">
+                      <span>Default</span>
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                    </span>
+                    <span class="custom-bar-spacer"></span>
+                    <span class="custom-ctx" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <circle class="custom-ctx-track" cx="12" cy="12" r="9" fill="none" stroke-width="3"></circle>
+                        <circle class="custom-ctx-arc" cx="12" cy="12" r="9" fill="none" stroke-width="3" transform="rotate(-90 12 12)" stroke-dasharray="16 56.55"></circle>
+                      </svg>
+                    </span>
+                    <span class="custom-send" data-demo-send aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </article>
+          </div>
+
+          <!-- 下面的工作台：左＝按场景挂进来的插件界面，右＝会话框 -->
+          <div class="demo-workbench" data-demo-workbench>
+            <div class="custom-view" data-demo-mount>
+              <header class="custom-view-head">
+                <span class="custom-view-kicker">Panel container</span>
+                <span class="custom-view-slot">slot · <b data-demo-slot>none</b></span>
+              </header>
+              <div class="custom-view-body">
+                <span class="demo-cursor" data-demo-cursor aria-hidden="true">
+                  <svg viewBox="0 0 24 24"><path d="M5 2.5l12.5 7.2-5.4 1.2-1.5 5.5z"></path></svg>
+                </span>
+                <p class="custom-view-empty" data-demo-empty>
+                  <span class="custom-view-empty-mark" aria-hidden="true">( )</span>
+                  Pick a job above — the panel mounts right here.
+                </p>
+
+                <section class="pv" data-demo-mount-item="video-studio" hidden>
+                  <header class="pv-head">
+                    <span class="pv-title"><b>Video Studio</b><em>Storyboard · 3 shots</em></span>
+                    <button class="pv-run" type="button" data-demo-run>Start render</button>
+                  </header>
+                  <div class="pv-controls">
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="aspect">
+                      <span class="pv-opt-label">aspect</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">9:16</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">16:9</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">1:1</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="captions">
+                      <span class="pv-opt-label">captions</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">on</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">burned-in</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="music">
+                      <span class="pv-opt-label">music</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">lo-fi</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">cinematic</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">none</button>
+                    </div>
+                  </div>
+                  <div class="pv-body">
+                    <div class="pv-shots" aria-hidden="true">
+                      <span class="pv-shot">A</span>
+                      <span class="pv-shot">B</span>
+                      <span class="pv-shot">C</span>
+                    </div>
+                    <div class="pv-timeline" aria-hidden="true">
+                      <span style="flex: 2"></span>
+                      <span style="flex: 5"></span>
+                      <span style="flex: 3"></span>
+                    </div>
+                    <ul class="pv-rows">
+                      <li><span>hook</span><b>0:00 – 0:08</b></li>
+                      <li><span>body</span><b>0:08 – 0:41</b></li>
+                      <li><span>payoff</span><b>0:41 – 0:57</b></li>
+                    </ul>
+                  </div>
+                </section>
+
+                <section class="pv" data-demo-mount-item="learn-workbench" hidden>
+                  <header class="pv-head">
+                    <span class="pv-title"><b>Learn Workbench</b><em>Week 4 · mastery 63%</em></span>
+                    <button class="pv-run" type="button" data-demo-run>Start lesson</button>
+                  </header>
+                  <div class="pv-controls">
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="level">
+                      <span class="pv-opt-label">level</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">year 1</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">year 2</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">grad</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="language">
+                      <span class="pv-opt-label">language</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">EN</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">中文</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="quiz">
+                      <span class="pv-opt-label">quiz</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">10 qs</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">20 qs</button>
+                    </div>
+                  </div>
+                  <div class="pv-body">
+                    <ul class="pv-progress">
+                      <li><span class="pv-progress-name">Chain rule</span><span class="pv-bar"><i style="width: 100%"></i></span><b>done</b></li>
+                      <li><span class="pv-progress-name">Numeric gradient</span><span class="pv-bar"><i style="width: 62%"></i></span><b>62%</b></li>
+                      <li><span class="pv-progress-name">Backprop quiz</span><span class="pv-bar"><i style="width: 18%"></i></span><b>next</b></li>
+                    </ul>
+                    <ul class="pv-rows">
+                      <li><span>streak</span><b>6 days</b></li>
+                      <li><span>weak spot</span><b>gradient quiz</b></li>
+                    </ul>
+                  </div>
+                </section>
+
+                <section class="pv" data-demo-mount-item="quant-lab" hidden>
+                  <header class="pv-head">
+                    <span class="pv-title"><b>Quant Lab</b><em>Factor screen · CSI 300</em></span>
+                    <button class="pv-run" type="button" data-demo-run>Run screen</button>
+                  </header>
+                  <div class="pv-controls">
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="strategy">
+                      <span class="pv-opt-label">strategy</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">reversal 20d</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">value</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">quality</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="rebalance">
+                      <span class="pv-opt-label">rebalance</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">monthly</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">weekly</button>
+                    </div>
+                    <div class="pv-opts" data-demo-opt-group data-demo-opt-key="cost">
+                      <span class="pv-opt-label">cost</span>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">0.15%</button>
+                      <button class="pv-opt" type="button" data-demo-opt aria-pressed="false">0.05%</button>
+                    </div>
+                  </div>
+                  <div class="pv-body">
+                    <div class="pv-rows-head" aria-hidden="true"><span>factor</span><b>IC</b><b>turnover</b></div>
+                    <ul class="pv-rows pv-rows--grid">
+                      <li><span>reversal 20d</span><b>0.041</b><b>28%</b></li>
+                      <li><span>value</span><b>0.017</b><b>12%</b></li>
+                      <li><span>quality</span><b>0.009</b><b>9%</b></li>
+                    </ul>
+                    <div class="pv-spark" aria-hidden="true">
+                      <i style="height: 32%"></i>
+                      <i style="height: 58%"></i>
+                      <i style="height: 44%"></i>
+                      <i style="height: 76%"></i>
+                      <i style="height: 61%"></i>
+                      <i style="height: 88%"></i>
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </div>
+
+            <div class="custom-chat">
+              <header class="custom-chat-head">
+                <span class="custom-chat-kicker">Session</span>
+                <span class="custom-chat-loop">Loop · <b data-demo-loop-name>Default</b></span>
+              </header>
+              <div class="demo-thread custom-thread" data-demo-thread>
+                <p class="demo-bubble demo-bubble--agent">Pick a job, then watch the panel press Start.</p>
+                <ul class="demo-auto" data-demo-msgs></ul>
+              </div>
+              <div class="custom-composer">
+                <div class="custom-bar">
+                  <div class="custom-input" aria-hidden="true">Ask PurrCat to wire this in…</div>
+                  <div class="custom-bar-row">
+                    <span class="custom-plus" aria-hidden="true">＋</span>
+                    <span class="custom-modes">
+                      <button
+                        class="custom-mode"
+                        type="button"
+                        data-demo-mode-btn
+                        aria-haspopup="true"
+                        aria-expanded="false"
+                        title="Switch agent loop"
+                      >
+                        <span data-demo-mode-label>Default</span>
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
+                      </button>
+                      <div class="custom-mode-menu" data-demo-mode-menu role="menu"></div>
+                    </span>
+                    <span class="custom-bar-spacer"></span>
+                    <span class="custom-ctx" aria-hidden="true">
+                      <svg viewBox="0 0 24 24">
+                        <circle class="custom-ctx-track" cx="12" cy="12" r="9" fill="none" stroke-width="3"></circle>
+                        <circle class="custom-ctx-arc" cx="12" cy="12" r="9" fill="none" stroke-width="3" transform="rotate(-90 12 12)" stroke-dasharray="16 56.55"></circle>
+                      </svg>
+                    </span>
+                    <span class="custom-send" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          </div>
+        </section>
+
+        <!-- ---------- 越用越聪明：skill 工厂 + 记忆库 ---------- -->
+        <section class="section evolve" id="evolve">
+          <div class="section-header section-header--center">
+            <p class="ks-eyebrow ks-eyebrow--gold">Compound</p>
+            <h2 class="section-title">It gets smarter the longer you use it.</h2>
+            <p class="section-lead">
+              Skills that are blind-tested until they hold, a memory that learns how you work — and not only
+              those two. Every plugin you switch on evolves the same way.
+            </p>
+          </div>
+
+          <div class="evolve-stage">
+            <article class="evolve-card">
+              <header class="evolve-card-head">
+                <span class="evolve-card-kicker">Skill factory</span>
+                <span class="evolve-card-tag">Sandboxed blind eval</span>
+              </header>
+              <div class="evolve-body">
+                <p class="evolve-report-title">quant-strategy <span>· iteration trail</span></p>
+                <ul class="evolve-iters">
+                  <li><span>Iter 1</span><i style="--fill: 33%"></i><b>33%</b></li>
+                  <li><span>Iter 2</span><i style="--fill: 67%"></i><b>67%</b></li>
+                  <li><span>Iter 3</span><i style="--fill: 100%"></i><b>100%</b></li>
+                </ul>
+                <ul class="evolve-cases">
+                  <li>
+                    <span class="evolve-case-flag is-pass" aria-hidden="true"></span>
+                    <span class="evolve-case-text"><b>build_alpha_pipeline</b><em>9 / 9 assertions</em></span>
+                    <b class="evolve-case-cost">812s · 684k tok</b>
+                  </li>
+                  <li>
+                    <span class="evolve-case-flag is-pass" aria-hidden="true"></span>
+                    <span class="evolve-case-text"><b>diagnose_leakage</b><em>7 / 7 assertions</em></span>
+                    <b class="evolve-case-cost">665s · 513k tok</b>
+                  </li>
+                  <li>
+                    <span class="evolve-case-flag is-pass" aria-hidden="true"></span>
+                    <span class="evolve-case-text"><b>decider_usage</b><em>6 / 6 assertions</em></span>
+                    <b class="evolve-case-cost">431s · 299k tok</b>
+                  </li>
+                </ul>
+                <div class="evolve-bench">
+                  <div class="evolve-bench-row"><span>Pass rate</span><b>3 / 3 · 100%</b></div>
+                  <div class="evolve-bench-row"><span>Avg time</span><b>636.2s</b></div>
+                  <div class="evolve-bench-row"><span>Avg tokens</span><b>498,549</b></div>
+                  <div class="evolve-bench-row"><span>Tokens saved</span><b>−32% · 486k</b></div>
+                </div>
+              </div>
+            </article>
+
+            <article class="evolve-card">
+              <header class="evolve-card-head">
+                <span class="evolve-card-kicker">Memory</span>
+                <span class="evolve-card-tag">Three layers, one recall</span>
+              </header>
+              <div class="evolve-body">
+                <ul class="evolve-layers">
+                  <li>
+                    <span class="evolve-layer-n">01</span>
+                    <span class="evolve-layer-text"><b>Working memory</b><em>Session context, held while the task runs.</em></span>
+                  </li>
+                  <li>
+                    <span class="evolve-layer-n">02</span>
+                    <span class="evolve-layer-text"><b>MEMORY.md</b><em>Durable notes the agent writes and re-reads.</em></span>
+                  </li>
+                  <li>
+                    <span class="evolve-layer-n">03</span>
+                    <span class="evolve-layer-text"><b>PurrMemo</b><em>Hybrid recall — events, experiences, a graph.</em></span>
+                  </li>
+                </ul>
+                <div class="evolve-bench">
+                  <div class="evolve-bench-row"><span>events</span><b>top 5 · time-filtered</b></div>
+                  <div class="evolve-bench-row"><span>experiences</span><b>top 5 · vector</b></div>
+                  <div class="evolve-bench-row"><span>graph nodes</span><b>top 3 · depth 2</b></div>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <!-- ---------- 安装 ---------- -->
+        <section class="section" id="downloads">
+          <div class="downloads-top">
+            <div class="downloads-head">
+              <p class="ks-eyebrow ks-eyebrow--gold">Quickstart</p>
+              <h2 class="downloads-title">Install PurrCat</h2>
+              <p class="downloads-lead">
+                Three steps from a clean machine: install PurrCat, launch the desktop app, and make it yours.
+              </p>
+            </div>
+
+            <div class="downloads-install" data-install-tabs data-install-flow>
+              <details class="downloads-flow-step" data-install-step="1" open>
+                <summary class="downloads-flow-heading">
+                  <span class="downloads-flow-number">1</span>
+                  <span>Install PurrCat</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+                </summary>
+                <div class="downloads-flow-body">
+                  <div class="downloads-step">
+                    <div class="downloads-tabs">
+                      <span class="downloads-tabs-label" id="install-tabs-label">Install via</span>
+                      <div class="downloads-method-strip" role="tablist" aria-labelledby="install-tabs-label" data-scroll="none">
+                        <button class="downloads-tab is-active" type="button" role="tab" id="install-tab-unix" aria-controls="install-panel-unix" aria-selected="true" data-method="unix" tabindex="0">macOS / Linux</button>
+                        <button class="downloads-tab" type="button" role="tab" id="install-tab-windows" aria-controls="install-panel-windows" aria-selected="false" data-method="windows" tabindex="-1">Windows</button>
+                        <button class="downloads-tab" type="button" role="tab" id="install-tab-source" aria-controls="install-panel-source" aria-selected="false" data-method="source" tabindex="-1">From source</button>
+                      </div>
+                    </div>
+
+                    <div class="downloads-method-panel" id="install-panel-unix" role="tabpanel" aria-labelledby="install-tab-unix" data-method-panel="unix">
+                      <p class="downloads-method-note">Run in your terminal, then follow the prompts.</p>
+                      <div class="downloads-cmd">
+                        <span class="downloads-prompt" aria-hidden="true">$</span>
+                        <code>curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash</code>
+                        <button class="downloads-copy" type="button" aria-label="Copy install command" data-copy-command="curl -fsSL https://raw.githubusercontent.com/PurrPod/purrcat/main/install.sh | bash">
+                          <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                          <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                          <span>Copy</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="downloads-method-panel" id="install-panel-windows" role="tabpanel" aria-labelledby="install-tab-windows" data-method-panel="windows" hidden>
+                      <p class="downloads-method-note">Run in PowerShell. Docker Desktop must be launched once afterwards to finish setup.</p>
+                      <div class="downloads-cmd">
+                        <span class="downloads-prompt" aria-hidden="true">&gt;</span>
+                        <code>irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex</code>
+                        <button class="downloads-copy" type="button" aria-label="Copy install command" data-copy-command="irm https://raw.githubusercontent.com/PurrPod/purrcat/main/install.ps1 | iex">
+                          <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                          <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                          <span>Copy</span>
+                        </button>
+                      </div>
+                    </div>
+
+                    <div class="downloads-method-panel" id="install-panel-source" role="tabpanel" aria-labelledby="install-tab-source" data-method-panel="source" hidden>
+                      <p class="downloads-method-note">Prefer to read every line first? Clone the repository and run the installer yourself.</p>
+                      <div class="downloads-cmd">
+                        <span class="downloads-prompt" aria-hidden="true">$</span>
+                        <code>git clone https://github.com/PurrPod/purrcat ~/purrcat</code>
+                        <button class="downloads-copy" type="button" aria-label="Copy clone command" data-copy-command="git clone https://github.com/PurrPod/purrcat ~/purrcat">
+                          <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                          <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                          <span>Copy</span>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+
+                  <details class="downloads-branch">
+                    <summary class="downloads-branch-summary">
+                      <svg class="downloads-branch-arrow" width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M9 6l6 6-6 6"></path></svg>
+                      <span>What the script does</span>
+                    </summary>
+                    <div class="downloads-install-details">
+                      <p>It checks for and installs the required prerequisites, clones the source to <code>~/purrcat</code>, installs the project dependencies, and registers a global <code>purrcat</code> command.</p>
+                      <p><strong>Windows:</strong> launch Docker Desktop once after installation to complete setup and accept its agreement. The Windows flow is well tested; macOS and Linux have more limited coverage.</p>
+                    </div>
+                  </details>
+
+                  <button class="downloads-next" type="button" data-install-next="2">Next: launch the desktop app <span aria-hidden="true">&rarr;</span></button>
+                </div>
+              </details>
+
+              <details class="downloads-flow-step" data-install-step="2">
+                <summary class="downloads-flow-heading">
+                  <span class="downloads-flow-number">2</span>
+                  <span>Launch the desktop app</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+                </summary>
+                <div class="downloads-flow-body">
+                  <p class="downloads-flow-intro">Start the Electron desktop app, then confirm the API is listening.</p>
+
+                  <div class="downloads-step">
+                    <h3 class="downloads-cmd-label"><span class="downloads-cmd-num">01</span> Start the desktop app</h3>
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">$</span>
+                      <code>purrcat desktop start</code>
+                      <button class="downloads-copy" type="button" aria-label="Copy start command" data-copy-command="purrcat desktop start">
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="downloads-step">
+                    <h3 class="downloads-cmd-label"><span class="downloads-cmd-num">02</span> Pin the API port</h3>
+                    <p class="downloads-method-note">The API uses port <code>8000</code> by default and quietly moves to the next free port when it is taken. To pin one instead:</p>
+                    <div class="downloads-cmd">
+                      <span class="downloads-prompt" aria-hidden="true">$</span>
+                      <code>PURRCAT_API_PORT=8123 purrcat desktop start</code>
+                      <button class="downloads-copy" type="button" aria-label="Copy pinned port command" data-copy-command="PURRCAT_API_PORT=8123 purrcat desktop start">
+                        <svg class="downloads-copy-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"></path></svg>
+                        <svg class="downloads-check-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"></path></svg>
+                        <span>Copy</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <button class="downloads-next" type="button" data-install-next="3">Next: make it yours <span aria-hidden="true">&rarr;</span></button>
+                </div>
+              </details>
+
+              <details class="downloads-flow-step" data-install-step="3">
+                <summary class="downloads-flow-heading">
+                  <span class="downloads-flow-number">3</span>
+                  <span>Make it yours</span>
+                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="m9 6 6 6-6 6"></path></svg>
+                </summary>
+                <div class="downloads-flow-body">
+                  <p class="downloads-flow-intro">Tell it your workflow, and it writes you a workbench of your own.</p>
+
+                  <ul class="downloads-follow">
+                    <li>
+                      <div>
+                        <strong>Keep it current.</strong>
+                        <p>Pull the latest source and refresh dependencies in one command.</p>
+                      </div>
+                      <a class="ks-button ks-button-secondary" href="https://github.com/PurrPod/purrcat#quickstart" target="_blank" rel="noopener">Update PurrCat <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" aria-hidden="true"><path d="M7 17 17 7M7 7h10v10"></path></svg></a>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Read how it works.</strong>
+                        <p>Plugins, memory, workflows, and the sandbox, in detail.</p>
+                      </div>
+                      <a class="ks-button ks-button-secondary" href="/docs/">Open the docs <span class="ks-button-arrow" aria-hidden="true"><svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M0 4h14M10 0l4 4-4 4"></path></svg></span></a>
+                    </li>
+                    <li>
+                      <div>
+                        <strong>Follow along.</strong>
+                        <p>Star the repo to keep PurrCat close and support the project.</p>
+                      </div>
+                      <a class="ks-button ks-button-primary" href="https://github.com/PurrPod/purrcat" target="_blank" rel="noopener">Star on GitHub <span class="ks-button-arrow" aria-hidden="true"><svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square"><path d="M0 4h14M10 0l4 4-4 4"></path></svg></span></a>
+                    </li>
+                  </ul>
+
+                  <a class="downloads-next" href="/docs/">Start building <span aria-hidden="true">&rarr;</span></a>
+                </div>
+              </details>
+            </div>
+          </div>
+
+        </section>
+
+        <!-- ---------- 结尾 ---------- -->
+        <section class="closing">
+          <p class="ks-eyebrow">Design goal</p>
+          <h2 class="section-title">
+            Let the agent be not just stronger, but more aligned with how you work.
+          </h2>
+          <div class="hero-actions">
+            <a href="#downloads" class="ks-button ks-button-primary"
+              >Install PurrCat<span class="ks-button-arrow" aria-hidden="true"
+                ><svg viewBox="0 0 16 8" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="square">
+                  <path d="M0 4h14M10 0l4 4-4 4"></path></svg></span
+            ></a>
+            <a
+              href="https://github.com/PurrPod/purrcat"
+              class="ks-button ks-button-ghost"
+              target="_blank"
+              rel="noopener"
+              >View on GitHub</a
+            >
+          </div>
+        </section>
+
+      </div>
+    </main>
+
+    <footer class="site-footer">
+      <!-- ---------- 许可与生态 ---------- -->
+      <ul class="downloads-extras">
+        <li>
+          <strong>MIT licensed</strong>
+          <span>Use it, modify it, and distribute it — including commercially. Source install only for now; there are no pre-packaged desktop installers yet.</span>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">Read the license</a>
+        </li>
+        <li>
+          <strong>Any harness, one plugin surface</strong>
+          <span>MCP servers and Agent Skills install through the built-in market, with dependency resolution across six extension types.</span>
+          <a href="/#features">See the extension types</a>
+        </li>
+      </ul>
+
+      <div class="footer-row">
+        <a class="footer-logo" href="/">PurrCat</a>
+        <nav class="footer-links" aria-label="Footer">
+          <a href="#features">Features</a>
+          <a href="/docs/">Docs</a>
+          <a href="/about.html">About</a>
+          <a href="https://github.com/PurrPod/purrcat">GitHub</a>
+          <a href="https://github.com/PurrPod/purrcat/blob/main/LICENSE">MIT License</a>
+        </nav>
+        <div class="footer-credit">
+          <span>© 2026 PurrPod · Let expression no longer be a lossy compression</span>
+        </div>
+      </div>
+    </footer>
+
+    <script src="/assets/js/site.js" defer></script>
+  </body>
 </html>
