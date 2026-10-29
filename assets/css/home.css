@@ -1230,7 +1230,7 @@
 
 .downloads-install .downloads-cmd-label {
   font-family: var(--ks-mono);
-  font-size: var(--ks-type-micro-size);
+  font-size: 0.625rem;
   letter-spacing: 0.14em;
   text-transform: uppercase;
   color: var(--ks-text-muted);

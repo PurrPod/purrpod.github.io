@@ -558,7 +558,7 @@ html .site-code-block.code-block-wrap.site-code-block--mono>pre.site-code-conten
 
 .downloads-install .downloads-step{gap:12px;min-width:0;display:grid}
 
-.downloads-install .downloads-cmd-label{font-family:var(--ks-mono);font-size:var(--ks-type-micro-size);letter-spacing:.14em;text-transform:uppercase;color:var(--ks-text-muted);align-items:baseline;gap:12px;margin:0;font-weight:500;line-height:1.1;display:flex}
+.downloads-install .downloads-cmd-label{font-family:var(--ks-mono);font-size:.625rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ks-text-muted);align-items:baseline;gap:12px;margin:0;font-weight:500;line-height:1.1;display:flex}
 
 .downloads-install .downloads-cmd-num{color:var(--ks-ink);letter-spacing:.06em}
 
@@ -1208,6 +1208,72 @@ html .site-code-block.code-block-wrap.site-code-block--mono>pre.site-code-conten
   line-height: 1.6;
   overflow-x: auto;
   white-space: pre;
+}
+
+/* --------------------------------------------------------------------------
+   开发文档：插件组合关系图（mermaid 风格内联 SVG）
+   -------------------------------------------------------------------------- */
+.docs-kinpaku .docs-plugin-map {
+  margin: 0;
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.docs-plugin-map svg {
+  display: block;
+  width: 100%;
+  min-width: 860px;
+  height: auto;
+}
+
+.docs-plugin-map .pm-node {
+  fill: var(--ks-paper-raised);
+  stroke: var(--ks-edge);
+  stroke-width: 1;
+}
+
+.docs-plugin-map .pm-node--plugin {
+  fill: var(--ks-paper-deep);
+}
+
+.docs-plugin-map .pm-node--agent {
+  fill: var(--ks-kinpaku-pale);
+  stroke: var(--ks-kinpaku-rich);
+  stroke-width: 1.5;
+}
+
+.docs-plugin-map .pm-line {
+  fill: none;
+  stroke: var(--ks-text-muted);
+  stroke-width: 1.2;
+}
+
+.docs-plugin-map .pm-line--dashed {
+  stroke-dasharray: 5 4;
+}
+
+.docs-plugin-map marker path {
+  fill: var(--ks-text-muted);
+}
+
+.docs-plugin-map text {
+  font-family: var(--ks-mono);
+  fill: var(--ks-ink);
+  font-size: 12px;
+  text-anchor: middle;
+  dominant-baseline: middle;
+}
+
+.docs-plugin-map .pm-agent-label {
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+
+.docs-plugin-map .pm-edge-label {
+  fill: var(--ks-text-faint);
+  font-size: 9.5px;
+  font-weight: 500;
 }
 
 /* --------------------------------------------------------------------------

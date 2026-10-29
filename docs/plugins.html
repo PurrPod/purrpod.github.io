@@ -424,11 +424,69 @@ ui/web-minimal/plugins/builtin/&lt;id&gt;/ 内置（随分发，只读）</code>
                 <h3>
                   <span class="i18n-zh">组合关系</span><span class="i18n-en">How they combine</span>
                 </h3>
-                <pre class="docs-code-block"><code>外部渠道 ─▶ Sensor ─┐
-                    ├──▶ Agent ◀── UI Plugin ◀── 用户
-                    │
-   AgentLoop ───────┼─▶ 注入引导信息 · 必要节点审批 / 打回
-   原生工具 ────────┴─▶ 发现并调用 Graph / MCP / Skill</code></pre>
+                <figure class="docs-plugin-map">
+                  <svg viewBox="0 0 1060 260" role="img" aria-labelledby="plugin-map-title">
+                    <title id="plugin-map-title">
+                      外部渠道、用户汇入 Agent，AgentLoop 与原生工具位于 Agent 右侧的组合关系
+                    </title>
+                    <defs>
+                      <marker
+                        id="pm-arrow"
+                        viewBox="0 0 10 10"
+                        refX="9"
+                        refY="5"
+                        markerWidth="9"
+                        markerHeight="9"
+                        markerUnits="userSpaceOnUse"
+                        orient="auto-start-reverse"
+                      >
+                        <path d="M1 1 9 5 1 9Z" />
+                      </marker>
+                    </defs>
+
+                    <g class="pm-edges">
+                      <path class="pm-line" d="M160 82H206" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line" d="M342 82H476" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line pm-line--dashed" d="M480 96H346" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line" d="M900 82H684" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line" d="M684 162H896" marker-start="url(#pm-arrow)" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line" d="M160 162H206" marker-end="url(#pm-arrow)" />
+                      <path class="pm-line" d="M342 162H476" marker-start="url(#pm-arrow)" marker-end="url(#pm-arrow)" />
+                    </g>
+
+                    <g class="pm-nodes">
+                      <rect class="pm-node" x="20" y="60" width="140" height="44" rx="8" />
+                      <rect class="pm-node pm-node--plugin" x="210" y="60" width="132" height="44" rx="8" />
+                      <rect class="pm-node pm-node--agent" x="480" y="58" width="200" height="128" rx="8" />
+                      <rect class="pm-node" x="20" y="140" width="140" height="44" rx="8" />
+                      <rect class="pm-node pm-node--plugin" x="210" y="140" width="132" height="44" rx="8" />
+                      <rect class="pm-node pm-node--plugin" x="900" y="60" width="140" height="44" rx="8" />
+                      <rect class="pm-node" x="900" y="140" width="140" height="44" rx="8" />
+                    </g>
+
+                    <g class="pm-labels">
+                      <text class="pm-label i18n-zh" x="90" y="82">外部渠道</text>
+                      <text class="pm-label i18n-en" x="90" y="82">External channel</text>
+                      <text class="pm-label" x="276" y="82">Sensor</text>
+                      <text class="pm-label i18n-zh" x="90" y="162">用户</text>
+                      <text class="pm-label i18n-en" x="90" y="162">User</text>
+                      <text class="pm-label" x="276" y="162">UI Plugin</text>
+                      <text class="pm-label pm-agent-label" x="580" y="122">Agent</text>
+                      <text class="pm-label" x="970" y="82">AgentLoop</text>
+                      <text class="pm-label i18n-zh" x="970" y="162">原生工具</text>
+                      <text class="pm-label i18n-en" x="970" y="162">Native tools</text>
+                    </g>
+
+                    <g class="pm-edge-labels">
+                      <text class="pm-edge-label" x="409" y="70">Events</text>
+                      <text class="pm-edge-label" x="409" y="150">Messages</text>
+                      <text class="pm-edge-label i18n-zh" x="790" y="70">注入引导信息 · 必要节点审批 / 打回</text>
+                      <text class="pm-edge-label i18n-en" x="790" y="70">Guidance · approvals at key nodes</text>
+                      <text class="pm-edge-label i18n-zh" x="790" y="150">发现并调用 Graph / MCP / Skill</text>
+                      <text class="pm-edge-label i18n-en" x="790" y="150">Calls Graph / MCP / Skill</text>
+                    </g>
+                  </svg>
+                </figure>
                 <div class="docs-prose">
                   <ul>
                     <li>
